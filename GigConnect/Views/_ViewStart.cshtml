@@ -1,3 +1,18 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (this.User.IsInRole("Band"))
+    {
+        Layout = "~/Views/Shared/_BandLayout.cshtml";
+    }
+
+    else if (this.User.IsInRole("Venue"))
+    {
+        Layout = "~/Views/Shared/_VenueLayout.cshtml";
+    }
+
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
 }

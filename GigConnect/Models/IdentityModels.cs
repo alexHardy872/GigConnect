@@ -29,5 +29,15 @@ namespace GigConnect.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<Band> Bands { get; set; }
+        public DbSet<Venue> Venues { get; set; }
+
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<Gig> Gigs { get; set; }
+        public DbSet<Message> Messages { get; set; }
+   
+
+
     }
 }
