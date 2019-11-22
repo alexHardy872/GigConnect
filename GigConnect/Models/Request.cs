@@ -7,10 +7,10 @@ using System.Web;
 
 namespace GigConnect.Models
 {
-    public class Gig
+    public class Request
     {
         [Key]
-        public int GigId { get; set; }
+        public int RequestId { get; set; }
 
 
         [ForeignKey("Location")]
@@ -18,16 +18,26 @@ namespace GigConnect.Models
         public Location Location { get; set; }
 
 
+        [ForeignKey("Gig")]    //// for later, checking if a gig is null differentiates a custom request
+        public int? eventId { get; set; }
+        public Gig Gig { get; set; }
+
+
+        [ForeignKey("Band")]
+        public int bandId { get; set; }
+        public Band Band { get; set; }
+
+
         [ForeignKey("Venue")]
         public int venueId { get; set; }
         public Venue Venue { get; set; }
 
-        public string bandsOnVenue { get; set; } // coma 
-
-        public DateTime timeOfGig { get; set; }
+        public DateTime gigTime { get; set; }
 
 
+        public bool fromBand { get; set; }
 
+        public bool fromVenue { get; set; }
 
 
 

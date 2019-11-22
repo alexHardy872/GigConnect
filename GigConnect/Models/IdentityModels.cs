@@ -36,6 +36,10 @@ namespace GigConnect.Models
         public DbSet<Location> Locations { get; set; }
         public DbSet<Gig> Gigs { get; set; }
         public DbSet<Message> Messages { get; set; }
+
+        public DbSet<Request> Requests { get; set; }
+
+        public DbSet<SocialMediaIds> Socials { get; set; }
    
 
 

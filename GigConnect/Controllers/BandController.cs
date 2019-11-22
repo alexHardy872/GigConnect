@@ -1,14 +1,22 @@
-﻿using System;
+﻿using GigConnect.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using GigConnect.Models.ViewModels;
 
 namespace GigConnect.Controllers
 {
     public class BandController : Controller
     {
 
+        public ApplicationDbContext context;
+        public BandController()
+        {
+            context = new ApplicationDbContext();
+        }
 
         // create profile
 
@@ -33,7 +41,14 @@ namespace GigConnect.Controllers
         // GET: Band/Create
         public ActionResult Create()
         {
-            return View();
+            CreateAndEditViewModel createView = new CreateAndEditViewModel();
+
+            
+
+            createView.Location = new Location();
+            createView.Band = new Band();
+
+            return View(createView);
         }
 
         // POST: Band/Create
@@ -42,7 +57,16 @@ namespace GigConnect.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
+                string userId = User.Identity.GetUserId();
+
+                // band
+
+                // location info
+
+                // save changes
+
+                // redirect to main dashboard (create profile???)
+            
 
                 return RedirectToAction("Index");
             }
