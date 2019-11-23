@@ -32,6 +32,13 @@ namespace GigConnect.Controllers
         // GET: Band
         public ActionResult Index()
         {
+            string userId = User.Identity.GetUserId();
+            Band band = context.Bands.Where(b => b.ApplicationId == userId).FirstOrDefault();
+            if(band == null)
+            {
+                return RedirectToAction("Create", "Band");
+            }
+
             return View();
         }
 
@@ -45,8 +52,6 @@ namespace GigConnect.Controllers
         public ActionResult Create()
         {
             CreateAndEditViewModel createView = new CreateAndEditViewModel();
-
-            
 
             createView.Location = new Location();
             createView.Band = new Band();

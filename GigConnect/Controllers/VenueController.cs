@@ -22,6 +22,12 @@ namespace GigConnect.Controllers
         // GET: Venue
         public ActionResult Index()
         {
+            string userId = User.Identity.GetUserId();
+            Venue venue = context.Venues.Where(b => b.ApplicationId == userId).FirstOrDefault();
+            if (venue == null)
+            {
+                return RedirectToAction("Create", "Venue");
+            }
             return View();
         }
 

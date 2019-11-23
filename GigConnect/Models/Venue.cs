@@ -18,6 +18,8 @@ namespace GigConnect.Models
 
         public string description { get; set; }
 
+        public string websiteUrl { get; set; }
+
         [Display(Name = "Genre")]
         public GenreList genre { get; set; }
 

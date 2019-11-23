@@ -32,6 +32,20 @@ namespace GigConnect.Controllers
             }
             else
             {
+                if (User.IsInRole("Band"))
+                {
+                    return RedirectToAction("Index", "Band");
+                }
+                if (User.IsInRole("Venue"))
+                {
+                    return RedirectToAction("Index", "Venue");
+                }
+
+
+
+
+
+
                 return RedirectToAction("Index", "Home");
             }
 
