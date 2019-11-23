@@ -43,6 +43,8 @@ namespace GigConnect.Models
 
         public bool approved { get; set; }
 
+        public bool denied { get; set; }
+
 
 
 

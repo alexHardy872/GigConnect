@@ -40,10 +40,7 @@ namespace GigConnect.Controllers
             }
 
             BandIndexViewModel model = AssembleIndexViewModelForBand();
-            // something else???
-            // create index view??
-
-            return View();
+            return View(model);
         }
 
         public BandIndexViewModel AssembleIndexViewModelForBand()
@@ -52,20 +49,12 @@ namespace GigConnect.Controllers
  
             bandInfo.band = GetUserBand();
             bandInfo.gigs = GetGigs(bandInfo.band);
-            bandInfo.conversations = GetConversations(bandInfo.band.BandId);
+            bandInfo.messagesIn = GetAllMessagesIn(bandInfo.band.BandId);
+            bandInfo.messagesOut = GetAllMessagesOut(bandInfo.band.BandId);
 
-            
-
-        //public Band band
-
-        //public List<Gig> gig
-
-        //public List<Message> messages 
-
-        //public List<Request> requestsIn 
-
-        //public List<Request> requestsOut 
-
+            bandInfo.requestsIn = GetRequestsIn(bandInfo.band.BandId);
+            bandInfo.requestsOut = GetRequestsOut(bandInfo.band.BandId);
+            bandInfo.unreadMessages = FilterForUnread(bandInfo.messagesIn);
 
             return bandInfo;
         }
@@ -103,21 +92,43 @@ namespace GigConnect.Controllers
             }
     }
 
-    public List<ConversationViewModel> GetConversations(int bandId)
+   
+
+
+        public List<Message> GetAllMessagesIn(int bandId)
         {
-            List<ConversationViewModel> conversations = new List<ConversationViewModel>();
-            List<Message> allBandMessages = GetAllMessages(bandId);
-            
-
-
-            return conversations;
+            List<Message> messages = context.Messages.Where(m => m.bandId == bandId && m.from == "Venue").ToList();           
+            return messages;
         }
 
-        public List<Message> getAllMessages(int bandId)
+        public bool FilterForUnread(List<Message> messages)
         {
-            List<Message> messages = new List<Message>();
-            messages = context.Messages.Where(m => m.bandId == bandId).ToList();
+            var unread = messages.Where(u => u.read == false).ToList();
+            if(unread.Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
 
+        public List<Message> GetAllMessagesOut(int bandId)
+        {
+            List<Message> messages = context.Messages.Where(m => m.bandId == bandId && m.from == "Band").ToList();
+            return messages;
+        }
+
+        public List<Request> GetRequestsIn(int bandId)
+        {
+            List<Request> requestsIn = context.Requests.Where(r => r.bandId == bandId && r.fromVenue == true && r.approved == false && r.denied == false).ToList();
+            return requestsIn;
+        }
+        public List<Request> GetRequestsOut(int bandId)
+        {
+            List<Request> requestsIn = context.Requests.Where(r => r.bandId == bandId && r.fromVenue == true && r.approved == false && r.denied == false).ToList();
+            return requestsIn;
         }
 
         // GET: Band/Details/5

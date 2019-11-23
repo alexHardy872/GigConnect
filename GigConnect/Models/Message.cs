@@ -12,6 +12,8 @@ namespace GigConnect.Models
         [Key]
         public int MessageId { get; set; }
 
+        public string from { get; set; }
+
 
         [ForeignKey("Venue")]
         public int venueId { get; set; }
