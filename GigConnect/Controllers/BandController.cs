@@ -11,7 +11,7 @@ using GigConnect.Services;
 
 namespace GigConnect.Controllers
 {
-    [Authorize(Roles = "Band")]
+   // [Authorize(Roles = "Band")]
     public class BandController : Controller
     {
 
@@ -39,6 +39,9 @@ namespace GigConnect.Controllers
                 return RedirectToAction("Create", "Band");
             }
 
+            // something else???
+            string applcationId = "heyyyy";
+
             return View();
         }
 
@@ -53,9 +56,12 @@ namespace GigConnect.Controllers
         {
             CreateAndEditViewModel createView = new CreateAndEditViewModel();
 
-            createView.Location = new Location();
-            createView.Band = new Band();
-            createView.Social = new SocialMediaIds();
+            Location location = new Location();
+            createView.Location = location;
+            Band band = new Band();
+            createView.Band = band;
+            SocialMediaIds social = new SocialMediaIds();
+            createView.Social = social;
 
             return View(createView);
         }

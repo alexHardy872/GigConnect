@@ -19,7 +19,7 @@ namespace GigConnect.Models
         [Display(Name = "Genre")]
         public GenreList genre { get; set; }
 
-   
+        public string town { get; set; }
 
         [ForeignKey("Location")]
         public int? LocationId { get; set; }

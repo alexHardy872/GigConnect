@@ -1,11 +1,11 @@
 ﻿@{
 
-    if (this.User.IsInRole("Band"))
+    if (User.IsInRole("Band"))
     {
         Layout = "~/Views/Shared/_BandLayout.cshtml";
     }
 
-    else if (this.User.IsInRole("Venue"))
+    else if (User.IsInRole("Venue"))
     {
         Layout = "~/Views/Shared/_VenueLayout.cshtml";
     }
@@ -14,5 +14,12 @@
     {
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
+
+
+    //    string[] roles = Roles.GetRolesForUser(userName);
+    //if (roles.Contains("Administrator") || roles.Contains("Manager"))
+    //{
+    //    return RedirectToAction("Index", "AdminApp");
+    //}
 
 }

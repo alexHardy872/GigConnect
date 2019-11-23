@@ -7,13 +7,13 @@ namespace GigConnect.Models.ViewModels
 {
     public class CreateAndEditViewModel
     {
-        public Band Band;
+        public Band Band { get; set; }
 
-        public Location Location;
+        public Location Location { get; set; }
 
-        public Venue Venue;
+        public Venue Venue { get; set; }
 
-        public SocialMediaIds Social;
+        public SocialMediaIds Social { get; set; }
 
 
 

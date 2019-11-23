@@ -10,6 +10,14 @@ namespace GigConnect.Controllers
     {
         public ActionResult Index()
         {
+            if (User.IsInRole("Band"))
+            {
+                return RedirectToAction("Index", "Band");
+            }
+            if (User.IsInRole("Venue"))
+            {
+                return RedirectToAction("Index", "Venue");
+            }
             return View();
         }
 

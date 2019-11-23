@@ -11,7 +11,7 @@ using GigConnect.Services;
 
 namespace GigConnect.Controllers
 {
-    [Authorize(Roles = "Venue")]
+   // [Authorize(Roles = "Venue")]
     public class VenueController : Controller
     {
         public ApplicationDbContext context;

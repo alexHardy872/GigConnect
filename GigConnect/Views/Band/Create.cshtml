@@ -13,7 +13,9 @@
 
 
 <div class="form-horizontal">
-    <h4>Person</h4>
+    <h4>Band</h4>
+
+
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
@@ -21,6 +23,14 @@
         <div class="col-md-10">
             @Html.EditorFor(model => model.Band.bandName, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Band.bandName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Band.town, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Band.town, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Band.town, "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -35,7 +45,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Social.facebookPageId, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EnumDropDownListFor(model => model.Social.facebookPageId, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.Social.facebookPageId, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Social.facebookPageId, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -43,7 +53,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Social.twitterHandle, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EnumDropDownListFor(model => model.Social.twitterHandle, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.Social.twitterHandle, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Social.twitterHandle, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -51,7 +61,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Social.youtubeChannelId, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EnumDropDownListFor(model => model.Social.youtubeChannelId, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.Social.youtubeChannelId, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Social.youtubeChannelId, "", new { @class = "text-danger" })
         </div>
     </div>

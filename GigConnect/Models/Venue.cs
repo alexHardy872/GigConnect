@@ -16,6 +16,8 @@ namespace GigConnect.Models
 
         public string venueName { get; set; }
 
+        public string town { get; set; }
+
         public string description { get; set; }
 
         public string websiteUrl { get; set; }
