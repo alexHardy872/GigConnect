@@ -26,6 +26,11 @@ namespace GigConnect.Models
         public Location Location { get; set; }
 
 
+        [ForeignKey("Social")]
+        public int socialId { get; set; }
+        public SocialMediaIds Social { get; set; }
+
+
         [ForeignKey("ApplicationUser")]//fk attr
         public string ApplicationId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }//the class the fk attr is referencing

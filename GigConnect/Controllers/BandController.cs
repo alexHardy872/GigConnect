@@ -6,9 +6,12 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using GigConnect.Models.ViewModels;
+using System.Threading.Tasks;
+using GigConnect.Services;
 
 namespace GigConnect.Controllers
 {
+    [Authorize(Roles = "Band")]
     public class BandController : Controller
     {
 
@@ -47,31 +50,40 @@ namespace GigConnect.Controllers
 
             createView.Location = new Location();
             createView.Band = new Band();
+            createView.Social = new SocialMediaIds();
 
             return View(createView);
         }
 
         // POST: Band/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public async Task<ActionResult> Create(CreateAndEditViewModel createInfo)
         {
             try
             {
                 string userId = User.Identity.GetUserId();
+                createInfo.Band.ApplicationId = userId;
+                int nextLocationId = context.Database.ExecuteSqlCommand("SELECT IDENT_CURRENT('dbo.Locations')") + 1;
+                int nextSocialId = context.Database.ExecuteSqlCommand("SELECT IDENT_CURRENT('dbo.Socials')") + 1;
+                createInfo.Band.LocationId = nextLocationId;
+                createInfo.Band.socialId = nextSocialId;
 
-                // band
+                context.Socials.Add(createInfo.Social);
 
-                // location info
+                context.Bands.Add(createInfo.Band);
 
-                // save changes
+                string[] latLng = await GeoCode.GetLatLongFromApi(createInfo.Location);
+                createInfo.Location.lat = latLng[0];
+                createInfo.Location.lng = latLng[1];
 
-                // redirect to main dashboard (create profile???)
-            
+                context.Locations.Add(createInfo.Location);
 
+                await context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return View();
             }
         }
@@ -79,20 +91,52 @@ namespace GigConnect.Controllers
         // GET: Band/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            CreateAndEditViewModel toEdit = new CreateAndEditViewModel();
+            string userId = User.Identity.GetUserId();
+            toEdit.Band = context.Bands.Where(b => b.ApplicationId == userId).FirstOrDefault();
+            toEdit.Location = context.Locations.Where(l => l.LocationId == toEdit.Band.LocationId).FirstOrDefault();
+            toEdit.Social = context.Socials.Where(s => s.SocialId == toEdit.Band.socialId).FirstOrDefault();
+            
+            return View(toEdit);
         }
 
         // POST: Band/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public async Task<ActionResult> Edit(CreateAndEditViewModel input)
         {
             try
             {
-                // TODO: Add update logic here
+                string userId = User.Identity.GetUserId();
+                Band currentBand = context.Bands.Where(b => b.ApplicationId == userId).FirstOrDefault();
+                Location currentLocation = context.Locations.Where(l => l.LocationId == currentBand.LocationId).FirstOrDefault();
+                SocialMediaIds currentSocials = context.Socials.Where(s => s.SocialId == currentBand.socialId).FirstOrDefault();
 
+                currentBand.BandId = input.Band.BandId;
+                currentBand.bandName = input.Band.bandName;
+                currentBand.genre = input.Band.genre;
+                currentBand.LocationId = input.Band.LocationId;
+                currentBand.ApplicationId = input.Band.ApplicationId;
+
+                currentLocation.LocationId = input.Location.LocationId;
+                currentLocation.address1 = input.Location.address1;
+                currentLocation.address2 = input.Location.address2;
+                currentLocation.city = input.Location.city;
+                currentLocation.zip = input.Location.zip;
+                currentLocation.state = input.Location.state;
+
+                currentSocials.SocialId = input.Social.SocialId;
+                currentSocials.facebookPageId = input.Social.facebookPageId;
+                currentSocials.twitterHandle = input.Social.twitterHandle;
+                currentSocials.youtubeChannelId = input.Social.youtubeChannelId;
+
+                string[] latLng = await GeoCode.GetLatLongFromApi(currentLocation);
+                currentLocation.lat = latLng[0];
+                currentLocation.lng = latLng[1];
+                
+                await context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exception e)
             {
                 return View();
             }

@@ -1,4 +1,5 @@
-﻿@model GigConnect.Models.ViewModels.CreateAndEditViewModel
+﻿
+@model GigConnect.Models.ViewModels.CreateAndEditViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -15,6 +16,14 @@
 <div class="form-horizontal">
     <h4>Person</h4>
     <hr />
+
+    @Html.HiddenFor(x => x.Band.ApplicationId)
+
+    @Html.HiddenFor(x => x.Band.LocationId)
+
+    @Html.HiddenFor(x => x.Band.socialId)
+
+
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(model => model.Band.bandName, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -24,6 +33,9 @@
         </div>
     </div>
 
+    <span> **<i>The Genre which BEST describes your music....</i>** </span>
+
+
     <div class="form-group">
         @Html.LabelFor(model => model.Band.genre, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -31,6 +43,9 @@
             @Html.ValidationMessageFor(model => model.Band.genre, "", new { @class = "text-danger" })
         </div>
     </div>
+
+    <span> **<i>IMPORTANT: fill these to help the app retrieve post from your social media... REQUIRED!</i>** </span>
+
 
     <div class="form-group">
         @Html.LabelFor(model => model.Social.facebookPageId, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -108,7 +123,7 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+            <input type="submit" value="Save" class="btn btn-default" />
         </div>
     </div>
 </div>

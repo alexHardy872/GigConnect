@@ -18,9 +18,6 @@ namespace GigConnect.Models
 
         public string youtubeChannelId { get; set; }
 
-        [ForeignKey("Band")]
-        public int bandId { get; set; }
-        public Band Band { get; set; }
 
 
 

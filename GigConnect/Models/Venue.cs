@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GigConnect.Models.EnumClasses;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,6 +15,12 @@ namespace GigConnect.Models
 
 
         public string venueName { get; set; }
+
+        public string description { get; set; }
+
+        [Display(Name = "Genre")]
+        public GenreList genre { get; set; }
+
 
         [ForeignKey("ApplicationUser")]//fk attr
         public string ApplicationId { get; set; }

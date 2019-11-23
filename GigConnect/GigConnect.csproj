@@ -201,6 +201,7 @@
     <Compile Include="Models\ViewModels\CreateAndEditViewModel.cs" />
     <Compile Include="Private\Keys.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\GeoCode.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -263,11 +264,13 @@
     <Content Include="Views\Shared\_BandLayout.cshtml" />
     <Content Include="Views\Shared\_VenueLayout.cshtml" />
     <Content Include="Views\Band\Create.cshtml" />
+    <Content Include="Views\Band\Edit.cshtml" />
+    <Content Include="Views\Venue\Create.cshtml" />
+    <Content Include="Views\Venue\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Role\" />
-    <Folder Include="Views\Venue\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
