@@ -18,9 +18,16 @@ namespace GigConnect.Models
         public Venue Venue { get; set; }
 
 
+        [ForeignKey("Band")]
+        public int bandId { get; set; }
+        public Band band { get; set; }
+
+
         public string messageContent { get; set; }
 
         public DateTime timeStamp { get; set; }
+
+        public bool read { get; set; }
 
     }
 }

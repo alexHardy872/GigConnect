@@ -34,10 +34,14 @@ namespace GigConnect.Models
 
         public DateTime gigTime { get; set; }
 
+        public string message { get; set; }
+
 
         public bool fromBand { get; set; }
 
         public bool fromVenue { get; set; }
+
+        public bool approved { get; set; }
 
 
 

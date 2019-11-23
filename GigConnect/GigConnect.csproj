@@ -180,21 +180,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201911221807492_init2.cs" />
-    <Compile Include="Migrations\201911221807492_init2.Designer.cs">
-      <DependentUpon>201911221807492_init2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911221948562_init-roles.cs" />
-    <Compile Include="Migrations\201911221948562_init-roles.Designer.cs">
-      <DependentUpon>201911221948562_init-roles.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911230011146_changes.cs" />
-    <Compile Include="Migrations\201911230011146_changes.Designer.cs">
-      <DependentUpon>201911230011146_changes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911231907479_initial.cs" />
-    <Compile Include="Migrations\201911231907479_initial.Designer.cs">
-      <DependentUpon>201911231907479_initial.cs</DependentUpon>
+    <Compile Include="Migrations\201911232003541_resetAfterNuke.cs" />
+    <Compile Include="Migrations\201911232003541_resetAfterNuke.Designer.cs">
+      <DependentUpon>201911232003541_resetAfterNuke.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -281,6 +269,8 @@
     <Content Include="Views\Band\Edit.cshtml" />
     <Content Include="Views\Venue\Create.cshtml" />
     <Content Include="Views\Venue\Edit.cshtml" />
+    <Content Include="Views\Band\Index.cshtml" />
+    <Content Include="Views\Venue\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -300,17 +290,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201911221807492_init2.resx">
-      <DependentUpon>201911221807492_init2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911221948562_init-roles.resx">
-      <DependentUpon>201911221948562_init-roles.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911230011146_changes.resx">
-      <DependentUpon>201911230011146_changes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911231907479_initial.resx">
-      <DependentUpon>201911231907479_initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201911232003541_resetAfterNuke.resx">
+      <DependentUpon>201911232003541_resetAfterNuke.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

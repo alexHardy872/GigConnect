@@ -39,10 +39,85 @@ namespace GigConnect.Controllers
                 return RedirectToAction("Create", "Band");
             }
 
+            BandIndexViewModel model = AssembleIndexViewModelForBand();
             // something else???
-            string applcationId = "heyyyy";
+            // create index view??
 
             return View();
+        }
+
+        public BandIndexViewModel AssembleIndexViewModelForBand()
+        {
+            BandIndexViewModel bandInfo = new BandIndexViewModel();
+ 
+            bandInfo.band = GetUserBand();
+            bandInfo.gigs = GetGigs(bandInfo.band);
+            bandInfo.conversations = GetConversations(bandInfo.band.BandId);
+
+            
+
+        //public Band band
+
+        //public List<Gig> gig
+
+        //public List<Message> messages 
+
+        //public List<Request> requestsIn 
+
+        //public List<Request> requestsOut 
+
+
+            return bandInfo;
+        }
+
+    public Band GetUserBand()
+        {
+            string userId = User.Identity.GetUserId();
+            Band band = context.Bands.Where(b => b.ApplicationId == userId).FirstOrDefault();
+            return band;
+        }
+
+    public List<Gig> GetGigs(Band band)
+        {
+            List<Gig> bandGigs = new List<Gig>();
+            List<Gig> allGigs = context.Gigs.ToList();
+            foreach( Gig gig in allGigs)
+            {
+                if (IsBandOnGig(gig.bandsOnVenue, band.BandId) == true)
+                {
+                    bandGigs.Add(gig);
+                }
+            }
+            return bandGigs;
+        }
+    public bool IsBandOnGig(string bandsOnVenue, int bandId)
+    {   
+        List<int> bandIds = bandsOnVenue.Split(',').Select(int.Parse).ToList();
+         if (bandIds.Contains(bandId))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+    }
+
+    public List<ConversationViewModel> GetConversations(int bandId)
+        {
+            List<ConversationViewModel> conversations = new List<ConversationViewModel>();
+            List<Message> allBandMessages = GetAllMessages(bandId);
+            
+
+
+            return conversations;
+        }
+
+        public List<Message> getAllMessages(int bandId)
+        {
+            List<Message> messages = new List<Message>();
+            messages = context.Messages.Where(m => m.bandId == bandId).ToList();
+
         }
 
         // GET: Band/Details/5
