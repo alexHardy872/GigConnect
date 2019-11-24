@@ -7,13 +7,13 @@ namespace GigConnect.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class update_models : IMigrationMetadata
+    public sealed partial class init : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(update_models));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(init));
         
         string IMigrationMetadata.Id
         {
-            get { return "201911241736395_update_models"; }
+            get { return "201911241920106_init"; }
         }
         
         string IMigrationMetadata.Source

@@ -3,7 +3,7 @@ namespace GigConnect.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class update_models : DbMigration
+    public partial class init : DbMigration
     {
         public override void Up()
         {
@@ -15,7 +15,7 @@ namespace GigConnect.Migrations
                         bandName = c.String(nullable: false),
                         genre = c.Int(nullable: false),
                         town = c.String(nullable: false),
-                        bandWebist = c.String(nullable: false),
+                        bandWebsite = c.String(nullable: false),
                         LocationId = c.Int(),
                         socialId = c.Int(nullable: false),
                         ApplicationId = c.String(maxLength: 128),
@@ -194,6 +194,23 @@ namespace GigConnect.Migrations
                 .Index(t => t.venueId);
             
             CreateTable(
+                "dbo.Reviews",
+                c => new
+                    {
+                        ReviewId = c.Int(nullable: false, identity: true),
+                        reviewOf = c.String(),
+                        rating = c.Int(nullable: false),
+                        content = c.String(),
+                        bandId = c.Int(),
+                        venueId = c.Int(),
+                    })
+                .PrimaryKey(t => t.ReviewId)
+                .ForeignKey("dbo.Bands", t => t.bandId)
+                .ForeignKey("dbo.Venues", t => t.venueId)
+                .Index(t => t.bandId)
+                .Index(t => t.venueId);
+            
+            CreateTable(
                 "dbo.AspNetRoles",
                 c => new
                     {
@@ -208,6 +225,8 @@ namespace GigConnect.Migrations
         public override void Down()
         {
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
+            DropForeignKey("dbo.Reviews", "venueId", "dbo.Venues");
+            DropForeignKey("dbo.Reviews", "bandId", "dbo.Bands");
             DropForeignKey("dbo.Requests", "venueId", "dbo.Venues");
             DropForeignKey("dbo.Requests", "locationId", "dbo.Locations");
             DropForeignKey("dbo.Requests", "eventId", "dbo.Gigs");
@@ -225,6 +244,8 @@ namespace GigConnect.Migrations
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.Reviews", new[] { "venueId" });
+            DropIndex("dbo.Reviews", new[] { "bandId" });
             DropIndex("dbo.Requests", new[] { "venueId" });
             DropIndex("dbo.Requests", new[] { "bandId" });
             DropIndex("dbo.Requests", new[] { "eventId" });
@@ -244,6 +265,7 @@ namespace GigConnect.Migrations
             DropIndex("dbo.Bands", new[] { "socialId" });
             DropIndex("dbo.Bands", new[] { "LocationId" });
             DropTable("dbo.AspNetRoles");
+            DropTable("dbo.Reviews");
             DropTable("dbo.Requests");
             DropTable("dbo.Messages");
             DropTable("dbo.Venues");

@@ -40,6 +40,8 @@ namespace GigConnect.Models
         public DbSet<Request> Requests { get; set; }
 
         public DbSet<SocialMediaIds> Socials { get; set; }
+
+        public DbSet<Review> Reviews { get; set; }
    
 
 
