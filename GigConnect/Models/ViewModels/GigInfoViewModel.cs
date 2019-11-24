@@ -5,11 +5,12 @@ using System.Web;
 
 namespace GigConnect.Models.ViewModels
 {
-    public class ConversationViewModel
+    public class GigInfoViewModel
     {
-        public string other { get; set; }
-        List<Message> messages { get; set; }
 
+        public Gig gig { get; set; }
+
+        public List<Band> bands { get; set; }
 
     }
 }

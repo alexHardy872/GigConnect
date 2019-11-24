@@ -48,7 +48,7 @@ namespace GigConnect.Controllers
             BandIndexViewModel bandInfo = new BandIndexViewModel();
  
             bandInfo.band = GetUserBand();
-            bandInfo.gigs = GetGigs(bandInfo.band);
+            bandInfo.currentGigs = GetGigViewModel(GetGigs(bandInfo.band));
             bandInfo.messagesIn = GetAllMessagesIn(bandInfo.band.BandId);
             bandInfo.messagesOut = GetAllMessagesOut(bandInfo.band.BandId);
 
@@ -191,10 +191,25 @@ namespace GigConnect.Controllers
             return band;
         }
 
+        public List<Band> GetBandsOnGig(Gig gig)
+        {
+            List<Band> bands = new List<Band>();
+            List<int> bandsOn = gig.bandsOnVenue.Split(',').Select(int.Parse).ToList();
+           foreach(int bandId in bandsOn)
+            {
+                Band band = context.Bands.Where(b => b.BandId == bandId).FirstOrDefault();
+                bands.Add(band);
+            }
+
+            return bands;
+
+        }
         public List<Gig> GetGigs(Band band)
         {
             List<Gig> bandGigs = new List<Gig>();
-            List<Gig> allGigs = context.Gigs.ToList();
+            List<Gig> allGigs = context.Gigs
+                        .Include("Venue")
+                        .Include("Location").ToList();
             foreach (Gig gig in allGigs)
             {
                 if (IsBandOnGig(gig.bandsOnVenue, band.BandId) == true)
@@ -202,7 +217,22 @@ namespace GigConnect.Controllers
                     bandGigs.Add(gig);
                 }
             }
+
             return bandGigs;
+        }
+
+        public List<GigInfoViewModel> GetGigViewModel(List<Gig> gigs)
+        {
+            List<GigInfoViewModel> gigModels = new List<GigInfoViewModel>();
+            foreach( Gig gig in gigs)
+            {
+                GigInfoViewModel tempGigModel = new GigInfoViewModel();
+                tempGigModel.gig = gig;
+                tempGigModel.bands = GetBandsOnGig(gig);
+                gigModels.Add(tempGigModel);
+
+            }
+            return gigModels;
         }
         public bool IsBandOnGig(string bandsOnVenue, int bandId)
         {

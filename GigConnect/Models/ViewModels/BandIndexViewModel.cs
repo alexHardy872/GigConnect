@@ -9,7 +9,7 @@ namespace GigConnect.Models.ViewModels
     {
        public Band band { get; set; }
 
-       public List<Gig> gigs { get; set; }
+       public List<GigInfoViewModel> currentGigs { get; set; }
 
        public List<Message> messagesIn { get; set; }
 
