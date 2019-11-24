@@ -42,6 +42,7 @@ namespace GigConnect.Models
     public class ForgotViewModel
     {
         [Required]
+        [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
@@ -50,7 +51,7 @@ namespace GigConnect.Models
     {
         [Required]
         [Display(Name = "UserName")]
-        [EmailAddress]
+       
         public string UserName { get; set; }
 
         [Required]

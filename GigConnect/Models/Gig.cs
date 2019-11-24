@@ -26,6 +26,8 @@ namespace GigConnect.Models
 
         public DateTime timeOfGig { get; set; }
 
+        public bool open { get; set; }
+
 
 
 

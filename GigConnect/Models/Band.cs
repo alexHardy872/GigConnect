@@ -13,13 +13,24 @@ namespace GigConnect.Models
         [Key]
         public int BandId { get; set; }
 
-
+        [Required]
+        [Display(Name = "Band Name")]
         public string bandName { get; set; }
 
+        [Required]
         [Display(Name = "Genre")]
         public GenreList genre { get; set; }
 
+
+        [Required]
+        [Display(Name = "Hometown/Region")]
         public string town { get; set; }
+
+
+        [Required]
+        [DataType(DataType.Url)]
+        [Display(Name = "Band Website")]
+        public string bandWebsite { get; set; }
 
         [ForeignKey("Location")]
         public int? LocationId { get; set; }

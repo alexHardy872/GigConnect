@@ -32,6 +32,7 @@ namespace GigConnect.Models
         public int venueId { get; set; }
         public Venue Venue { get; set; }
 
+
         public DateTime gigTime { get; set; }
 
         public string message { get; set; }

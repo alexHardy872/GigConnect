@@ -12,7 +12,7 @@ namespace GigConnect.Models
         [Key]
         public int MessageId { get; set; }
 
-        public string from { get; set; }
+        public string from { get; set; } // venue or band?
 
 
         [ForeignKey("Venue")]
@@ -22,7 +22,7 @@ namespace GigConnect.Models
 
         [ForeignKey("Band")]
         public int bandId { get; set; }
-        public Band band { get; set; }
+        public Band Band { get; set; }
 
 
         public string messageContent { get; set; }

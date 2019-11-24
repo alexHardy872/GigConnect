@@ -22,8 +22,8 @@ namespace GigConnect.Controllers
         // GET: Venue
         public ActionResult Index()
         {
-            string userId = User.Identity.GetUserId();
-            Venue venue = context.Venues.Where(b => b.ApplicationId == userId).FirstOrDefault();
+
+            Venue venue = GetUserVenue();
             if (venue == null)
             {
                 return RedirectToAction("Create", "Venue");
@@ -85,9 +85,8 @@ namespace GigConnect.Controllers
         public ActionResult Edit(int id)
         {
             CreateAndEditViewModel toEdit = new CreateAndEditViewModel();
-            string userId = User.Identity.GetUserId();
-            toEdit.Venue = context.Venues.Where(b => b.ApplicationId == userId).FirstOrDefault();
-            toEdit.Location = context.Locations.Where(l => l.LocationId == toEdit.Venue.LocationId).FirstOrDefault();
+            toEdit.Venue = GetUserVenue();
+            toEdit.Location = GetVenueLocation(toEdit.Venue);
 
             return View(toEdit);
         }
@@ -98,9 +97,8 @@ namespace GigConnect.Controllers
         {
             try
             {
-                string userId = User.Identity.GetUserId();
-                Venue currentVenue = context.Venues.Where(b => b.ApplicationId == userId).FirstOrDefault();
-                Location currentLocation = context.Locations.Where(l => l.LocationId == currentVenue.LocationId).FirstOrDefault();
+                Venue currentVenue = GetUserVenue();
+                Location currentLocation = GetVenueLocation(currentVenue);
 
                 currentVenue.VenueId = input.Venue.VenueId;
                 currentVenue.venueName = input.Venue.venueName;
@@ -132,26 +130,73 @@ namespace GigConnect.Controllers
             }
         }
 
-        // GET: Venue/Delete/5
-        public ActionResult Delete(int id)
+
+
+
+        // HELPER FUNCTIONS //////////////////////////////////////////////
+
+
+
+        public Location GetVenueLocation(Venue venue)
         {
-            return View();
+            Location location = context.Locations.Where(l => l.LocationId == venue.LocationId).FirstOrDefault();
+            return location;
+        }
+        public Venue GetUserVenue()
+        {
+            string userId = User.Identity.GetUserId();
+            Venue venue = context.Venues.Where(b => b.ApplicationId == userId).FirstOrDefault();
+            return venue;
         }
 
-        // POST: Venue/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public List<Gig> GetGigs(Venue venue)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            List<Gig> venueGigs = new List<Gig>();
+            List<Gig> allGigs = context.Gigs.Where(g => g.venueId == venue.VenueId).OrderBy(o => o.timeOfGig).ToList();
+            return allGigs;
+        }
+    
 
-                return RedirectToAction("Index");
-            }
-            catch
+        public List<Message> GetAllMessagesIn(int venueId)
+        {
+            List<Message> messages = context.Messages.Where(m => m.venueId == venueId && m.from == "Band").ToList();
+            return messages;
+        }
+
+        public bool FilterForUnread(List<Message> messages)
+        {
+            var unread = messages.Where(u => u.read == false).ToList();
+            if (unread.Count == 0)
             {
-                return View();
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
+
+        public List<Message> GetAllMessagesOut(int venueId)
+        {
+            List<Message> messages = context.Messages.Where(m => m.venueId == venueId && m.from == "Band").OrderBy(d => d.timeStamp).ToList();
+            return messages;
+        }
+
+        public List<Request> GetRequestsIn(int venueId)
+        {
+            List<Request> requestsIn = context.Requests.Where(r => r.venueId ==venueId && r.fromVenue == true && r.approved == false && r.denied == false).ToList();
+            return requestsIn;
+        }
+        public List<Request> GetRequestsOut(int venueId)
+        {
+            List<Request> requestsIn = context.Requests.Where(r => r.venueId == venueId && r.fromVenue == true && r.approved == false && r.denied == false).ToList();
+            return requestsIn;
+        }
+
+
+
+
+
+
     }
 }

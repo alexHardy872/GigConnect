@@ -59,78 +59,7 @@ namespace GigConnect.Controllers
             return bandInfo;
         }
 
-    public Band GetUserBand()
-        {
-            string userId = User.Identity.GetUserId();
-            Band band = context.Bands.Where(b => b.ApplicationId == userId).FirstOrDefault();
-            return band;
-        }
-
-    public List<Gig> GetGigs(Band band)
-        {
-            List<Gig> bandGigs = new List<Gig>();
-            List<Gig> allGigs = context.Gigs.ToList();
-            foreach( Gig gig in allGigs)
-            {
-                if (IsBandOnGig(gig.bandsOnVenue, band.BandId) == true)
-                {
-                    bandGigs.Add(gig);
-                }
-            }
-            return bandGigs;
-        }
-    public bool IsBandOnGig(string bandsOnVenue, int bandId)
-    {   
-        List<int> bandIds = bandsOnVenue.Split(',').Select(int.Parse).ToList();
-         if (bandIds.Contains(bandId))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-    }
-
-   
-
-
-        public List<Message> GetAllMessagesIn(int bandId)
-        {
-            List<Message> messages = context.Messages.Where(m => m.bandId == bandId && m.from == "Venue").ToList();           
-            return messages;
-        }
-
-        public bool FilterForUnread(List<Message> messages)
-        {
-            var unread = messages.Where(u => u.read == false).ToList();
-            if(unread.Count == 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        public List<Message> GetAllMessagesOut(int bandId)
-        {
-            List<Message> messages = context.Messages.Where(m => m.bandId == bandId && m.from == "Band").ToList();
-            return messages;
-        }
-
-        public List<Request> GetRequestsIn(int bandId)
-        {
-            List<Request> requestsIn = context.Requests.Where(r => r.bandId == bandId && r.fromVenue == true && r.approved == false && r.denied == false).ToList();
-            return requestsIn;
-        }
-        public List<Request> GetRequestsOut(int bandId)
-        {
-            List<Request> requestsIn = context.Requests.Where(r => r.bandId == bandId && r.fromVenue == true && r.approved == false && r.denied == false).ToList();
-            return requestsIn;
-        }
-
+    
         // GET: Band/Details/5
         public ActionResult Details(int id)
         {
@@ -189,11 +118,9 @@ namespace GigConnect.Controllers
         public ActionResult Edit(int id)
         {
             CreateAndEditViewModel toEdit = new CreateAndEditViewModel();
-            string userId = User.Identity.GetUserId();
-            toEdit.Band = context.Bands.Where(b => b.ApplicationId == userId).FirstOrDefault();
-            toEdit.Location = context.Locations.Where(l => l.LocationId == toEdit.Band.LocationId).FirstOrDefault();
-            toEdit.Social = context.Socials.Where(s => s.SocialId == toEdit.Band.socialId).FirstOrDefault();
-            
+            toEdit.Band = GetUserBand();
+            toEdit.Location = GetBandLocation(toEdit.Band);
+            toEdit.Social = GetBandSocials(toEdit.Band);
             return View(toEdit);
         }
 
@@ -203,14 +130,14 @@ namespace GigConnect.Controllers
         {
             try
             {
-                string userId = User.Identity.GetUserId();
-                Band currentBand = context.Bands.Where(b => b.ApplicationId == userId).FirstOrDefault();
-                Location currentLocation = context.Locations.Where(l => l.LocationId == currentBand.LocationId).FirstOrDefault();
-                SocialMediaIds currentSocials = context.Socials.Where(s => s.SocialId == currentBand.socialId).FirstOrDefault();
+                Band currentBand = GetUserBand();
+                Location currentLocation = GetBandLocation(currentBand);
+                SocialMediaIds currentSocials = GetBandSocials(currentBand);
 
                 currentBand.BandId = input.Band.BandId;
                 currentBand.bandName = input.Band.bandName;
                 currentBand.genre = input.Band.genre;
+                currentBand.bandWebsite = input.Band.bandWebsite;
                 currentBand.LocationId = input.Band.LocationId;
                 currentBand.ApplicationId = input.Band.ApplicationId;
 
@@ -239,26 +166,97 @@ namespace GigConnect.Controllers
             }
         }
 
-        // GET: Band/Delete/5
-        public ActionResult Delete(int id)
+
+
+
+
+        // HELPER FUNCTIONS
+
+
+        public SocialMediaIds GetBandSocials(Band band)
         {
-            return View();
+            SocialMediaIds currentSocials = context.Socials.Where(s => s.SocialId == band.socialId).FirstOrDefault();
+            return currentSocials;
         }
 
-        // POST: Band/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public Location GetBandLocation(Band band)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            Location location = context.Locations.Where(l => l.LocationId == band.LocationId).FirstOrDefault();
+            return location;
+        }
+        public Band GetUserBand()
+        {
+            string userId = User.Identity.GetUserId();
+            Band band = context.Bands.Where(b => b.ApplicationId == userId).FirstOrDefault();
+            return band;
+        }
 
-                return RedirectToAction("Index");
-            }
-            catch
+        public List<Gig> GetGigs(Band band)
+        {
+            List<Gig> bandGigs = new List<Gig>();
+            List<Gig> allGigs = context.Gigs.ToList();
+            foreach (Gig gig in allGigs)
             {
-                return View();
+                if (IsBandOnGig(gig.bandsOnVenue, band.BandId) == true)
+                {
+                    bandGigs.Add(gig);
+                }
+            }
+            return bandGigs;
+        }
+        public bool IsBandOnGig(string bandsOnVenue, int bandId)
+        {
+            List<int> bandIds = bandsOnVenue.Split(',').Select(int.Parse).ToList();
+            if (bandIds.Contains(bandId))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
+
+        public List<Message> GetAllMessagesIn(int bandId)
+        {
+            List<Message> messages = context.Messages.Where(m => m.bandId == bandId && m.from == "Venue").ToList();
+            return messages;
+        }
+
+        public bool FilterForUnread(List<Message> messages)
+        {
+            var unread = messages.Where(u => u.read == false).ToList();
+            if (unread.Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public List<Message> GetAllMessagesOut(int bandId)
+        {
+            List<Message> messages = context.Messages.Where(m => m.bandId == bandId && m.from == "Band").OrderBy(d => d.timeStamp).ToList();
+            return messages;
+        }
+
+        public List<Request> GetRequestsIn(int bandId)
+        {
+            List<Request> requestsIn = context.Requests.Where(r => r.bandId == bandId && r.fromVenue == true && r.approved == false && r.denied == false).ToList();
+            return requestsIn;
+        }
+        public List<Request> GetRequestsOut(int bandId)
+        {
+            List<Request> requestsIn = context.Requests.Where(r => r.bandId == bandId && r.fromVenue == true && r.approved == false && r.denied == false).ToList();
+            return requestsIn;
+        }
+
+
+
+
+
+
     }
 }

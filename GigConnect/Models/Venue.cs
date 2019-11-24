@@ -13,15 +13,25 @@ namespace GigConnect.Models
         [Key]
         public int VenueId { get; set; }
 
-
+        [Required]
+        [Display(Name = "Venue Name")]
         public string venueName { get; set; }
 
+
+        [Required]
+        [Display(Name = "Town/Region")]
         public string town { get; set; }
+
 
         public string description { get; set; }
 
+
+        [Required]
+        [DataType(DataType.Url)]
+        [Display(Name = "Venue Website")]
         public string websiteUrl { get; set; }
 
+        [Required]
         [Display(Name = "Genre")]
         public GenreList genre { get; set; }
 
