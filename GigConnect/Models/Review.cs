@@ -12,9 +12,6 @@ namespace GigConnect.Models
         [Key]
         public int ReviewId { get; set; }
 
-
-        public string reviewOf { get; set; } // band or venue?
-
         [Required]
         [Display(Name = "Rating")]
         public int rating { get; set; }
@@ -24,13 +21,7 @@ namespace GigConnect.Models
 
         public DateTime timeStamp { get; set; }
 
-        [ForeignKey("Band")]
-        public int? bandId { get; set; }
-        public Band Band { get; set; }
-
-        [ForeignKey("Venue")]
-        public int? venueId { get; set; }
-        public Venue Venue { get; set; }
+      
 
 
 

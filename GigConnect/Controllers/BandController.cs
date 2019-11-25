@@ -203,7 +203,9 @@ namespace GigConnect.Controllers
             List<int> allBandGigIds = context.BandGigs.Where(b => b.bandId == band.BandId).Select(s => s.gigId).ToList();                    
             foreach (int gigId in allBandGigIds)
             {
-                bandGigs.Add(context.Gigs.Where(g => g.GigId == gigId).FirstOrDefault());
+                bandGigs.Add(context.Gigs
+                    .Include("Venue")
+                    .Where(g => g.GigId == gigId).FirstOrDefault());
             }
             bandGigs = bandGigs.Where(g => g.timeOfGig > DateTime.Now).OrderBy(o => o.timeOfGig).ToList();
             return bandGigs;
@@ -217,24 +219,14 @@ namespace GigConnect.Controllers
                 GigInfoViewModel tempGigModel = new GigInfoViewModel();
                 tempGigModel.gig = gig;
                 tempGigModel.bands = GetBandsOnGig(gig);
-                tempGigModel.formattedAddress = GeoCode.FormatAddress(gig.Venue.Location);
+                Location location = context.Locations.Where(l => l.LocationId == gig.Venue.LocationId).FirstOrDefault();
+                tempGigModel.formattedAddress = GeoCode.FormatAddress(location); 
                 gigModels.Add(tempGigModel);
 
             }
             return gigModels;
         }
-        public bool IsBandOnGig(string bandsOnVenue, int bandId)
-        {
-            List<int> bandIds = bandsOnVenue.Split(',').Select(int.Parse).ToList();
-            if (bandIds.Contains(bandId))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+    
 
         public List<Message> GetAllMessagesIn(int bandId)
         {

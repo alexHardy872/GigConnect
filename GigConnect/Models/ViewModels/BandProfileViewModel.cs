@@ -17,8 +17,10 @@ namespace GigConnect.Models.ViewModels
 
         public List<string> youtubeUrls { get; set; }
 
-        public string twitterId { get; set; }
 
+        public string facebookImageUrl { get; set; }
+
+        public double score { get; set; }
 
 
 

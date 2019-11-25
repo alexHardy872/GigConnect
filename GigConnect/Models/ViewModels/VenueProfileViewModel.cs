@@ -14,6 +14,8 @@ namespace GigConnect.Models.ViewModels
 
         public List<Review> reviews { get; set; }
 
+        public double score { get; set; }
+
         
 
 

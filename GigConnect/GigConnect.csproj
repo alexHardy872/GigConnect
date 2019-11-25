@@ -214,10 +214,19 @@
     <Compile Include="Migrations\201911251659361_testcomp.Designer.cs">
       <DependentUpon>201911251659361_testcomp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911251919257_junkadd.cs" />
+    <Compile Include="Migrations\201911251919257_junkadd.Designer.cs">
+      <DependentUpon>201911251919257_junkadd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911252132188_modelUpdate.cs" />
+    <Compile Include="Migrations\201911252132188_modelUpdate.Designer.cs">
+      <DependentUpon>201911252132188_modelUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Band.cs" />
     <Compile Include="Models\BandGig.cs" />
+    <Compile Include="Models\BandReview.cs" />
     <Compile Include="Models\EnumClasses\GenreList.cs" />
     <Compile Include="Models\EnumClasses\StateList.cs" />
     <Compile Include="Models\Gig.cs" />
@@ -229,6 +238,7 @@
     <Compile Include="Models\Review.cs" />
     <Compile Include="Models\SocialMediaIds.cs" />
     <Compile Include="Models\Venue.cs" />
+    <Compile Include="Models\VenueReview.cs" />
     <Compile Include="Models\ViewModels\BandIndexViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateAndEditViewModel.cs" />
     <Compile Include="Models\ViewModels\GigInfoViewModel.cs" />
@@ -341,6 +351,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911251659361_testcomp.resx">
       <DependentUpon>201911251659361_testcomp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911251919257_junkadd.resx">
+      <DependentUpon>201911251919257_junkadd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911252132188_modelUpdate.resx">
+      <DependentUpon>201911252132188_modelUpdate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

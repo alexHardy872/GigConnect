@@ -63,5 +63,32 @@ namespace GigConnect.Services
 
             Console.WriteLine($"Video Name: {response.Items[0].Snippet.Title} Views: {views}");
         }
+
+        public List<string> GetUrlsOfTopVideos(string channelId)
+        {
+            List<string> YoutubeUrls = new List<string>();
+
+            
+
+            int maxResultCount = 3;
+
+            SearchResource.ListRequest searchListRequest = client.Search.List("snippet");
+                //searchListRequest.Q = channelId;
+                searchListRequest.MaxResults = maxResultCount;
+                searchListRequest.ChannelId = channelId;
+                searchListRequest.Type = "video";
+
+            SearchListResponse searchListResponse = searchListRequest.Execute();
+
+            foreach(SearchResult searchResult in searchListResponse.Items)
+            {
+                string url = "https://www.youtube.com/watch?v=";
+                    url += searchResult.Id.VideoId;
+                YoutubeUrls.Add(url);
+            }
+
+
+            return YoutubeUrls;
+        }
     }
 }

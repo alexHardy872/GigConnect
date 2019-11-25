@@ -45,6 +45,10 @@ namespace GigConnect.Models
 
         public DbSet<BandGig> BandGigs { get; set; }
 
+        public DbSet<BandReview> BandReviews { get; set; }
+
+        public DbSet<VenueReview> VenueReviews { get; set; }
+
 
 
     }
