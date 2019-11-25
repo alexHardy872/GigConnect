@@ -10,6 +10,8 @@ namespace GigConnect.Models.ViewModels
 
         public Gig gig { get; set; }
 
+        public string formattedAddress { get; set; }
+
         public List<Band> bands { get; set; }
 
     }

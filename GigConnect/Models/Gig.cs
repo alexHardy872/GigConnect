@@ -13,16 +13,16 @@ namespace GigConnect.Models
         public int GigId { get; set; }
 
 
-        [ForeignKey("Location")]
-        public int locationId { get; set; }
-        public Location Location { get; set; }
+        //[ForeignKey("Location")]
+        //public int locationId { get; set; }
+        //public Location Location { get; set; }
 
 
         [ForeignKey("Venue")]
         public int venueId { get; set; }
         public Venue Venue { get; set; }
 
-        public string bandsOnVenue { get; set; } // coma 
+        //public string bandsOnVenue { get; set; } // coma 
 
         public DateTime timeOfGig { get; set; }
 

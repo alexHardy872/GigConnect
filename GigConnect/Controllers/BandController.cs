@@ -43,21 +43,7 @@ namespace GigConnect.Controllers
             return View(model);
         }
 
-        public BandIndexViewModel AssembleIndexViewModelForBand()
-        {
-            BandIndexViewModel bandInfo = new BandIndexViewModel();
- 
-            bandInfo.band = GetUserBand();
-            bandInfo.currentGigs = GetGigViewModel(GetGigs(bandInfo.band));
-            bandInfo.messagesIn = GetAllMessagesIn(bandInfo.band.BandId);
-            bandInfo.messagesOut = GetAllMessagesOut(bandInfo.band.BandId);
-
-            bandInfo.requestsIn = GetRequestsIn(bandInfo.band.BandId);
-            bandInfo.requestsOut = GetRequestsOut(bandInfo.band.BandId);
-            bandInfo.unreadMessages = FilterForUnread(bandInfo.messagesIn);
-
-            return bandInfo;
-        }
+      
 
     
         // GET: Band/Details/5
@@ -172,6 +158,20 @@ namespace GigConnect.Controllers
 
         // HELPER FUNCTIONS
 
+        public BandIndexViewModel AssembleIndexViewModelForBand()
+        {
+            BandIndexViewModel bandInfo = new BandIndexViewModel();
+            bandInfo.band = GetUserBand();
+            bandInfo.currentGigs = GetGigViewModel(GetGigs(bandInfo.band)); // contains Gig, BandsList, Location (formatted)
+            bandInfo.messagesIn = GetAllMessagesIn(bandInfo.band.BandId);
+            bandInfo.messagesOut = GetAllMessagesOut(bandInfo.band.BandId);
+            bandInfo.requestsIn = GetRequestsIn(bandInfo.band.BandId);
+            bandInfo.requestsOut = GetRequestsOut(bandInfo.band.BandId);
+            bandInfo.unreadMessages = FilterForUnread(bandInfo.messagesIn);
+
+            return bandInfo;
+        }
+
 
         public SocialMediaIds GetBandSocials(Band band)
         {
@@ -193,30 +193,21 @@ namespace GigConnect.Controllers
 
         public List<Band> GetBandsOnGig(Gig gig)
         {
-            List<Band> bands = new List<Band>();
-            List<int> bandsOn = gig.bandsOnVenue.Split(',').Select(int.Parse).ToList();
-           foreach(int bandId in bandsOn)
-            {
-                Band band = context.Bands.Where(b => b.BandId == bandId).FirstOrDefault();
-                bands.Add(band);
-            }
-
+            List<Band> bands = context.BandGigs.Where(g => g.gigId == gig.GigId).Select(s => s.Band).ToList();
             return bands;
 
         }
         public List<Gig> GetGigs(Band band)
         {
             List<Gig> bandGigs = new List<Gig>();
-            List<Gig> allGigs = context.Gigs
-                        .Include("Venue")
-                        .Include("Location").ToList();
-            foreach (Gig gig in allGigs)
+            List<int> allBandGigIds = context.BandGigs.Where(b => b.bandId == band.BandId).Select(s => s.gigId).ToList();
+                        
+            foreach (int gigId in allBandGigIds)
             {
-                if (IsBandOnGig(gig.bandsOnVenue, band.BandId) == true)
-                {
-                    bandGigs.Add(gig);
-                }
+                bandGigs.Add(context.Gigs.Where(g => g.GigId == gigId).FirstOrDefault());
             }
+
+            bandGigs = bandGigs.Where(g => g.timeOfGig > DateTime.Now).OrderBy(o => o.timeOfGig).ToList();
 
             return bandGigs;
         }
@@ -224,7 +215,7 @@ namespace GigConnect.Controllers
         public List<GigInfoViewModel> GetGigViewModel(List<Gig> gigs)
         {
             List<GigInfoViewModel> gigModels = new List<GigInfoViewModel>();
-            foreach( Gig gig in gigs)
+            foreach (Gig gig in gigs)
             {
                 GigInfoViewModel tempGigModel = new GigInfoViewModel();
                 tempGigModel.gig = gig;

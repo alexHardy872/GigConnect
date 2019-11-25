@@ -42,7 +42,9 @@ namespace GigConnect.Models
         public DbSet<SocialMediaIds> Socials { get; set; }
 
         public DbSet<Review> Reviews { get; set; }
-   
+
+        public DbSet<BandGig> BandGigs { get; set; }
+
 
 
     }
