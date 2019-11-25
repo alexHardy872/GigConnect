@@ -200,15 +200,12 @@ namespace GigConnect.Controllers
         public List<Gig> GetGigs(Band band)
         {
             List<Gig> bandGigs = new List<Gig>();
-            List<int> allBandGigIds = context.BandGigs.Where(b => b.bandId == band.BandId).Select(s => s.gigId).ToList();
-                        
+            List<int> allBandGigIds = context.BandGigs.Where(b => b.bandId == band.BandId).Select(s => s.gigId).ToList();                    
             foreach (int gigId in allBandGigIds)
             {
                 bandGigs.Add(context.Gigs.Where(g => g.GigId == gigId).FirstOrDefault());
             }
-
             bandGigs = bandGigs.Where(g => g.timeOfGig > DateTime.Now).OrderBy(o => o.timeOfGig).ToList();
-
             return bandGigs;
         }
 
@@ -220,6 +217,7 @@ namespace GigConnect.Controllers
                 GigInfoViewModel tempGigModel = new GigInfoViewModel();
                 tempGigModel.gig = gig;
                 tempGigModel.bands = GetBandsOnGig(gig);
+                tempGigModel.formattedAddress = GeoCode.FormatAddress(gig.Venue.Location);
                 gigModels.Add(tempGigModel);
 
             }
