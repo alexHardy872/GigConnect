@@ -132,7 +132,8 @@ namespace GigConnect.Controllers
             double score = 0;
             foreach(Review review in reviews)
             {
-                score += review.rating;
+                int ratingEnum = (int)review.rating + 1;
+                score += Convert.ToDouble(review.rating);
             }
             double average = score / reviews.Count;
             return Math.Round(average, 1);

@@ -100,6 +100,12 @@
     <Reference Include="Microsoft.Owin.Security.Twitter, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Security.Twitter.4.0.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
     </Reference>
+    <Reference Include="Skywalker.Fluently, Version=1.1.0.3, Culture=en-US, processorArchitecture=MSIL">
+      <HintPath>..\packages\Skywalker.FluentComponents.1.1.0.3\lib\net40\Skywalker.Fluently.dll</HintPath>
+    </Reference>
+    <Reference Include="Skywalker.Web.Mvc.ViewComponents, Version=1.1.0.7, Culture=en-us, processorArchitecture=MSIL">
+      <HintPath>..\packages\Skywalker.Web.Mvc.ViewComponents.1.1.0.7\lib\Skywalker.Web.Mvc.ViewComponents.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -196,6 +202,7 @@
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\ProfileViewController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
+    <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\userController.cs" />
     <Compile Include="Controllers\VenueController.cs" />
@@ -222,12 +229,21 @@
     <Compile Include="Migrations\201911252132188_modelUpdate.Designer.cs">
       <DependentUpon>201911252132188_modelUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911261507244_ratingENum.cs" />
+    <Compile Include="Migrations\201911261507244_ratingENum.Designer.cs">
+      <DependentUpon>201911261507244_ratingENum.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911261627481_adjustScaleOnEnum.cs" />
+    <Compile Include="Migrations\201911261627481_adjustScaleOnEnum.Designer.cs">
+      <DependentUpon>201911261627481_adjustScaleOnEnum.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Band.cs" />
     <Compile Include="Models\BandGig.cs" />
     <Compile Include="Models\BandReview.cs" />
     <Compile Include="Models\EnumClasses\GenreList.cs" />
+    <Compile Include="Models\EnumClasses\Rating.cs" />
     <Compile Include="Models\EnumClasses\StateList.cs" />
     <Compile Include="Models\Gig.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -243,6 +259,7 @@
     <Compile Include="Models\ViewModels\CreateAndEditViewModel.cs" />
     <Compile Include="Models\ViewModels\GigInfoViewModel.cs" />
     <Compile Include="Models\ViewModels\BandProfileViewModel.cs" />
+    <Compile Include="Models\ViewModels\ReviewViewModel.cs" />
     <Compile Include="Models\ViewModels\TravelDistanceViewModel.cs" />
     <Compile Include="Models\ViewModels\VenueProfileViewModel.cs" />
     <Compile Include="Private\Keys.cs" />
@@ -254,6 +271,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-theme-2.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -322,9 +340,11 @@
     <Content Include="Views\Venue\BandDirectory.cshtml" />
     <Content Include="Views\ProfileView\ViewBandProfile.cshtml" />
     <Content Include="Views\ProfileView\ViewVenueProfile.cshtml" />
+    <Content Include="Views\Review\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ViewComponents\" />
     <Folder Include="Views\Gig\" />
     <Folder Include="Views\Message\" />
     <Folder Include="Views\Request\" />
@@ -358,6 +378,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911252132188_modelUpdate.resx">
       <DependentUpon>201911252132188_modelUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911261507244_ratingENum.resx">
+      <DependentUpon>201911261507244_ratingENum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911261627481_adjustScaleOnEnum.resx">
+      <DependentUpon>201911261627481_adjustScaleOnEnum.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

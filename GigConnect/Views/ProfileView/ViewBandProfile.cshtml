@@ -18,7 +18,21 @@
 </div>
 
 
+<div id="Reviews">
+    <div id="overall">
+        <h4>Overall Rating @Model.score</h4>
+    </div>
+    @foreach (var review in Model.reviews)
+    {
+        <div class="review">
+            <span>Date: @review.timeStamp.Date</span>
+            <span>@review.content</span>
+        </div>
+    }
+    <br />
+    <span>@Html.ActionLink("Leave a Review", "Create", "Review", new { reviewedId = Model.band.BandId, isBand = true }, null)</span>
 
+</div>
 <div id="Gigs">
     <table>
         <tr>
@@ -149,7 +163,7 @@
 
 
 
-
+       
 
 
 

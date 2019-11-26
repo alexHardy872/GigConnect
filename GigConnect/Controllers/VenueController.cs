@@ -104,6 +104,7 @@ namespace GigConnect.Controllers
                 currentVenue.venueName = input.Venue.venueName;
                 currentVenue.genre = input.Venue.genre;
                 currentVenue.websiteUrl = input.Venue.websiteUrl;
+                currentVenue.description = input.Venue.description;
 
                 currentVenue.LocationId = input.Band.LocationId;
                 currentVenue.ApplicationId = input.Band.ApplicationId;

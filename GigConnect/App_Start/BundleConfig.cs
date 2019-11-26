@@ -23,7 +23,7 @@ namespace GigConnect
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/bootstrap-theme-2.css", // theme change 
                       "~/Content/Site.css"));
         }
     }
