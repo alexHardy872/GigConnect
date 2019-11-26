@@ -57,11 +57,14 @@ namespace GigConnect.Controllers
             model.venue = venue;
             model.reviews = GetVenueReviews(venue);
             model.score = AverageReviews(model.reviews);
+            //model.currentBand = GetBand(2);
 
+            if (User.IsInRole("Band")) // only needs travel info for band
+            {
+                model.currentBand = GetUserBand();
+                model.distance = await DistanceMatrix.GetTravelInfo(model.currentBand, venue);
+            }
             
-            Band band = GetBand(2);
-
-            model.distance = await DistanceMatrix.GetTravelInfo(band, venue);
 
             return View(model);
 

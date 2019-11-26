@@ -1,7 +1,58 @@
-﻿
-@{
-    ViewBag.Title = "ViewVenueProfile";
-}
+﻿@model GigConnect.Models.ViewModels.VenueProfileViewModel
 
 <h2>ViewVenueProfile</h2>
+
+
+
+
+
+
+@*reviews
+gigs
+location/ information
+travel distance from band ect  OPEN GIGS? REQUEST OPTION???*@
+
+
+<div id="reviews"></div>
+<div id="gigs"></div>
+
+
+
+
+
+
+<div id="map" style="height: 400px; width: 400px;"></div>
+
+<script>
+    var map;
+    function initMap() {
+        //pin to represent the teacher's location
+        var venueLocation = { lat: @Model.venue.Location.lat, lng: @Model.venue.Location.lng};
+        var bandLocation = { lat: @Model.currentBand.Location.lat, lng: @Model.currentBand.Location.lng};
+        //add a map
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 11,
+            center: venueLocation
+        });
+        //roadmap style
+        var mapOptions = {
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            styles: [{ featureType: 'all', stylers: [{ saturation: -100 }, { brightness: 5 }] }],
+            scrollwheel: false
+        };
+        //add a marker
+        var venueLocationMarker = new google.maps.Marker({ position: venueLocation, title: "Venue location", map: map });
+        var bandLocationMarker = new google.maps.Marker({ position: bandLocation, title: "Band location", map: map });
+        //add a radius for max range
+
+     }
+</script>
+
+@{
+    var ApiUrlStr = GigConnect.Private.Keys.googleMapsApiUrl;
+    var ApiKeyStr = GigConnect.Private.Keys.googleMapsApiKey;
+    var ApiKeyCbk = GigConnect.Private.Keys.googleMapsCallback;
+    string googleMapsRequest = ApiUrlStr + ApiKeyStr + ApiKeyCbk;}
+
+<script src="@googleMapsRequest" async defer></script>
 

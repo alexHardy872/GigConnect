@@ -10,6 +10,8 @@ namespace GigConnect.Models.ViewModels
 
         public Venue venue { get; set; }
 
+        public Band currentBand { get; set; }
+
         public List<GigInfoViewModel> gigs { get; set; }
 
         public List<Review> reviews { get; set; }
