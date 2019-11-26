@@ -5,6 +5,7 @@ using System.Web;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using Google.Apis.Services;
+using System.Threading.Tasks;
 
 namespace GigConnect.Services
 {
@@ -64,13 +65,13 @@ namespace GigConnect.Services
             Console.WriteLine($"Video Name: {response.Items[0].Snippet.Title} Views: {views}");
         }
 
-        public List<string> GetUrlsOfTopVideos(string channelId)
+        public async Task<List<string>> GetUrlsOfTopVideos(string channelId)
         {
             List<string> YoutubeUrls = new List<string>();
 
             
 
-            int maxResultCount = 3;
+            int maxResultCount = 4;
 
             SearchResource.ListRequest searchListRequest = client.Search.List("snippet");
                 //searchListRequest.Q = channelId;
@@ -78,11 +79,11 @@ namespace GigConnect.Services
                 searchListRequest.ChannelId = channelId;
                 searchListRequest.Type = "video";
 
-            SearchListResponse searchListResponse = searchListRequest.Execute();
+            SearchListResponse searchListResponse = await searchListRequest.ExecuteAsync();
 
             foreach(SearchResult searchResult in searchListResponse.Items)
             {
-                string url = "https://www.youtube.com/watch?v=";
+                string url = "https://www.youtube.com/embed/";
                     url += searchResult.Id.VideoId;
                 YoutubeUrls.Add(url);
             }

@@ -16,6 +16,7 @@ namespace GigConnect.Models.ViewModels
 
         public double score { get; set; }
 
+        public TravelDistanceViewModel distance { get; set;} // units??
         
 
 

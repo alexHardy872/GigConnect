@@ -1,0 +1,161 @@
+﻿@model GigConnect.Models.ViewModels.BandProfileViewModel
+
+@{
+    ViewBag.Title = "ViewBandProfile";
+}
+
+
+
+
+
+<div class="optionsContainer">
+
+
+    <div class="optionsHeader" id="showProfile"><div class="txtBtn">Profile</div></div>
+    <div class="optionsHeader" id="showEvents"><div class="txtBtn">Events</div></div>
+
+
+</div>
+
+
+
+<div id="Gigs">
+    <table>
+        <tr>
+            <td>Date</td>
+            <td>Time</td>
+            <td>Venue</td>
+            <td>Bands</td>
+            <td>Address</td>
+
+        </tr>
+        @foreach (var gig in Model.gigs)
+        {
+    <tr>
+        <td>@gig.gig.timeOfGig.Date</td>
+        <td>@gig.gig.timeOfGig.TimeOfDay</td>
+        <td>@gig.gig.Venue.venueName</td>
+        <td>@gig.bands</td>
+
+        @foreach(var band in gig.bands){
+            <span>@band, </span>
+        }
+        <td>(@gig.formattedAddress)</td>
+    </tr>
+
+        }
+    </table>
+
+</div>
+
+
+<div id="socialContainer" style="display: flex; justify-content: space-between;">
+
+
+    <div id="leftComp" style="display: inline-block">
+        <div id="bandInfo">
+            <h1>@Model.band.bandName - @Model.band.town</h1>
+            <br />
+
+            <a href="@Model.band.bandWebsite">Band Website</a>
+
+            <br />
+            <img src="@Model.facebookImageUrl" alt="pic" style="height: 400px; width: 400px;" />
+        </div>
+
+        <div id="ratings">
+
+            @if (Model.reviews.Count == 0)
+            {
+                <h2>(no reviews yet)</h2>
+            }
+            else
+            {
+                <h2> Overall rating - @Model.score</h2>
+                foreach (var rating in Model.reviews)
+                {
+                    <div class="review">
+                        <span> rating - @rating.rating</span>
+                        <br />
+                        <span> @rating.content</span>
+
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+
+
+    <div id="twitterPosts" style="height: 700px; width: 370px; background-color: deepskyblue; text-align: center; border-radius: 15px; ">
+        <h2 style="color: white;">twitter</h2>
+        <div class="postScroller" style="overflow-y: scroll; overflow-x: hidden; width: 360px; max-height: 650px; background-color: white; display: inline-block; ">
+
+            <a class="twitter-timeline" href="https://twitter.com/@Model.band.Social.twitterHandle?ref_src=twsrc%5Etfw">Tweets by @Model.band.bandName</a>
+
+
+
+        </div>
+    </div>
+
+    <div id="facebookPosts" style="height: 700px; width: 370px; background-color: darkblue; text-align: center; border-radius: 15px; ">
+        <h2 style="color: white;">facebook</h2>
+        <div class="postScroller" style="overflow-y: scroll; overflow-x: hidden; max-width: 360px; max-height: 650px; background-color: white; display: inline-block; ">
+
+            @if (Model.facebookPermalinks.Count == 0)
+            {
+                <div class="postContainer">
+                    <h3 style="color: red;">Facebook Token Exipred</h3>
+                </div>
+            }
+            else
+            {
+                foreach (var permaLink in Model.facebookPermalinks)
+                {
+                    <div class="postContainer">
+                        <div class="fb-post" data-href="@permaLink" data-width="330">
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+</div>
+
+<div id="youtubeVids" style="height: 300px; width: 1200px; background-color: red; text-align: center; border-radius: 15px;">
+    <h2 style="color: white;">Youtube Videos</h2>
+    <div class="postScroller" style=" overflow-y: hidden;  max-height: 280px; background-color: white; display: inline-block; ">
+
+        @foreach (var videoUrl in Model.youtubeUrls)
+        {
+        <div style="display: inline-block;">
+            <iframe width="250" height="200" src="@videoUrl" frameborder="0" allowfullscreen></iframe>
+        </div>
+        }
+
+    </div>
+</div>
+
+
+
+
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async defer src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        (function ($) {
+
+
+
+
+
+
+
+
+
+        })(jQuery);
+    });
+</script>
+

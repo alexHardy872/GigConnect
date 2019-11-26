@@ -18,18 +18,15 @@ namespace GigConnect.Services
             public static double metersToMiles = 1609.34;
 
 
-            public static async Task<TravelDistanceViewModel> GetTravelInfo(int bandId, int venueId)
+            public static async Task<TravelDistanceViewModel> GetTravelInfo(Band band, Venue venue)
             {
                 HttpClient client = new HttpClient();
-                ApplicationDbContext context = new ApplicationDbContext();
+                //ApplicationDbContext context = new ApplicationDbContext();
 
                 string requestUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=";
                 string destinationsString = "&destinations=";
                 string authenticationString = "&key=" + Keys.googleMapsApiKey;
 
-            
-                Venue venue = context.Venues.Include("Location").Where(p => p.VenueId == venueId).SingleOrDefault();
-                Band band = context.Bands.Include("Location").Where(p => p.BandId == bandId).SingleOrDefault();
 
                 Location GigLocation = venue.Location;
                 Location BandLocation = band.Location;

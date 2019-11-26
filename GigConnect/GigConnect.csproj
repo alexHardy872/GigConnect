@@ -320,12 +320,13 @@
     <Content Include="Views\Venue\Index.cshtml" />
     <Content Include="Views\Band\VenueDirectory.cshtml" />
     <Content Include="Views\Venue\BandDirectory.cshtml" />
+    <Content Include="Views\ProfileView\ViewBandProfile.cshtml" />
+    <Content Include="Views\ProfileView\ViewVenueProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Gig\" />
     <Folder Include="Views\Message\" />
-    <Folder Include="Views\ProfileView\" />
     <Folder Include="Views\Request\" />
     <Folder Include="Views\Role\" />
   </ItemGroup>

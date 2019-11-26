@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace GigConnect.Controllers
 {
@@ -29,39 +30,25 @@ namespace GigConnect.Controllers
         {
             Band band = GetBand(bandId);
             BandProfileViewModel model = new BandProfileViewModel();
-
             SocialMediaIds socials = GetBandSocials(band.socialId);
-
             model.band = band;
-            model.facebookImageUrl = await Services.FacebookAPI.GetProfilePicture(socials.facebookPageId);
-            model.facebookPermalinks = await Services.FacebookAPI.GetPermaUrlFromPost(socials.facebookPageId);
-
-            //model.youtubeUrls = await Services.YouTubeAPI.
-            //model.youtube....
-
+            model.facebookImageUrl = await FacebookAPI.GetProfilePicture(socials.facebookPageId);
+            model.facebookPermalinks = await FacebookAPI.GetPermaUrlFromPost(socials.facebookPageId);
+            model.youtubeUrls = await GetYoutubeUrls(band);
             model.reviews = GetBandReviews(band);
             model.score = AverageReviews(model.reviews);
-
             model.gigs =  GetGigViewModel(GetGigs(band));
+
+            
 
 
             return View(model);
 
         }
 
-        public List<string> YoutubeTest()
-        {
-            List<string> YoutubeUrls = new List<string>();
+     
 
-            Band band = GetBand(1);
-            SocialMediaIds socials = context.Socials.Where(s => s.SocialId == band.socialId).FirstOrDefault();
-            YouTubeAPI youtube = new YouTubeAPI();
-            YoutubeUrls = youtube.GetUrlsOfTopVideos(socials.youtubeChannelId);
-
-            return YoutubeUrls;
-        }
-
-        public ActionResult ViewVenueProfile(int venueId)
+        public async Task<ActionResult> ViewVenueProfile(int venueId)
         {
             Venue venue = GetVenue(venueId);
             VenueProfileViewModel model = new VenueProfileViewModel();
@@ -70,6 +57,11 @@ namespace GigConnect.Controllers
             model.venue = venue;
             model.reviews = GetVenueReviews(venue);
             model.score = AverageReviews(model.reviews);
+
+            
+            Band band = GetBand(2);
+
+            model.distance = await DistanceMatrix.GetTravelInfo(band, venue);
 
             return View(model);
 
@@ -82,10 +74,18 @@ namespace GigConnect.Controllers
         // helpers //////////////////////////////////////////////////////////////////
 
 
+        public Band GetUserBand()
+        {
+            string userId = User.Identity.GetUserId();
+            Band band = context.Bands
+                .Include("Location").Where(b => b.ApplicationId == userId).FirstOrDefault();
+            return band;
+        }
         public Band GetBand(int id)
         {
             Band band = context.Bands
-                .Include("Social").Where(b => b.BandId == id).FirstOrDefault();
+                .Include("Social")
+                .Include("Location").Where(b => b.BandId == id).FirstOrDefault();
             return band;
         }
 
@@ -183,14 +183,26 @@ namespace GigConnect.Controllers
             return gigModels;
         }
 
+        public async Task<List<string>> GetYoutubeUrls(Band band) // returns urls for top 3 youtube videos!!
+        {
 
-        
-        
+           
 
-     
-      
+            //Band band = GetBand(bandId);
+            SocialMediaIds socials = context.Socials.Where(s => s.SocialId == band.socialId).FirstOrDefault();
+            YouTubeAPI youtube = new YouTubeAPI();
+            List<string> YoutubeUrls = await youtube.GetUrlsOfTopVideos(socials.youtubeChannelId);
 
-        
+            return YoutubeUrls;
+        }
+
+
+
+
+
+
+
+
 
 
 
