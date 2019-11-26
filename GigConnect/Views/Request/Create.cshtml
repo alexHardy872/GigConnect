@@ -1,0 +1,56 @@
+﻿@model GigConnect.Models.Request
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>Request</h4>
+
+    @Html.HiddenFor(x => x.RequestId)
+    @Html.HiddenFor(x => x.bandId)
+    @Html.HiddenFor(x => x.venueId)
+    @Html.HiddenFor(x => x.timeStamp)
+    @Html.HiddenFor(x => x.fromBand)
+    @Html.HiddenFor(x => x.fromVenue)
+    @Html.HiddenFor(x => x.approved)
+    @Html.HiddenFor(x => x.denied)
+
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.gigTime, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.gigTime, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.gigTime, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.message, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.message, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.message, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

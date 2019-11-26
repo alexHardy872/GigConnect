@@ -54,30 +54,45 @@ namespace GigConnect.Controllers
         {
             try
             {
-                
-
                 if (model.message.from == "Band")
                 {
                    model.message.bandId = GetUserBandId();
                    model.message.venueId = model.recipientId;
+                    context.Messages.Add(model.message);
+                    await context.SaveChangesAsync();
+                    return RedirectToAction("Index","Band");
                 }
-                if (model.message.from == "Venue")
+                else 
                 {
                     model.message.venueId = GetUserVenueId();
                    model.message.bandId = model.recipientId;
+                    context.Messages.Add(model.message);
+                    await context.SaveChangesAsync();
+                    return RedirectToAction("Index", "Venue");
 
                 }
-                context.Messages.Add(model.message);
-                await context.SaveChangesAsync();
-                return RedirectToAction("Index");
+
+
             }
             catch (Exception e)
             {
-                return View("Index");
+                return View("Index","Home");
             }
         }
 
+       
 
+
+            // read
+
+        public async Task<ActionResult> ToggleRead(int messageId)
+        {
+            Message message = context.Messages.Where(m => m.MessageId == messageId).FirstOrDefault();
+            message.read = !message.read;
+            await context.SaveChangesAsync();
+            return RedirectToAction("Index", "Home");
+        }
+      
 
         ////// helpers
         ///

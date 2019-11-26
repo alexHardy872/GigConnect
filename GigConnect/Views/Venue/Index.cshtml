@@ -1,7 +1,248 @@
-﻿
-@{
-    ViewBag.Title = "Index";
-}
+﻿<!-- headsrs and hidden divs for-->
+<!-- Requests-->
+<!-- Messages-->
+<!-- Gigs-->
+
+@model GigConnect.Models.ViewModels.VenueIndexViewModel
 
 <h2>Venue Index</h2>
+
+@*<div class="index-header">
+        <h2><strong>@Model.currentUser.firstName  @Model.currentUser.lastName</strong> Student Dashboard </h2>
+    </div>*@
+
+<div id="venueView">
+
+    <div id="updateInfo">
+        @Html.ActionLink("Update Info", "Edit", new { id = Model.venue.VenueId })
+    </div>
+
+    <div class="container">
+
+        <div class="optionsContainer">
+
+            <div class="optionsHeader" id="showGigs"><div class="txtBtn">Gigs</div></div>
+
+            <div class="optionsHeader" id="showVenues"><div class="txtBtn">Gigs</div></div>
+
+            <div class="optionsHeader" id="showMessages"><div class="txtBtn">Messages</div></div>
+
+            <div class="optionsHeader" id="showRequests"><div class="txtBtn">Pending Requests</div></div>
+
+        </div>
+
+        <div id="messages">
+            <div class="twoOptionsHeader">
+                <button id="showInbox" class="twoOptionsBtn" style=" height: 40px; width: 45%;font-weight: bold;">INBOX</button>
+                <button id="showOutbox" class="twoOptionsBtn" style=" height: 40px; width: 45%; ">OUTBOX</button>
+            </div>
+            <div id="inbox">
+                @if (Model.messagesIn.Count == 0)
+                {
+                    <div><span>NO MESSAGES IN INBOX</span></div>
+                }
+                else
+                {
+                    <table class="table">
+                        <tr>
+                            <td>DATE</td>
+                            <td>TIME</td>
+                            <td>FROM</td>
+                            <td>MESSAGE</td>
+                            <td>ACTIONS</td>
+                        </tr>
+                        @foreach (var message in Model.messagesIn)
+                        {
+                            if (message.read == false)
+                            {
+                                <tr>
+                                    <td> @message.timeStamp.Date </td>
+                                    <td> @message.timeStamp.TimeOfDay:</td>
+                                    <td style="font-weight: bold;">@message.Band.bandName:</td>
+                                    <td>@message.messageContent</td>
+                                    <td>
+                                        <button style="background-color: black;">@Html.ActionLink("Reply", "Create", "Message", new { recipientId = message.Band.BandId, isBand = true }, null)</button>
+                                        <button style="background-color: black;">@Html.ActionLink("Mark Read", "ToggleRead", "Message", new { messageId = message.MessageId }, null)</button>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr style="color: gray">
+                                    <td> @message.timeStamp.Date </td>
+                                    <td> @message.timeStamp.TimeOfDay:</td>
+                                    <td style="font-weight: bold;">@message.Band.bandWebsite:</td>
+                                    <td>@message.messageContent</td>
+                                    <td>
+                                        <button style="background-color: black;">@Html.ActionLink("Reply", "Create", "Message", new { recipientId = message.Band.BandId, isBand = true }, null)</button>
+                                        <button style="background-color: black;">@Html.ActionLink("Mark Unread", "ToggleRead", "Message", new { messageId = message.MessageId }, null)</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                }
+            </div>
+
+            <div id="outbox" style="display: none;">
+                @if (Model.messagesOut.Count == 0)
+                {
+                    <div><span>NO MESSAGES SENT</span></div>
+                }
+                else
+                {
+                    <table class="table">
+                        <tr>
+                            <td>DATE</td>
+                            <td>TIME</td>
+                            <td>TO</td>
+                            <td>MESSAGE</td>
+                            <td>ACTIONS</td>
+                        </tr>
+                        @foreach (var message in Model.messagesOut)
+                        {
+                            <tr style="color: gray">
+                                <td> @message.timeStamp.Date </td>
+                                <td> @message.timeStamp.TimeOfDay:</td>
+                                <td style="font-weight: bold;">@message.Band.bandName:</td>
+                                <td>@message.messageContent</td>
+                                <td>
+                                    <button style="background-color: black;">@Html.ActionLink("Send Another?", "Create", "Message", new { recipientId = message.Venue.VenueId, isBand = false }, null)</button>
+                                </td>
+                            </tr>
+
+                        }
+                    </table>
+                }
+            </div>
+        </div>
+
+
+
+
+
+        
+
+        <div id="gigList">
+            <h3>upcoming Gigs</h3>
+            <table class="table">
+                <tr>
+                    <th> Venue </th>
+                    <th> Date</th>
+                    <th> Time </th>
+                    <th> Line-up </th>
+                </tr>
+
+                @foreach (var gigModel in Model.currentGigs)
+                {
+
+                    <tr>
+
+                        <td>  @Html.DisplayFor(modelItem => gigModel.gig.Venue.venueName)</td>
+                        <td>  @Html.DisplayFor(modelItem => gigModel.gig.timeOfGig.Date)  </td>
+                        <td>  @Html.DisplayFor(modelItem => gigModel.gig.timeOfGig.TimeOfDay)  </td>
+
+                        <td>
+
+                            @foreach (var band in gigModel.bands)
+                            {
+
+                                <span> @Html.DisplayFor(modelItem => band.bandName), </span>
+                                
+                                // maybe here insert link with band id to band profile?????
+                            }
+                        </td>
+
+
+
+
+
+                        @*<td>
+                                @Html.ActionLink("CANCEL", "../SMS/SendSMSToTeacher", new { id = lesson.LessonId })
+                            </td>
+                            <td>
+                                @Html.ActionLink("DETAILS", "../Lesson/Details", new { id = lesson.LessonId })
+
+                            </td>*@
+                    </tr>
+                }
+
+            </table>
+        </div>
+
+
+
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+
+
+        (function ($) {
+
+            @*ResetHeader();
+
+            function ResetHeader() {
+                 $("index-header-parent").html("");
+            $("#index-header-parent").append("<div class='index-header'><h2><strong>@Model.currentUser.firstName  @Model.currentUser.lastName</strong> Student Dashboard </h2> </div>");
+            }
+
+            function resetClosedTabs() {
+                 $("#showLessons").css("font-weight", "normal");
+                 $("#showLessons").css("border", "2pt solid rgba(56, 119, 128, .30)");
+                 $("#showTeachers").css("font-weight", "normal");
+                 $("#showTeachers").css("border", "2pt solid rgba(56, 119, 128, .30)");
+                 $("#showRequests").css("font-weight", "normal");
+                 $("#showRequests").css("border", "2pt solid rgba(56, 119, 128, .30)");
+                 $("#showMakeups").css("font-weight", "normal");
+                 $("#showMakeups").css("border", "2pt solid rgba(56, 119, 128, .30)");
+            }*@
+
+
+
+             $( "#showInbox" ).click(function() {
+                 console.log("Handler for .click() called.");
+                            $("#inbox").show()
+                            $("#outbox").hide();
+                 $(this).css("font-weight", "bold");
+                 $("#showOutbox").css("font-weight", "normal");
+             });
+               $( "#showInbox" ).mouseenter(function() {
+                 $(this).css("background-image", "linear-gradient(white, black)");
+
+               });
+             $( "#showInbox" ).mouseleave(function() {
+                 $(this).css("background-image", "none");
+
+             });
+
+            $( "#showOutbox" ).click(function() {
+                 console.log("Handler for .click() called.");
+                            $("#inbox").hide()
+                            $("#outbox").show();
+                 $(this).css("font-weight", "bold");
+                 $("#showInbox").css("font-weight", "normal");
+             });
+               $( "#showOutbox" ).mouseenter(function() {
+                 $(this).css("background-image", "linear-gradient(white, black)");
+
+               });
+             $( "#showOutbox" ).mouseleave(function() {
+                 $(this).css("background-image", "none");
+
+             });
+
+
+
+
+        })(jQuery);
+
+    });
+</script>
+
+
+
 

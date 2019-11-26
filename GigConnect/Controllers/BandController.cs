@@ -32,8 +32,8 @@ namespace GigConnect.Controllers
         // GET: Band
         public ActionResult Index()
         {
-            string userId = User.Identity.GetUserId();
-            Band band = context.Bands.Where(b => b.ApplicationId == userId).FirstOrDefault();
+
+            Band band = GetUserBand();
             if(band == null)
             {
                 return RedirectToAction("Create", "Band");
@@ -167,7 +167,10 @@ namespace GigConnect.Controllers
             bandInfo.messagesOut = GetAllMessagesOut(bandInfo.band.BandId);
             bandInfo.requestsIn = GetRequestsIn(bandInfo.band.BandId);
             bandInfo.requestsOut = GetRequestsOut(bandInfo.band.BandId);
-            bandInfo.unreadMessages = FilterForUnread(bandInfo.messagesIn);
+            bandInfo.requestResponses = GetRespondedRequests(bandInfo.band.BandId);
+            bandInfo.reviews = GetBandReviews(bandInfo.band);
+            bandInfo.score = AverageReviews(bandInfo.reviews);
+            
 
             return bandInfo;
         }
@@ -193,7 +196,8 @@ namespace GigConnect.Controllers
 
         public List<Band> GetBandsOnGig(Gig gig)
         {
-            List<Band> bands = context.BandGigs.Where(g => g.gigId == gig.GigId).Select(s => s.Band).ToList();
+            List<Band> bands = context.BandGigs
+                .Include("Band").Where(g => g.gigId == gig.GigId).Select(s => s.Band).ToList();
             return bands;
 
         }
@@ -230,38 +234,71 @@ namespace GigConnect.Controllers
 
         public List<Message> GetAllMessagesIn(int bandId)
         {
-            List<Message> messages = context.Messages.Where(m => m.bandId == bandId && m.from == "Venue").ToList();
+            List<Message> messages = context.Messages
+                .Include("Venue")
+                .Include("Band")
+                .Where(m => m.bandId == bandId && m.from == "Venue").ToList();
             return messages;
         }
 
-        public bool FilterForUnread(List<Message> messages)
-        {
-            var unread = messages.Where(u => u.read == false).ToList();
-            if (unread.Count == 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
+      
 
         public List<Message> GetAllMessagesOut(int bandId)
         {
-            List<Message> messages = context.Messages.Where(m => m.bandId == bandId && m.from == "Band").OrderBy(d => d.timeStamp).ToList();
+            List<Message> messages = context.Messages
+                .Include("Venue")
+                .Include("Band")
+                .Where(m => m.bandId == bandId && m.from == "Band").OrderBy(d => d.timeStamp).ToList();
             return messages;
         }
 
+
         public List<Request> GetRequestsIn(int bandId)
         {
-            List<Request> requestsIn = context.Requests.Where(r => r.bandId == bandId && r.fromVenue == true && r.approved == false && r.denied == false).ToList();
+            List<Request> requestsIn = context.Requests
+                .Include("Venue").Include("Band").Where(r => r.bandId == bandId && r.fromVenue == true && r.approved == false && r.denied == false)
+                .OrderBy(o => o.timeStamp).ToList();
             return requestsIn;
         }
         public List<Request> GetRequestsOut(int bandId)
         {
-            List<Request> requestsIn = context.Requests.Where(r => r.bandId == bandId && r.fromVenue == true && r.approved == false && r.denied == false).ToList();
-            return requestsIn;
+            List<Request> requestsOut = context.Requests
+                .Include("Venue").Include("Band").Where(r => r.bandId == bandId && r.fromVenue == true && r.approved == false && r.denied == false)
+                .OrderBy(o => o.timeStamp).ToList();
+            return requestsOut;
+        }
+
+        public List<Request> GetRespondedRequests(int bandId)
+        {
+            List<Request> requestsOut = context.Requests
+                            .Include("Venue").Include("Band").Where(r => r.bandId == bandId && r.fromBand == true && r.approved == true || r.denied == true)
+                            .OrderBy(o => o.timeStamp).ToList();
+            return requestsOut;
+        }
+
+
+        public List<Review> GetBandReviews(Band band)
+        {
+            List<Review> reviews = context.BandReviews
+                .Include("Review")
+                .Where(r => r.bandId == band.BandId)
+                .Select(s => s.Review).ToList();
+            return reviews;
+        }
+
+
+
+
+        public double AverageReviews(List<Review> reviews)
+        {
+            double score = 0;
+            foreach (Review review in reviews)
+            {
+                int ratingEnum = (int)review.rating + 1;
+                score += Convert.ToDouble(review.rating);
+            }
+            double average = score / reviews.Count;
+            return Math.Round(average, 1);
         }
 
 

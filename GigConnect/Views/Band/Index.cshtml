@@ -15,7 +15,7 @@
         <h2><strong>@Model.currentUser.firstName  @Model.currentUser.lastName</strong> Student Dashboard </h2>
     </div>*@
 
-<div id="studentView">
+<div id="bandView">
 
     <div id="updateInfo">
             @Html.ActionLink("Update Info", "Edit", new { id = Model.band.BandId })
@@ -33,6 +33,91 @@
 
             <div class="optionsHeader" id="showRequests"><div class="txtBtn">Pending Requests</div></div>
 
+        </div>
+
+        <div id="messages">
+            <div class="twoOptionsHeader">
+                <button id="showInbox" class="twoOptionsBtn" style=" height: 40px; width: 45%;font-weight: bold;">INBOX</button>
+                <button id="showOutbox" class="twoOptionsBtn"style=" height: 40px; width: 45%; ">OUTBOX</button>
+            </div>
+            <div id="inbox">
+                @if (Model.messagesIn.Count == 0)
+                {
+                    <div><span>NO MESSAGES IN INBOX</span></div>
+                }
+                else
+                {
+                    <table class="table">
+                        <tr>
+                            <td>DATE</td>
+                            <td>TIME</td>
+                            <td>FROM</td>
+                            <td>MESSAGE</td>
+                            <td>ACTIONS</td>
+                        </tr>
+                        @foreach (var message in Model.messagesIn)
+                        {
+                            if (message.read == false)
+                            {
+                                <tr>
+                                    <td> @message.timeStamp.Date </td>
+                                    <td> @message.timeStamp.TimeOfDay:</td>
+                                    <td style="font-weight: bold;">@message.Venue.venueName:</td>
+                                    <td>@message.messageContent</td>
+                                    <td>
+                                        <button style="background-color: black;">@Html.ActionLink("Reply", "Create", "Message", new { recipientId = message.Venue.VenueId, isBand = false }, null)</button>
+                                        <button style="background-color: black;">@Html.ActionLink("Mark Read", "ToggleRead", "Message", new { messageId = message.MessageId }, null)</button>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr style="color: gray">
+                                    <td> @message.timeStamp.Date </td>
+                                    <td> @message.timeStamp.TimeOfDay:</td>
+                                    <td style="font-weight: bold;">@message.Venue.venueName:</td>
+                                    <td>@message.messageContent</td>
+                                    <td>
+                                        <button style="background-color: black;">@Html.ActionLink("Reply", "Create", "Message", new { recipientId = message.Venue.VenueId, isBand = false }, null)</button>
+                                        <button style="background-color: black;">@Html.ActionLink("Mark Unread", "ToggleRead", "Message", new { messageId = message.MessageId }, null)</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                }
+            </div>
+
+            <div id="outbox" style="display: none;">
+                @if (Model.messagesOut.Count == 0)
+                {
+                    <div><span>NO MESSAGES SENT</span></div>
+                }
+                else
+                {
+                    <table class="table">
+                        <tr>
+                            <td>DATE</td>
+                            <td>TIME</td>
+                            <td>TO</td>
+                            <td>MESSAGE</td>
+                            <td>ACTIONS</td>
+                        </tr>
+                        @foreach (var message in Model.messagesOut)
+                        {     
+                                <tr style="color: gray">
+                                    <td> @message.timeStamp.Date </td>
+                                    <td> @message.timeStamp.TimeOfDay:</td>
+                                    <td style="font-weight: bold;">@message.Venue.venueName:</td>
+                                    <td>@message.messageContent</td>
+                                    <td>
+                                        <button style="background-color: black;">@Html.ActionLink("Send Another?", "Create", "Message", new { recipientId = message.Venue.VenueId, isBand = false }, null)</button>
+                                    </td>
+                                </tr>               
+                        }
+                    </table>
+                }
+            </div>   
         </div>
 
 
@@ -102,7 +187,9 @@
 
             <tr>
 
-                <td>  @Html.DisplayFor(modelItem => gigModel.gig.Venue.venueName)</td>
+                <td>
+                    @Html.ActionLink(gigModel.gig.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = gigModel.gig.Venue.VenueId }, null),
+                </td>
                 <td>  @Html.DisplayFor(modelItem => gigModel.gig.timeOfGig.Date)  </td>
                 <td>  @Html.DisplayFor(modelItem => gigModel.gig.timeOfGig.TimeOfDay)  </td>
 
@@ -111,8 +198,9 @@
                     @foreach (var band in gigModel.bands)
                     {
 
-                        <span> @Html.DisplayFor(modelItem => band.bandName), </span>
-                        // maybe here insert link with band id to band profile?????
+                    <span>
+                        @Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null), 
+                    </span>
                     }
                 </td>
 
@@ -133,81 +221,20 @@
             </table>
         </div>
 
-        @*<div id="requested" style="display: none;">
-            <h3> Awaiting Reply </h3>
-
-            <table class="table">
-                <tr>
-                    <th> Lesson Date / Time </th>
-                    <th> Lesson Subject </th>
-                    <th> Instructor </th>
-                    <th> Location </th>
-                    <th> Price </th>
-                    <th></th>
-                </tr>
-
-                @foreach (var lesson in requestedList)
-                {
-
-
-                    <tr>
-
-                        <td>  @Html.DisplayFor(modelItem => lesson.start) - @Html.DisplayFor(modelItem => lesson.end) </td>
-                        <td>  @Html.DisplayFor(modelItem => lesson.LessonType)  </td>
-                        <td>  @Html.DisplayFor(modelItem => lesson.Teacher.firstName) @Html.DisplayFor(modelItem => lesson.Teacher.lastName) </td>
-                        <td>  @Html.DisplayFor(modelItem => lesson.Location.address1) @Html.DisplayFor(modelItem => lesson.Location.city) @Html.DisplayFor(modelItem => lesson.Location.state) </td>
-                        <td>  @Html.DisplayFor(modelItem => lesson.Price)  </td>
-
-
-
-
-                    </tr>
-                }
-
-            </table>
-        </div>
-
-        <div id="makeups" style="display: none;">
-            <h2> Make-up Lessons</h2>
-
-            <table class="table">
-                <tr>
-                    <th> Teacher Name </th>
-                    <th> Granted </th>
-                </tr>
-
-                @{
-                    var makeupList = Model.makeups;
-                }
-                @foreach (var lesson in makeupList)
-                {
-                    <tr>
-                        <td>  @Html.DisplayFor(modelItem => lesson.Teacher.firstName) @Html.DisplayFor(modelItem => lesson.Teacher.lastName) </td>
-
-                        <td>  @Html.DisplayFor(modelItem => lesson.start.Date) @Html.DisplayFor(modelItem => lesson.end.Date) </td>
-
-
-
-                    </tr>
-                }
-
-
-            </table>
-        </div>
-
+        
 
     </div>
 
-</div>*@
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
 
 
-        @*(function ($) {
+        (function ($) {
 
-            ResetHeader();
+            @*ResetHeader();
 
             function ResetHeader() {
                  $("index-header-parent").html("");
@@ -223,71 +250,49 @@
                  $("#showRequests").css("border", "2pt solid rgba(56, 119, 128, .30)");
                  $("#showMakeups").css("font-weight", "normal");
                  $("#showMakeups").css("border", "2pt solid rgba(56, 119, 128, .30)");
-            }
+            }*@
 
 
 
-             $( "#showLessons" ).click(function() {
-                        console.log("Handler for .click() called.");
-                            $("#teacherDirectory").hide();
-                            $("#lessonList").show();
-                            $("#requested").hide();
-                            $("#makeups").hide();
-
-                            resetClosedTabs();
-
-                            $(this).css("font-weight", "bold");
-                            $(this).css("border-bottom", "none");
-                            $(this).css("border-color", "rgb(56, 119, 128)");
-
-
-              });
-            $( "#showTeachers" ).click(function() {
-                        console.log("Handler for .click() called.");
-                            $("#teacherDirectory").show();
-                            $("#lessonList").hide();
-                            $("#requested").hide();
-                            $("#makeups").hide();
-
-                            resetClosedTabs();
-
-                             $(this).css("font-weight", "bold");
-                             $(this).css("border-bottom", "none");
-                             $(this).css("border-color", "rgb(56, 119, 128)");
-            });
-             $( "#showRequests" ).click(function() {
-                        console.log("Handler for .click() called.");
-                            $("#teacherDirectory").hide();
-                            $("#lessonList").hide();
-                            $("#requested").show();
-                            $("#makeups").hide();
-                             resetClosedTabs();
-
-                            $(this).css("font-weight", "bold");
-                            $(this).css("border-bottom", "none");
-                            $(this).css("border-color", "rgb(56, 119, 128)");
+             $( "#showInbox" ).click(function() {
+                 console.log("Handler for .click() called.");
+                            $("#inbox").show()
+                            $("#outbox").hide();                         
+                 $(this).css("font-weight", "bold");          
+                 $("#showOutbox").css("font-weight", "normal");      
              });
-             $( "#showMakeups" ).click(function() {
-                        console.log("Handler for .click() called.");
-                            $("#teacherDirectory").hide();
-                            $("#lessonList").hide();
-                            $("#requested").hide();
-                            $("#makeups").show();
+               $( "#showInbox" ).mouseenter(function() {                                
+                 $(this).css("background-image", "linear-gradient(white, black)");               
+                 
+               });
+             $( "#showInbox" ).mouseleave(function() {                                
+                 $(this).css("background-image", "none");               
+                 
+             });
 
-                            resetClosedTabs();
+            $( "#showOutbox" ).click(function() {
+                 console.log("Handler for .click() called.");
+                            $("#inbox").hide()
+                            $("#outbox").show();                         
+                 $(this).css("font-weight", "bold");          
+                 $("#showInbox").css("font-weight", "normal");      
+             });
+               $( "#showOutbox" ).mouseenter(function() {                                
+                 $(this).css("background-image", "linear-gradient(white, black)");               
+                 
+               });
+             $( "#showOutbox" ).mouseleave(function() {                                
+                 $(this).css("background-image", "none");               
+                 
+             });
 
-                            $(this).css("font-weight", "bold");
-                            $(this).css("border-bottom", "none");
-                            $(this).css("border-color", "rgb(56, 119, 128)");
-            });
-
-
+           
 
 
         })(jQuery);
 
     });
-</script>*@
+</script>
 
 
 

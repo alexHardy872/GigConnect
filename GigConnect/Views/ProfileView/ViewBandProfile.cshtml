@@ -22,15 +22,29 @@
     <div id="overall">
         <h4>Overall Rating @Model.score</h4>
     </div>
-    @foreach (var review in Model.reviews)
+
+    @if (Model.reviews.Count == 0)
     {
-        <div class="review">
-            <span>Date: @review.timeStamp.Date</span>
-            <span>@review.content</span>
+        <div>
+            <span>@Model.band.bandName has no reviews!</span>
+            <span>@Html.ActionLink("Be the first!", "Create", "Review", new { reviewedId = Model.band.BandId, isBand = true }, null)</span>
         </div>
     }
+    else
+    {
+        foreach (var review in Model.reviews)
+        {
+            <div class="review">
+                <span>Date: @review.timeStamp.Date</span>
+                <span>@review.content</span>
+            </div>
+        }
+
+    }
+
     <br />
-    <span>@Html.ActionLink("Leave a Review", "Create", "Review", new { reviewedId = Model.band.BandId, isBand = true }, null)</span>
+    <button>@Html.ActionLink("Leave a Review", "Create", "Review", new { reviewedId = Model.band.BandId, isBand = true }, null)</button>
+
 
 </div>
 <div id="Gigs">
@@ -50,9 +64,10 @@
         <td>@gig.gig.timeOfGig.TimeOfDay</td>
         <td>@gig.gig.Venue.venueName</td>
         <td>@gig.bands</td>
-
+       
         @foreach(var band in gig.bands){
-            <span>@band, </span>
+            
+            @Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId },null)
         }
         <td>(@gig.formattedAddress)</td>
     </tr>
@@ -75,6 +90,8 @@
 
             <br />
             <img src="@Model.facebookImageUrl" alt="pic" style="height: 400px; width: 400px;" />
+            <button>@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = Model.band.BandId, isBand = true }, null)</button>
+
         </div>
 
         <div id="ratings">

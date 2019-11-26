@@ -12,6 +12,8 @@ namespace GigConnect.Models
         [Key]
         public int GigId { get; set; }
 
+        public string description { get; set; }
+
 
         //[ForeignKey("Location")]
         //public int locationId { get; set; }

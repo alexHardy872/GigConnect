@@ -28,14 +28,13 @@ namespace GigConnect.Controllers
             {
                 return RedirectToAction("Create", "Venue");
             }
-            return View();
+            VenueIndexViewModel model = AssembleIndexViewModelForVenue();
+            return View(model);
         }
 
-        // GET: Venue/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+      
+
+       
 
         // GET: Venue/Create
         // GET: Band/Create
@@ -131,6 +130,22 @@ namespace GigConnect.Controllers
             }
         }
 
+        public VenueIndexViewModel AssembleIndexViewModelForVenue()
+        {
+            VenueIndexViewModel venueInfo = new VenueIndexViewModel();
+            venueInfo.venue = GetUserVenue();
+            venueInfo.currentGigs = GetGigViewModel(GetGigs(venueInfo.venue)); // contains Gig, BandsList, Location (formatted)
+            venueInfo.openGigs = GetGigViewModel(GetOpenGigs(venueInfo.venue));
+            venueInfo.messagesIn = GetAllMessagesIn(venueInfo.venue.VenueId);
+            venueInfo.messagesOut = GetAllMessagesOut(venueInfo.venue.VenueId);
+            venueInfo.requestsIn = GetRequestsIn(venueInfo.venue.VenueId);
+            venueInfo.requestsOut = GetRequestsOut(venueInfo.venue.VenueId);
+            venueInfo.requestResponses = GetRespondedRequests(venueInfo.venue.VenueId);
+            venueInfo.reviews = GetVenueReviews(venueInfo.venue);
+            venueInfo.score = AverageReviews(venueInfo.reviews);
+            return venueInfo;
+        }
+
 
 
 
@@ -146,53 +161,118 @@ namespace GigConnect.Controllers
         public Venue GetUserVenue()
         {
             string userId = User.Identity.GetUserId();
-            Venue venue = context.Venues.Where(b => b.ApplicationId == userId).FirstOrDefault();
+            Venue venue = context.Venues
+                .Include("Location").Where(b => b.ApplicationId == userId).FirstOrDefault();
             return venue;
         }
 
         public List<Gig> GetGigs(Venue venue)
         {
             List<Gig> venueGigs = new List<Gig>();
-            List<Gig> allGigs = context.Gigs.Where(g => g.venueId == venue.VenueId).OrderBy(o => o.timeOfGig).ToList();
+            List<Gig> allGigs = context.Gigs
+                .Include("Venue").Where(g => g.venueId == venue.VenueId && g.open == false).OrderBy(o => o.timeOfGig).ToList();
             return allGigs;
         }
-    
+        public List<Gig> GetOpenGigs(Venue venue)
+        {
+            List<Gig> venueGigs = new List<Gig>();
+            List<Gig> allGigs = context.Gigs
+                .Include("Venue").Where(g => g.venueId == venue.VenueId && g.open == true).OrderBy(o => o.timeOfGig).ToList();
+            return allGigs;
+        }
+
+        
+
+
+        public List<Band> GetBandsOnGig(Gig gig)
+        {
+            List<Band> bands = context.BandGigs
+                .Include("Band").Where(g => g.gigId == gig.GigId).Select(s => s.Band).ToList();
+            return bands;
+
+        }
+      
+
+        public List<GigInfoViewModel> GetGigViewModel(List<Gig> gigs)
+        {
+            List<GigInfoViewModel> gigModels = new List<GigInfoViewModel>();
+            foreach (Gig gig in gigs)
+            {
+                GigInfoViewModel tempGigModel = new GigInfoViewModel();
+                tempGigModel.gig = gig;
+                tempGigModel.bands = GetBandsOnGig(gig);
+                Location location = context.Locations.Where(l => l.LocationId == gig.Venue.LocationId).FirstOrDefault();
+                tempGigModel.formattedAddress = GeoCode.FormatAddress(location);
+                gigModels.Add(tempGigModel);
+
+            }
+            return gigModels;
+        }
+
 
         public List<Message> GetAllMessagesIn(int venueId)
         {
-            List<Message> messages = context.Messages.Where(m => m.venueId == venueId && m.from == "Band").ToList();
+            List<Message> messages = context.Messages
+                .Include("Venue").Include("Band").Where(m => m.venueId == venueId && m.from == "Band").ToList();
             return messages;
         }
 
-        public bool FilterForUnread(List<Message> messages)
-        {
-            var unread = messages.Where(u => u.read == false).ToList();
-            if (unread.Count == 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
+  
 
         public List<Message> GetAllMessagesOut(int venueId)
         {
-            List<Message> messages = context.Messages.Where(m => m.venueId == venueId && m.from == "Band").OrderBy(d => d.timeStamp).ToList();
+            List<Message> messages = context.Messages
+                .Include("Venue").Include("Band").Where(m => m.venueId == venueId && m.from == "Band").OrderBy(d => d.timeStamp).ToList();
             return messages;
         }
 
         public List<Request> GetRequestsIn(int venueId)
         {
-            List<Request> requestsIn = context.Requests.Where(r => r.venueId ==venueId && r.fromVenue == true && r.approved == false && r.denied == false).ToList();
+            List<Request> requestsIn = context.Requests
+                .Include("Venue").Include("Band").Where(r => r.venueId ==venueId && r.fromVenue == true && r.approved == false && r.denied == false)
+                .OrderBy(o => o.timeStamp).ToList();
             return requestsIn;
         }
         public List<Request> GetRequestsOut(int venueId)
         {
-            List<Request> requestsIn = context.Requests.Where(r => r.venueId == venueId && r.fromVenue == true && r.approved == false && r.denied == false).ToList();
+            List<Request> requestsIn = context.Requests
+                .Include("Venue").Include("Band").Where(r => r.venueId == venueId && r.fromVenue == true && r.approved == false && r.denied == false)
+                .OrderBy(o => o.timeStamp).ToList();
             return requestsIn;
         }
+
+        public List<Request> GetRespondedRequests(int venueId)
+        {
+            List<Request> requestsOut = context.Requests
+                            .Include("Venue").Include("Band").Where(r => r.venueId == venueId && r.fromVenue == true && r.approved == true || r.denied == true)
+                            .OrderBy(o => o.timeStamp).ToList();
+            return requestsOut;
+        }
+
+
+        public List<Review> GetVenueReviews(Venue venue)
+        {
+            List<Review> reviews = context.VenueReviews
+                .Include("Review")
+                .Where(r => r.venueId == venue.VenueId)
+                .Select(s => s.Review).ToList();
+            return reviews;
+        }
+
+
+
+        public double AverageReviews(List<Review> reviews)
+        {
+            double score = 0;
+            foreach (Review review in reviews)
+            {
+                int ratingEnum = (int)review.rating + 1;
+                score += Convert.ToDouble(review.rating);
+            }
+            double average = score / reviews.Count;
+            return Math.Round(average, 1);
+        }
+
 
 
 

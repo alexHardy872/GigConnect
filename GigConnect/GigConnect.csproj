@@ -237,6 +237,10 @@
     <Compile Include="Migrations\201911261627481_adjustScaleOnEnum.Designer.cs">
       <DependentUpon>201911261627481_adjustScaleOnEnum.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911262302132_newmigration.cs" />
+    <Compile Include="Migrations\201911262302132_newmigration.Designer.cs">
+      <DependentUpon>201911262302132_newmigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Band.cs" />
@@ -262,6 +266,7 @@
     <Compile Include="Models\ViewModels\MessageViewModel.cs" />
     <Compile Include="Models\ViewModels\ReviewViewModel.cs" />
     <Compile Include="Models\ViewModels\TravelDistanceViewModel.cs" />
+    <Compile Include="Models\ViewModels\VenueIndexViewModel.cs" />
     <Compile Include="Models\ViewModels\VenueProfileViewModel.cs" />
     <Compile Include="Private\Keys.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -343,12 +348,12 @@
     <Content Include="Views\ProfileView\ViewVenueProfile.cshtml" />
     <Content Include="Views\Review\Create.cshtml" />
     <Content Include="Views\Message\Create.cshtml" />
+    <Content Include="Views\Request\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ViewComponents\" />
     <Folder Include="Views\Gig\" />
-    <Folder Include="Views\Request\" />
     <Folder Include="Views\Role\" />
   </ItemGroup>
   <ItemGroup>
@@ -385,6 +390,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911261627481_adjustScaleOnEnum.resx">
       <DependentUpon>201911261627481_adjustScaleOnEnum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911262302132_newmigration.resx">
+      <DependentUpon>201911262302132_newmigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

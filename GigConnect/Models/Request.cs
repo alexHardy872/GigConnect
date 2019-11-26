@@ -13,11 +13,6 @@ namespace GigConnect.Models
         public int RequestId { get; set; }
 
 
-        [ForeignKey("Location")]
-        public int locationId { get; set; }
-        public Location Location { get; set; }
-
-
         [ForeignKey("Gig")]    //// for later, checking if a gig is null differentiates a custom request
         public int? eventId { get; set; }
         public Gig Gig { get; set; }
@@ -34,6 +29,8 @@ namespace GigConnect.Models
 
 
         public DateTime gigTime { get; set; }
+
+        public DateTime timeStamp { get; set; }
 
         public string message { get; set; }
 
