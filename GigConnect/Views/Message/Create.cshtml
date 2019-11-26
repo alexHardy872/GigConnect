@@ -1,0 +1,61 @@
+﻿@model GigConnect.Models.ViewModels.MessageViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Send message to a @Model.recipientType</h4>
+        <hr />
+        @Html.HiddenFor(x => x.recipientType)
+        @Html.HiddenFor(x => x.recipientId)
+        @Html.HiddenFor(x => x.message.MessageId)
+        @Html.HiddenFor(x => x.message.timeStamp)
+        @Html.HiddenFor(x => x.message.read)
+        @Html.HiddenFor(x => x.message.from)
+
+
+
+
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.message.messageContent, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.Venue.description, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.TextAreaFor(model => model.message.messageContent, new { htmlAttributes = new { @class = "form-control" } });
+                @Html.ValidationMessageFor(model => model.message.messageContent, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@if (Model.recipientType == "Band")
+{
+    <div>
+        @Html.ActionLink("Back to Band Profile", "ViewBandProfile", "ProfileView", new { bandId = Model.recipientId }, null)
+    </div>
+
+}
+else
+{
+    <div>
+        @Html.ActionLink("Back to Venue Profile", "ViewVenueProfile", "ProfileView", new { venueId = Model.recipientId }, null)
+    </div>
+}
+

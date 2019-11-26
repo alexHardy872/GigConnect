@@ -259,6 +259,7 @@
     <Compile Include="Models\ViewModels\CreateAndEditViewModel.cs" />
     <Compile Include="Models\ViewModels\GigInfoViewModel.cs" />
     <Compile Include="Models\ViewModels\BandProfileViewModel.cs" />
+    <Compile Include="Models\ViewModels\MessageViewModel.cs" />
     <Compile Include="Models\ViewModels\ReviewViewModel.cs" />
     <Compile Include="Models\ViewModels\TravelDistanceViewModel.cs" />
     <Compile Include="Models\ViewModels\VenueProfileViewModel.cs" />
@@ -341,12 +342,12 @@
     <Content Include="Views\ProfileView\ViewBandProfile.cshtml" />
     <Content Include="Views\ProfileView\ViewVenueProfile.cshtml" />
     <Content Include="Views\Review\Create.cshtml" />
+    <Content Include="Views\Message\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ViewComponents\" />
     <Folder Include="Views\Gig\" />
-    <Folder Include="Views\Message\" />
     <Folder Include="Views\Request\" />
     <Folder Include="Views\Role\" />
   </ItemGroup>
