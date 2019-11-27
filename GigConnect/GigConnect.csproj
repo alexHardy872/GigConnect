@@ -353,6 +353,7 @@
     <Content Include="Views\Gig\Create.cshtml" />
     <Content Include="Views\Gig\Edit.cshtml" />
     <Content Include="Views\Gig\AddSelectedBandToGig.cshtml" />
+    <Content Include="Views\Gig\RemoveBandsFromLineUp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

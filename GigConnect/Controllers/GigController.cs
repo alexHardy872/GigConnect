@@ -45,8 +45,10 @@ namespace GigConnect.Controllers
 
         public ActionResult Create()
         {
-            // maybe use gig view model? seperate list of bands on gig? able to edit/ remove ect?
             Gig gig = new Gig();
+            gig.venueId = GetUserVenue().VenueId;
+            gig.open = true;
+
 
             return View(gig);
         }
@@ -104,6 +106,16 @@ namespace GigConnect.Controllers
             context.BandGigs.Remove(toRemove);
             await context.SaveChangesAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult RemoveBandsFromLineUp(int gigId)
+        {
+            GigInfoViewModel model = new GigInfoViewModel();
+            model.gig = GetGigFromId(gigId);
+            model.bands = GetBandsOnGig(model.gig);
+            
+
+            return View(model);
         }
 
         public ActionResult ToggleGigOpen(int gigId)

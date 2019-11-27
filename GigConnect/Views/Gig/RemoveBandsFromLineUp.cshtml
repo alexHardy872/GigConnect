@@ -1,0 +1,32 @@
+﻿@model GigConnect.Models.ViewModels.GigInfoViewModel
+
+@{
+    ViewBag.Title = "RemoveBandsFromLineUp";
+}
+
+<h2>RemoveBandsFromLineUp</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Band
+        </th>
+        <th>
+            Action
+        </th>
+    </tr>
+
+@foreach (var band in Model.bands) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => band.bandName)
+        </td>
+        <td>
+           
+            <button class="btn-default">@Html.ActionLink("Remove", "RemoveBandFromGig", new { bandId = band.BandId, gigId = Model.gig.GigId })</button>
+        </td>
+    </tr>
+}
+
+</table>
