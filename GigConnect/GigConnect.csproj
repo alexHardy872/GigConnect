@@ -259,6 +259,7 @@
     <Compile Include="Models\SocialMediaIds.cs" />
     <Compile Include="Models\Venue.cs" />
     <Compile Include="Models\VenueReview.cs" />
+    <Compile Include="Models\ViewModels\AddBandToGigViewModel.cs" />
     <Compile Include="Models\ViewModels\BandIndexViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateAndEditViewModel.cs" />
     <Compile Include="Models\ViewModels\GigInfoViewModel.cs" />
@@ -349,11 +350,13 @@
     <Content Include="Views\Review\Create.cshtml" />
     <Content Include="Views\Message\Create.cshtml" />
     <Content Include="Views\Request\Create.cshtml" />
+    <Content Include="Views\Gig\Create.cshtml" />
+    <Content Include="Views\Gig\Edit.cshtml" />
+    <Content Include="Views\Gig\AddSelectedBandToGig.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ViewComponents\" />
-    <Folder Include="Views\Gig\" />
     <Folder Include="Views\Role\" />
   </ItemGroup>
   <ItemGroup>

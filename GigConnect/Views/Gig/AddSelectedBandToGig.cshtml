@@ -1,0 +1,51 @@
+﻿@model GigConnect.Models.ViewModels.AddBandToGigViewModel
+
+@{
+    ViewBag.Title = "AddSelectedBandToGig";
+}
+
+<h2>Add @Model.band.bandName to an Existing Gig</h2>
+
+<div id="gigDisplay">
+    <table class="table">
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Description</th>
+            <th>Bands</th>
+            <th>Location</th>
+            <th>Action</th>
+        </tr>
+
+        @foreach (var gig in Model.gigs)
+        {
+    <tr>
+        <td>
+            @gig.gig.timeOfGig.Date
+        </td>
+        <td>
+            @gig.gig.timeOfGig.TimeOfDay
+        </td>
+        <td>
+            @gig.gig.description
+        </td>
+        <td>
+            @foreach (var band in gig.bands)
+            {
+                @Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null),
+
+             }
+        </td>
+        <td>
+            @gig.formattedAddress
+        </td>
+
+        <td>
+            <button class="btn-defeault">@Html.ActionLink("Add to Gig", "AddBandToGig", new { bandId = Model.band.BandId, gigId = gig.gig.GigId })</button>
+        </td>
+    </tr>
+        }
+
+    </table>
+
+</div>

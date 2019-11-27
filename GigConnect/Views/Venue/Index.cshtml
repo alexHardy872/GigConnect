@@ -148,9 +148,10 @@
                             {
 
                                 <span> @Html.DisplayFor(modelItem => band.bandName), </span>
-                                
-                                // maybe here insert link with band id to band profile?????
-                            }
+                                @Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null),
+
+                                     // maybe here insert link with band id to band profile?????
+                                                            }
                         </td>
 
 

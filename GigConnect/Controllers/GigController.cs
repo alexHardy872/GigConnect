@@ -1,4 +1,7 @@
 ﻿using GigConnect.Models;
+using GigConnect.Models.ViewModels;
+using GigConnect.Services;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,7 +74,18 @@ namespace GigConnect.Controllers
         }
 
       
+        public ActionResult AddSelectedBandToGig(int bandId) // from venue carrying venue gigs.
+        {
+            Band band = GetBandFromId(bandId);
+            Venue venue = GetUserVenue();
+            AddBandToGigViewModel model = new AddBandToGigViewModel();
+            List<Gig> openGigs = GetOpenGigs(venue);
+            model.gigs =   GetGigViewModel(openGigs);
+            model.band = band;
+            return View(model);
+        }
 
+      
 
         public async Task<ActionResult> AddBandToGig(int bandId, int gigId)
         {
@@ -111,6 +125,56 @@ namespace GigConnect.Controllers
         {
             Gig gig = context.Gigs.Where(r => r.GigId == id).FirstOrDefault();
             return gig;
+        }
+
+      
+
+    
+        public List<Gig> GetOpenGigs(Venue venue)
+        {
+            List<Gig> venueGigs = new List<Gig>();
+            List<Gig> allGigs = context.Gigs
+                .Include("Venue").Where(g => g.venueId == venue.VenueId && g.open == true && g.timeOfGig > DateTime.Now).OrderBy(o => o.timeOfGig).ToList();
+            return allGigs;
+        }
+
+        public List<Band> GetBandsOnGig(Gig gig)
+        {
+            List<Band> bands = context.BandGigs
+                .Include("Band").Where(g => g.gigId == gig.GigId).Select(s => s.Band).ToList();
+            return bands;
+
+        }
+
+
+        public List<GigInfoViewModel> GetGigViewModel(List<Gig> gigs)
+        {
+            List<GigInfoViewModel> gigModels = new List<GigInfoViewModel>();
+            foreach (Gig gig in gigs)
+            {
+                GigInfoViewModel tempGigModel = new GigInfoViewModel();
+                tempGigModel.gig = gig;
+                tempGigModel.bands = GetBandsOnGig(gig);
+                Location location = context.Locations.Where(l => l.LocationId == gig.Venue.LocationId).FirstOrDefault();
+                tempGigModel.formattedAddress = GeoCode.FormatAddress(location);
+                gigModels.Add(tempGigModel);
+
+            }
+            return gigModels;
+        }
+
+        public Venue GetUserVenue()
+        {
+            string userId = User.Identity.GetUserId();
+            Venue venue = context.Venues
+                .Include("Location").Where(b => b.ApplicationId == userId).FirstOrDefault();
+            return venue;
+        }
+
+        public Band GetBandFromId(int bandId)
+        {
+            Band band = context.Bands.Where(b => b.BandId == bandId).FirstOrDefault();
+            return band;
         }
 
     }
