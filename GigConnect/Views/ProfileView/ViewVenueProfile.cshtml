@@ -6,12 +6,12 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4 contentCol">
             <div>
                 <h4>@Model.venue.venueName (@Model.venue.town)</h4>
                 <br />
                 <a href="@Model.venue.websiteUrl">Venue Website</a>
-                <button class="btn-default">@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
+                <button class="btn-default ">@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
                 <button class="btn-default">@Html.ActionLink("Book a Show", "Create", "Request", new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
 
                 @if (User.IsInRole("Band"))
@@ -45,7 +45,7 @@
                 }
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 contentCol">
             <div>
                 <h4>Upcoming Events at @Model.venue.venueName</h4>
                 @if(Model.gigs.Count == 0)
