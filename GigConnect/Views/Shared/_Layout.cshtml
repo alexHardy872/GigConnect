@@ -9,46 +9,6 @@
     <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
 </head>
 
-@if (User.IsInRole("Band")) // BAND PARTIAL VIEW
-{
-    <body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    @Html.ActionLink("GigConnect", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">                      
-                        <li> @Html.ActionLink("Band Profile", "ViewBandProfileNav", "ProfileView"),</li>
-                        <li>@Html.ActionLink("Update Information", "EditNav", "Band")</li>
-                    </ul>
-                    @Html.Partial("_LoginPartial")
-                </div>
-            </div>
-        </div>
-        <div class="container body-content">
-            @RenderBody()
-            <hr />
-            <footer>
-                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-            </footer>
-        </div>
-
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @RenderSection("scripts", required: false)
-    </body>
-
-
-
-}
-else if (User.IsInRole("Venue")) // VENUE PARTIAL VIEW
-{
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -59,45 +19,29 @@ else if (User.IsInRole("Venue")) // VENUE PARTIAL VIEW
                     <span class="icon-bar"></span>
                 </button>
                 @Html.ActionLink("GigConnect", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+               
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">               
-                    <li> @Html.ActionLink("Venue Profile", "ViewVenueProfileNav", "ProfileView"),</li>
-                    <li>@Html.ActionLink("Update Information", "EditNav", "Venue")</li>
+                <ul class="nav navbar-nav">
+
+                    @if (User.Identity.IsAuthenticated == true)
+                    {
+                        if (User.IsInRole("Band"))
+                        {
+                            <li> @Html.ActionLink("Band Profile", "ViewBandProfileNav", "ProfileView"),</li>
+                            <li>@Html.ActionLink("Update Information", "EditNav", "Band")</li>
+                        }
+                        else if (User.IsInRole("Venue"))
+                        {
+                            <li> @Html.ActionLink("Venue Profile", "ViewVenueProfileNav", "ProfileView"),</li>
+                            <li>@Html.ActionLink("Update Information", "EditNav", "Venue")</li>
+                        }
+
+
+                    }
+
                 </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-</body>
-
-
-}
-else // ANNONYMOUS USER LOG IN
-{
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("GigConnect", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">          
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
@@ -114,12 +58,5 @@ else // ANNONYMOUS USER LOG IN
     @RenderSection("scripts", required: false)
 </body>
 
-
-
-
-
-
-
-}
 
 </html>
