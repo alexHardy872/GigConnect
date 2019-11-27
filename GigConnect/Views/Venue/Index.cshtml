@@ -61,10 +61,10 @@
                         <tr>
                             <td> @message.timeStamp.Date </td>
                             <td> @message.timeStamp.TimeOfDay:</td>
-                            <td style="font-weight: bold;">@message.Venue.venueName:</td>
+                            <td style="font-weight: bold;">@message.Band.bandName:</td>
                             <td>@message.messageContent</td>
                             <td>
-                                <button style="background-color: black;">@Html.ActionLink("Reply", "Create", "Message", new { recipientId = message.Venue.VenueId, isBand = false }, null)</button>
+                                <button style="background-color: black;">@Html.ActionLink("Reply", "Create", "Message", new { recipientId = message.Band.BandId, isBand = true }, null)</button>
                                 <button style="background-color: black;">@Html.ActionLink("Mark Read", "ToggleRead", "Message", new { messageId = message.MessageId }, null)</button>
                             </td>
                         </tr>
@@ -74,10 +74,10 @@
                         <tr style="color: gray">
                             <td> @message.timeStamp.Date </td>
                             <td> @message.timeStamp.TimeOfDay:</td>
-                            <td style="font-weight: bold;">@message.Venue.venueName:</td>
+                            <td style="font-weight: bold;">@message.Band.bandName:</td>
                             <td>@message.messageContent</td>
                             <td>
-                                <button style="background-color: black;">@Html.ActionLink("Reply", "Create", "Message", new { recipientId = message.Venue.VenueId, isBand = false }, null)</button>
+                                <button style="background-color: black;">@Html.ActionLink("Reply", "Create", "Message", new { recipientId = message.Band.BandId, isBand = true }, null)</button>
                                 <button style="background-color: black;">@Html.ActionLink("Mark Unread", "ToggleRead", "Message", new { messageId = message.MessageId }, null)</button>
                             </td>
                         </tr>
@@ -107,7 +107,7 @@
                     <tr style="color: gray">
                         <td> @message.timeStamp.Date </td>
                         <td> @message.timeStamp.TimeOfDay:</td>
-                        <td style="font-weight: bold;">@message.Venue.venueName:</td>
+                        <td style="font-weight: bold;">@message.Band.bandName:</td>
                         <td>@message.messageContent</td>
                         <td>
                             <button style="background-color: black;">@Html.ActionLink("Send Another?", "Create", "Message", new { recipientId = message.Venue.VenueId, isBand = false }, null)</button>

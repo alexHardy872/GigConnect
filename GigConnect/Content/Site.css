@@ -70,3 +70,16 @@ textarea {
     position: relative;
     font-size: 18pt;
 }
+
+.body-content{
+    margin: 100px;
+}
+
+.container{
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.body {
+    background-image: url(".../Content/Images/versio.jpg");
+}

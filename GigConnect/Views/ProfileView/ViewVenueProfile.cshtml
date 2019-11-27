@@ -1,10 +1,80 @@
 ﻿@model GigConnect.Models.ViewModels.VenueProfileViewModel
 
-<h2>ViewVenueProfile</h2>
 
 
 
 
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div>
+                <h4>@Model.venue.venueName (@Model.venue.town)</h4>
+                <br />
+                <a href="@Model.venue.websiteUrl">Venue Website</a>
+                <button class="btn-default">@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
+                <button class="btn-default">@Html.ActionLink("Book a Show", "Create", "Request", new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
+
+                @if (User.IsInRole("Band"))
+                {
+                    <h6>@Model.distance.travelDistance miles from you (@Model.distance.travelDuration minutes)</h6>
+                }
+                <br />
+                <span>@GigConnect.Services.GeoCode.FormatAddress(Model.venue.Location)</span>
+                <div id="map" style="height: 350px; width: 350px;"></div>
+
+
+            </div>
+            <div>
+                <h4>Reviews</h4>
+                <span id="score">Average rating (@Model.score/4) </span><button class="btn-default">@Html.ActionLink("Write a Review", "Create", "Review", new { venueId = Model.venue.VenueId })</button>
+                @if (Model.reviews.Count == 0)
+                {
+                    <p> This venue does not have any reviews yet.. @Html.ActionLink("Be the first!", "Create", "Review", new { venueId = Model.venue.VenueId })</p>
+                }
+                else
+                {
+                    <table class="table">
+                        @foreach (var review in Model.reviews)
+                        {
+                            <tr>
+                                <td><strong>@review.rating</strong></td>
+                                <td>@review.content</td>
+                            </tr>
+                        }
+                    </table>
+                }
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div>
+                <h4>Upcoming Events at @Model.venue.venueName</h4>
+                @if(Model.gigs.Count == 0)
+                {
+                    <br />
+                    <p><i>No gigs on current schedule!</i></p>
+                }
+                else
+                {
+
+                }
+            </div>
+        </div>
+        <div class="col-md-4">
+           
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            
+        </div>
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-4">
+
+        </div>
+    </div>
+</div>
 
 
 @*reviews
@@ -21,7 +91,7 @@ travel distance from band ect  OPEN GIGS? REQUEST OPTION???*@
 
 
 
-<div id="map" style="height: 400px; width: 400px;"></div>
+
 
 <script>
     var map;
@@ -41,8 +111,9 @@ travel distance from band ect  OPEN GIGS? REQUEST OPTION???*@
             scrollwheel: false
         };
         //add a marker
-        var venueLocationMarker = new google.maps.Marker({ position: venueLocation, title: "Venue location", map: map });
-        var bandLocationMarker = new google.maps.Marker({ position: bandLocation, title: "Band location", map: map });
+        var venueLocationMarker = new google.maps.Marker({ position: venueLocation, label: "@Model.venue.venueName", title: "Venue location", map: map });
+        
+        var bandLocationMarker = new google.maps.Marker({ position: bandLocation, label: "@Model.currentBand.bandName", title: "Band location", map: map });
         //add a radius for max range
 
      }
