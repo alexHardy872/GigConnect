@@ -20,13 +20,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                    @Html.ActionLink("GigConnect", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
                 </div>
                 <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <ul class="nav navbar-nav">                      
+                        <li> @Html.ActionLink("Band Profile", "ViewBandProfileNav", "ProfileView"),</li>
+                        <li>@Html.ActionLink("Update Information", "EditNav", "Band")</li>
                     </ul>
                     @Html.Partial("_LoginPartial")
                 </div>
@@ -59,13 +58,12 @@ else if (User.IsInRole("Venue")) // VENUE PARTIAL VIEW
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("GigConnect", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                <ul class="nav navbar-nav">               
+                    <li> @Html.ActionLink("Venue Profile", "ViewVenueProfileNav", "ProfileView"),</li>
+                    <li>@Html.ActionLink("Update Information", "EditNav", "Venue")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

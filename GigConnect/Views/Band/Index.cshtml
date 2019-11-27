@@ -11,17 +11,29 @@
 
     <h2>Band Index</h2>
 
-@*<div class="index-header">
-        <h2><strong>@Model.currentUser.firstName  @Model.currentUser.lastName</strong> Student Dashboard </h2>
-    </div>*@
 
-<div id="bandView">
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-4">
+
+        </div>
+    </div>
+</div>
+
+
 
     <div id="updateInfo">
             @Html.ActionLink("Update Info", "Edit", new { id = Model.band.BandId })
         </div>
 
-    <div class="container">
+    
 
         <div class="optionsContainer">
 
@@ -118,62 +130,16 @@
                     </table>
                 }
             </div>   
-        </div>
+       
 
 
 
 
 
-        @*<div id="VenueDirectory" style="display: none;">
-            <h3>Teachers In Your Area</h3>
-
-            <table class="table" id="teacherList">
-                <tr>
-                    <th></th>
-                </tr>
-
-                @{
-                    var teacherList = Model.teachersComp;
-                    var lessonList = Model.studentLessons;
-                    var requestedList = Model.requestsForStudent;
-                }
-
-                @foreach (var item in teacherList)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.person.firstName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.person.lastName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.person.subjects)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.location.city)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.location.state)
-                        </td>
-
-
-
-                        <td>
-
-                            @Html.ActionLink("Details", "Details", new { id = item.person.PersonId })  |
-                            @Html.ActionLink("Request Lesson", "Create", "Lesson", new { teacherId = item.person.PersonId }, null)
-
-                        </td>
-                    </tr>
-                }
-
-
-            </table>
-        </div>*@
+       
 
         <div id="gigList">
-            <h3>upcoming Gigs</h3>
+            <h3>Upcoming Gigs</h3>
             <table class="table">
                 <tr>
                     <th> Venue </th>
@@ -203,18 +169,6 @@
                     </span>
                     }
                 </td>
-
-                
-
-
-
-                @*<td>
-                    @Html.ActionLink("CANCEL", "../SMS/SendSMSToTeacher", new { id = lesson.LessonId })
-                </td>
-                <td>
-                    @Html.ActionLink("DETAILS", "../Lesson/Details", new { id = lesson.LessonId })
-
-                </td>*@
             </tr>
                 }
 
@@ -225,7 +179,7 @@
 
     </div>
 
-</div>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -234,23 +188,7 @@
 
         (function ($) {
 
-            @*ResetHeader();
-
-            function ResetHeader() {
-                 $("index-header-parent").html("");
-            $("#index-header-parent").append("<div class='index-header'><h2><strong>@Model.currentUser.firstName  @Model.currentUser.lastName</strong> Student Dashboard </h2> </div>");
-            }
-
-            function resetClosedTabs() {
-                 $("#showLessons").css("font-weight", "normal");
-                 $("#showLessons").css("border", "2pt solid rgba(56, 119, 128, .30)");
-                 $("#showTeachers").css("font-weight", "normal");
-                 $("#showTeachers").css("border", "2pt solid rgba(56, 119, 128, .30)");
-                 $("#showRequests").css("font-weight", "normal");
-                 $("#showRequests").css("border", "2pt solid rgba(56, 119, 128, .30)");
-                 $("#showMakeups").css("font-weight", "normal");
-                 $("#showMakeups").css("border", "2pt solid rgba(56, 119, 128, .30)");
-            }*@
+            
 
 
 

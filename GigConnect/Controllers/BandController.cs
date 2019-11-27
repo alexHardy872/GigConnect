@@ -100,6 +100,11 @@ namespace GigConnect.Controllers
             }
         }
 
+        public ActionResult EditNav()
+        {
+            int UserId = GetUserBand().BandId;
+            return RedirectToAction("Edit", new { id = UserId });
+        }
         // GET: Band/Edit/5
         public ActionResult Edit(int id)
         {

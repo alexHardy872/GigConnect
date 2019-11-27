@@ -26,6 +26,11 @@ namespace GigConnect.Controllers
             return View();
         }
 
+        public ActionResult ViewBandProfileNav()
+        {
+            int id = GetUserBand().BandId;
+            return RedirectToAction("ViewBandProfile", new { bandId = id });
+        }
         public async Task<ActionResult> ViewBandProfile(int bandId)
         {
             Band band = GetBand(bandId);
@@ -46,7 +51,11 @@ namespace GigConnect.Controllers
 
         }
 
-     
+        public ActionResult ViewVenueProfileNav()
+        {
+            int id = GetUserVenue().VenueId;
+            return RedirectToAction("ViewVenueProfile", new { venueId = id });
+        }
 
         public async Task<ActionResult> ViewVenueProfile(int venueId)
         {
@@ -83,6 +92,13 @@ namespace GigConnect.Controllers
             Band band = context.Bands
                 .Include("Location").Where(b => b.ApplicationId == userId).FirstOrDefault();
             return band;
+        }
+        public Venue GetUserVenue()
+        {
+            string userId = User.Identity.GetUserId();
+            Venue venue = context.Venues
+                .Include("Location").Where(b => b.ApplicationId == userId).FirstOrDefault();
+            return venue;
         }
         public Band GetBand(int id)
         {

@@ -45,7 +45,7 @@ namespace GigConnect.Controllers
         {
             if(request.gigTime == null)
             {
-                request.gigTime = DateTime.Now;
+                request.gigTime = DateTime.Now; // placeholder to keep from null excepton
             }
             context.Requests.Add(request);
             await context.SaveChangesAsync();
@@ -55,8 +55,8 @@ namespace GigConnect.Controllers
 
         public async Task<ActionResult> ApproveRequest(int requestId)
         {
-            
-            Request request = context.Requests.Where(r => r.RequestId == requestId).FirstOrDefault();
+
+            Request request = GetRequestById(requestId);
             if(request.eventId == null)
             {
                 // create gig
@@ -69,8 +69,16 @@ namespace GigConnect.Controllers
 
         public async Task<ActionResult> DenyRequest(int requestId)
         {
-            Request request = context.Requests.Where(r => r.RequestId == requestId).FirstOrDefault();
+            Request request = GetRequestById(requestId);
             request.denied = true;
+            await context.SaveChangesAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<ActionResult> Delete(int requestId)
+        {
+            Request request = GetRequestById(requestId);
+            context.Requests.Remove(request);
             await context.SaveChangesAsync();
             return RedirectToAction("Index", "Home");
         }
@@ -86,6 +94,14 @@ namespace GigConnect.Controllers
             {
                 return false;
             }
+        }
+
+
+
+        public Request GetRequestById(int id)
+        {
+            Request request = context.Requests.Where(r => r.RequestId == id).FirstOrDefault();
+            return request;
         }
       
 

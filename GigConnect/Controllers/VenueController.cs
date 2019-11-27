@@ -79,6 +79,11 @@ namespace GigConnect.Controllers
             }
         }
 
+        public ActionResult EditNav()
+        {
+            int UserId = GetUserVenue().VenueId;
+            return RedirectToAction("Edit", new { id = UserId });
+        }
 
         // GET: Venue/Edit/5
         public ActionResult Edit(int id)
