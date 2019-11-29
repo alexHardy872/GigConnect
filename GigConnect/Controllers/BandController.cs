@@ -125,17 +125,17 @@ namespace GigConnect.Controllers
                 currentBand.bandName = input.Band.bandName;
                 currentBand.genre = input.Band.genre;
                 currentBand.bandWebsite = input.Band.bandWebsite;
-                currentBand.LocationId = input.Band.LocationId;
+                
                 currentBand.ApplicationId = input.Band.ApplicationId;
 
-                currentLocation.LocationId = input.Location.LocationId;
+                
                 currentLocation.address1 = input.Location.address1;
                 currentLocation.address2 = input.Location.address2;
                 currentLocation.city = input.Location.city;
                 currentLocation.zip = input.Location.zip;
                 currentLocation.state = input.Location.state;
 
-                currentSocials.SocialId = input.Social.SocialId;
+                
                 currentSocials.facebookPageId = input.Social.facebookPageId;
                 currentSocials.twitterHandle = input.Social.twitterHandle;
                 currentSocials.youtubeChannelId = input.Social.youtubeChannelId;

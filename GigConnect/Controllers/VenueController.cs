@@ -79,14 +79,10 @@ namespace GigConnect.Controllers
             }
         }
 
-        public ActionResult EditNav()
-        {
-            int UserId = GetUserVenue().VenueId;
-            return RedirectToAction("Edit", new { id = UserId });
-        }
+     
 
         // GET: Venue/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit()
         {
             CreateAndEditViewModel toEdit = new CreateAndEditViewModel();
             toEdit.Venue = GetUserVenue();
@@ -104,16 +100,15 @@ namespace GigConnect.Controllers
                 Venue currentVenue = GetUserVenue();
                 Location currentLocation = GetVenueLocation(currentVenue);
 
-                currentVenue.VenueId = input.Venue.VenueId;
+               
                 currentVenue.venueName = input.Venue.venueName;
                 currentVenue.genre = input.Venue.genre;
                 currentVenue.websiteUrl = input.Venue.websiteUrl;
                 currentVenue.description = input.Venue.description;
 
-                currentVenue.LocationId = input.Band.LocationId;
-                currentVenue.ApplicationId = input.Band.ApplicationId;
+  
 
-                currentLocation.LocationId = input.Location.LocationId;
+             
                 currentLocation.address1 = input.Location.address1;
                 currentLocation.address2 = input.Location.address2;
                 currentLocation.city = input.Location.city;
@@ -133,6 +128,12 @@ namespace GigConnect.Controllers
             {
                 return View();
             }
+        }
+
+        public ActionResult BandDirectory()
+        {
+            List<Band> bands = context.Bands.ToList();
+            return View(bands);
         }
 
         public VenueIndexViewModel AssembleIndexViewModelForVenue()

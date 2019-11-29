@@ -31,11 +31,16 @@
                         {
                             <li> @Html.ActionLink("Band Profile", "ViewBandProfileNav", "ProfileView"),</li>
                             <li>@Html.ActionLink("Update Information", "Edit", "Band")</li>
+                            <li>@Html.ActionLink("Venues", "VenueDirectory", "Band")</li>
+
+
                         }
                         else if (User.IsInRole("Venue"))
                         {
                             <li> @Html.ActionLink("Venue Profile", "ViewVenueProfileNav", "ProfileView"),</li>
                             <li>@Html.ActionLink("Update Information", "Edit", "Venue")</li>
+                            <li>@Html.ActionLink("Bands", "BandDirectory", "Venue")</li>
+
                         }
 
 

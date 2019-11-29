@@ -5,50 +5,71 @@
 }
 
 
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div id="leftComp" style="display: inline-block">
+                <div id="bandInfo">
+                    <h1>@Model.band.bandName - @Model.band.town</h1>
+                    <br />
 
+                    <a href="@Model.band.bandWebsite">Band Website</a>
 
+                    <br />
+                    @if (Model.facebookImageUrl == "Error: No Token or facebook id")
+                    {
+                        <img src="~/Content/Images/profile.jpg" alt="pic" style="height: 300px; width: 300px;" />
 
-<div class="optionsContainer">
+                    }
+                    else
+                    {
+                        <img src="@Model.facebookImageUrl" alt="pic" style="height: 300px; width: 300px;" />
 
+                    }
+                    <button>@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = Model.band.BandId, isBand = true }, null)</button>
 
-    <div class="optionsHeader" id="showProfile"><div class="txtBtn">Profile</div></div>
-    <div class="optionsHeader" id="showEvents"><div class="txtBtn">Events</div></div>
+                </div>
 
+                <div id="ratings">
 
-</div>
+                    <h4>Reviews</h4>
+                    @if (Model.reviews.Count == 0)
+                    {
+                        <p> This band does not have any reviews yet.. @Html.ActionLink("Be the first!", "Create", "Review", new { reviewedId = Model.band.BandId, isBand = true }, null)</p>
+                    }
+                    else
+                    {
+                        <span id="score">Average rating (@Model.score/4) </span><button class="btn-default">@Html.ActionLink("Write a Review", "Create", "Review", new { reviewedId = Model.band.BandId, isBand = true }, null)</button>
 
+                        <table class="table">
+                            @foreach (var review in Model.reviews)
+                            {
+                                <tr>
+                                    <td><strong>@review.rating</strong></td>
+                                    <td>@review.content</td>
+                                </tr>
+                            }
+                        </table>
+                    }
 
-<div id="Reviews">
-    <div id="overall">
-        <h4>Overall Rating @Model.score</h4>
-    </div>
-
-    @if (Model.reviews.Count == 0)
-    {
-        <div>
-            <span>@Model.band.bandName has no reviews!</span>
-            <span>@Html.ActionLink("Be the first!", "Create", "Review", new { reviewedId = Model.band.BandId, isBand = true }, null)</span>
-        </div>
-    }
-    else
-    {
-        foreach (var review in Model.reviews)
-        {
-            <div class="review">
-                <span>Date: @review.timeStamp.Date</span>
-                <span>@review.content</span>
+                </div>
             </div>
-        }
-
-    }
-
-    <br />
-    <button>@Html.ActionLink("Leave a Review", "Create", "Review", new { reviewedId = Model.band.BandId, isBand = true }, null)</button>
 
 
+
+        </div>
+    </div>
 </div>
+
+
+
+
+
+
+
+
 <div id="Gigs">
-    <table>
+    <table class="table">
         <tr>
             <td>Date</td>
             <td>Time</td>
@@ -81,51 +102,7 @@
 <div id="socialContainer" style="display: flex; justify-content: space-between;">
 
 
-    <div id="leftComp" style="display: inline-block">
-        <div id="bandInfo">
-            <h1>@Model.band.bandName - @Model.band.town</h1>
-            <br />
-
-            <a href="@Model.band.bandWebsite">Band Website</a>
-
-            <br />
-            @if (Model.facebookImageUrl == "Error: No Token or facebook id")
-            {
-                <img src="~/Content/Images/profile.jpg" alt="pic" style="height: 300px; width: 300px;" />
-
-            }
-            else
-            {
-                <img src="@Model.facebookImageUrl" alt="pic" style="height: 300px; width: 300px;" />
-
-            }
-            <button>@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = Model.band.BandId, isBand = true }, null)</button>
-
-        </div>
-
-        <div id="ratings">
-
-            @if (Model.reviews.Count == 0)
-            {
-                <h2>(no reviews yet)</h2>
-            }
-            else
-            {
-                <h2> Overall rating - @Model.score</h2>
-                foreach (var rating in Model.reviews)
-                {
-                    <div class="review">
-                        <span> rating - @rating.rating</span>
-                        <br />
-                        <span> @rating.content</span>
-
-                    </div>
-                }
-            }
-
-        </div>
-    </div>
-
+   
 
     <div id="twitterPosts" style="height: 700px; width: 370px; background-color: deepskyblue; text-align: center; border-radius: 15px; ">
         <h2 style="color: white;">twitter</h2>

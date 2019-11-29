@@ -20,19 +20,20 @@
                 }
                 <br />
                 <span>@GigConnect.Services.GeoCode.FormatAddress(Model.venue.Location)</span>
-                <div id="map" style="height: 350px; width: 350px;"></div>
+                <div id="map" style="height: 350px; width: 90%;"></div>
 
 
             </div>
             <div>
                 <h4>Reviews</h4>
-                <span id="score">Average rating (@Model.score/4) </span><button class="btn-default">@Html.ActionLink("Write a Review", ".../Review/Create", new { reviewedId = Model.venue.VenueId, isBand = true })</button>
                 @if (Model.reviews.Count == 0)
                 {
                     <p> This venue does not have any reviews yet.. @Html.ActionLink("Be the first!", ".../Review/Create", new { reviewedId = Model.venue.VenueId, isBand = true })</p>
                 }
                 else
                 {
+                    <span id="score">Average rating (@Model.score/4) </span><button class="btn-default">@Html.ActionLink("Write a Review", ".../Review/Create", new { reviewedId = Model.venue.VenueId, isBand = true })</button>
+
                     <table class="table">
                         @foreach (var review in Model.reviews)
                         {
@@ -128,7 +129,13 @@ travel distance from band ect  OPEN GIGS? REQUEST OPTION???*@
     function initMap() {
         //pin to represent the teacher's location
         var venueLocation = { lat: @Model.venue.Location.lat, lng: @Model.venue.Location.lng};
+        @if (User.IsInRole("Band"))
+        {
+          <text>
         var bandLocation = { lat: @Model.currentBand.Location.lat, lng: @Model.currentBand.Location.lng};
+          </text>
+
+        }
         //add a map
         map = new google.maps.Map(document.getElementById('map'), {
             zoom: 11,
@@ -142,8 +149,14 @@ travel distance from band ect  OPEN GIGS? REQUEST OPTION???*@
         };
         //add a marker
         var venueLocationMarker = new google.maps.Marker({ position: venueLocation, label: "@Model.venue.venueName", title: "Venue location", map: map });
-        
-        var bandLocationMarker = new google.maps.Marker({ position: bandLocation, label: "@Model.currentBand.bandName", title: "Band location", map: map });
+
+        @if (User.IsInRole("Band"))
+        {
+            <text>
+            var bandLocationMarker = new google.maps.Marker({ position: bandLocation, label: "@Model.currentBand.bandName", title: "Band location", map: map });
+
+        </text>
+        }
         //add a radius for max range
 
      }

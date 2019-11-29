@@ -1,7 +1,46 @@
-﻿
+﻿@model IEnumerable<GigConnect.Models.Band>
+
 @{
     ViewBag.Title = "BandDirectory";
 }
 
 <h2>BandDirectory</h2>
 
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.bandName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.town)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.genre)
+        </th>
+    
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.bandName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.town)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.genre)
+        </td>
+    
+        <td>
+           
+            @Html.ActionLink("View Profile", "ViewBandProfile", "ProfileView", new { bandId = item.BandId}, null)
+        </td>
+    </tr>
+}
+
+</table>

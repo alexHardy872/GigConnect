@@ -309,8 +309,6 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\user\Index.cshtml" />
-    <Content Include="Views\Shared\_BandLayout.cshtml" />
-    <Content Include="Views\Shared\_VenueLayout.cshtml" />
     <Content Include="Views\Band\Create.cshtml" />
     <Content Include="Views\Band\Edit.cshtml" />
     <Content Include="Views\Venue\Create.cshtml" />
@@ -318,7 +316,6 @@
     <Content Include="Views\Band\Index.cshtml" />
     <Content Include="Views\Venue\Index.cshtml" />
     <Content Include="Views\Band\VenueDirectory.cshtml" />
-    <Content Include="Views\Venue\BandDirectory.cshtml" />
     <Content Include="Views\ProfileView\ViewBandProfile.cshtml" />
     <Content Include="Views\ProfileView\ViewVenueProfile.cshtml" />
     <Content Include="Views\Review\Create.cshtml" />
@@ -328,6 +325,7 @@
     <Content Include="Views\Gig\Edit.cshtml" />
     <Content Include="Views\Gig\AddSelectedBandToGig.cshtml" />
     <Content Include="Views\Gig\RemoveBandsFromLineUp.cshtml" />
+    <Content Include="Views\Venue\BandDirectory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
