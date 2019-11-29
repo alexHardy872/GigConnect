@@ -11,8 +11,8 @@
                 <h4>@Model.venue.venueName (@Model.venue.town)</h4>
                 <br />
                 <a href="@Model.venue.websiteUrl">Venue Website</a>
-                <button class="btn-default ">@Html.ActionLink("Send a Message", ".../Message/Create", new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
-                <button class="btn-default">@Html.ActionLink("Book a Show", ".../Request.Create",  new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
+                <button class="btn-default ">@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
+                <button class="btn-default">@Html.ActionLink("Book a Show", "Create", "Request",  new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
 
                 @if (User.IsInRole("Band"))
                 {
@@ -28,11 +28,11 @@
                 <h4>Reviews</h4>
                 @if (Model.reviews.Count == 0)
                 {
-                    <p> This venue does not have any reviews yet.. @Html.ActionLink("Be the first!", ".../Review/Create", new { reviewedId = Model.venue.VenueId, isBand = true })</p>
+                    <p> This venue does not have any reviews yet.. @Html.ActionLink("Be the first!", "Create", "Review", new { reviewedId = Model.venue.VenueId, isBand = false }, null)</p>
                 }
                 else
                 {
-                    <span id="score">Average rating (@Model.score/4) </span><button class="btn-default">@Html.ActionLink("Write a Review", ".../Review/Create", new { reviewedId = Model.venue.VenueId, isBand = true })</button>
+                    <span id="score">Average rating (@Model.score/4) </span><button class="btn-default">@Html.ActionLink("Write a Review", "Create", "Review", new { reviewedId = Model.venue.VenueId, isBand = false })</button>
 
                     <table class="table">
                         @foreach (var review in Model.reviews)
@@ -56,7 +56,7 @@
                 }
                 else
                 {
-            <table class="table">
+            <table class="table" style="width: 100%;">
                 <tr>
                     <th>
                         Date
@@ -70,19 +70,40 @@
                     <th>
                         Description
                     </th>
+                    <th>
+
+                    </th>
                 </tr>
 
-                foreach(var gig in Model.gigs)
+                @foreach (var gig in Model.gigs)
                 {
 
-                if (gig.gig.open == true)
-                {
+                    <tr>
+                        <td>@gig.gig.timeOfGig.ToShortDateString()</td>
+                    
+                        <td>@gig.gig.timeOfGig.ToString("hh:mm tt")</td>
 
-                }
-                else
-                {
+                        <td>
+                            @foreach (var band in gig.bands)
+                            {
+                     <span>@Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null), </span>
 
-                }
+                              }
+                        </td>
+                        <td>@gig.gig.description</td>
+                    
+
+                        <td>
+                           @if (gig.gig.open == true)
+                            {
+                                <span>@Html.ActionLink("Request to Join", "Create", "Request", new { bandId = Model.currentBand.BandId, venueId = Model.venue.VenueId, gigId = gig.gig.GigId }, null), </span>
+                            }
+                            else
+                            {
+                                <span><i>this gig is closed to new bands</i></span>
+                            }
+                        </td>
+                        </tr>
 
 
                 }
@@ -108,14 +129,10 @@
 </div>
 
 
-@*reviews
-gigs
-location/ information
-travel distance from band ect  OPEN GIGS? REQUEST OPTION???*@
 
 
-<div id="reviews"></div>
-<div id="gigs"></div>
+
+
 
 
 

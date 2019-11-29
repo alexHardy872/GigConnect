@@ -1,7 +1,45 @@
-﻿
+﻿@model IEnumerable<GigConnect.Models.Venue>
+
 @{
     ViewBag.Title = "VenueDirectory";
 }
 
-<h2>VenueDirectory</h2>
+<h2>Venues</h2>
 
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.venueName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.town)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
+        </th>
+       
+        
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.venueName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.town)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+     
+        <td>
+            @Html.ActionLink("View Profile", "ViewVenueProfile", "ProfileView", new {venueId = item.VenueId}, null)
+
+        </td>
+    </tr>
+}
+
+</table>

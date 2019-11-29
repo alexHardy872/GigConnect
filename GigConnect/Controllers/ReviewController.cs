@@ -79,11 +79,11 @@ namespace GigConnect.Controllers
 
                 }
                 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Home");
             }
             catch(Exception e)
             {
-                return View("Index");
+                return View("Index","Home");
             }
         }
 
