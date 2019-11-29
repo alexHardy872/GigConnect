@@ -100,13 +100,9 @@ namespace GigConnect.Controllers
             }
         }
 
-        public ActionResult EditNav()
-        {
-            int UserId = GetUserBand().BandId;
-            return RedirectToAction("Edit", new { id = UserId });
-        }
+      
         // GET: Band/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit()
         {
             CreateAndEditViewModel toEdit = new CreateAndEditViewModel();
             toEdit.Band = GetUserBand();
@@ -242,7 +238,7 @@ namespace GigConnect.Controllers
             List<Message> messages = context.Messages
                 .Include("Venue")
                 .Include("Band")
-                .Where(m => m.bandId == bandId && m.from == "Venue").ToList();
+                .Where(m => m.bandId == bandId && m.from == "Venue").OrderByDescending(d => d.timeStamp).ToList();
             return messages;
         }
 
@@ -253,7 +249,7 @@ namespace GigConnect.Controllers
             List<Message> messages = context.Messages
                 .Include("Venue")
                 .Include("Band")
-                .Where(m => m.bandId == bandId && m.from == "Band").OrderBy(d => d.timeStamp).ToList();
+                .Where(m => m.bandId == bandId && m.from == "Band").OrderByDescending(d => d.timeStamp).ToList();
             return messages;
         }
 
@@ -262,14 +258,14 @@ namespace GigConnect.Controllers
         {
             List<Request> requestsIn = context.Requests
                 .Include("Venue").Include("Band").Where(r => r.bandId == bandId && r.fromVenue == true && r.approved == false && r.denied == false)
-                .OrderBy(o => o.timeStamp).ToList();
+                .OrderByDescending(d => d.timeStamp).ToList();
             return requestsIn;
         }
         public List<Request> GetRequestsOut(int bandId)
         {
             List<Request> requestsOut = context.Requests
                 .Include("Venue").Include("Band").Where(r => r.bandId == bandId && r.fromVenue == true && r.approved == false && r.denied == false)
-                .OrderBy(o => o.timeStamp).ToList();
+                .OrderByDescending(d => d.timeStamp).ToList();
             return requestsOut;
         }
 
@@ -277,7 +273,7 @@ namespace GigConnect.Controllers
         {
             List<Request> requestsOut = context.Requests
                             .Include("Venue").Include("Band").Where(r => r.bandId == bandId && r.fromBand == true && r.approved == true || r.denied == true)
-                            .OrderBy(o => o.timeStamp).ToList();
+                            .OrderByDescending(d => d.timeStamp).ToList();
             return requestsOut;
         }
 
@@ -287,7 +283,9 @@ namespace GigConnect.Controllers
             List<Review> reviews = context.BandReviews
                 .Include("Review")
                 .Where(r => r.bandId == band.BandId)
-                .Select(s => s.Review).ToList();
+                .Select(s => s.Review)
+                .OrderByDescending(d => d.timeStamp)
+                .ToList();
             return reviews;
         }
 

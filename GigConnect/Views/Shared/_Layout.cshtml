@@ -30,12 +30,12 @@
                         if (User.IsInRole("Band"))
                         {
                             <li> @Html.ActionLink("Band Profile", "ViewBandProfileNav", "ProfileView"),</li>
-                            <li>@Html.ActionLink("Update Information", "EditNav", "Band")</li>
+                            <li>@Html.ActionLink("Update Information", "Edit", "Band")</li>
                         }
                         else if (User.IsInRole("Venue"))
                         {
                             <li> @Html.ActionLink("Venue Profile", "ViewVenueProfileNav", "ProfileView"),</li>
-                            <li>@Html.ActionLink("Update Information", "EditNav", "Venue")</li>
+                            <li>@Html.ActionLink("Update Information", "Edit", "Venue")</li>
                         }
 
 

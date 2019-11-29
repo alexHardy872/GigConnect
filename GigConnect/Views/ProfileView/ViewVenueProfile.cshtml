@@ -11,8 +11,8 @@
                 <h4>@Model.venue.venueName (@Model.venue.town)</h4>
                 <br />
                 <a href="@Model.venue.websiteUrl">Venue Website</a>
-                <button class="btn-default ">@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
-                <button class="btn-default">@Html.ActionLink("Book a Show", "Create", "Request", new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
+                <button class="btn-default ">@Html.ActionLink("Send a Message", ".../Message/Create", new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
+                <button class="btn-default">@Html.ActionLink("Book a Show", ".../Request.Create",  new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
 
                 @if (User.IsInRole("Band"))
                 {
@@ -26,10 +26,10 @@
             </div>
             <div>
                 <h4>Reviews</h4>
-                <span id="score">Average rating (@Model.score/4) </span><button class="btn-default">@Html.ActionLink("Write a Review", "Create", "Review", new { venueId = Model.venue.VenueId })</button>
+                <span id="score">Average rating (@Model.score/4) </span><button class="btn-default">@Html.ActionLink("Write a Review", ".../Review/Create", new { reviewedId = Model.venue.VenueId, isBand = true })</button>
                 @if (Model.reviews.Count == 0)
                 {
-                    <p> This venue does not have any reviews yet.. @Html.ActionLink("Be the first!", "Create", "Review", new { venueId = Model.venue.VenueId })</p>
+                    <p> This venue does not have any reviews yet.. @Html.ActionLink("Be the first!", ".../Review/Create", new { reviewedId = Model.venue.VenueId, isBand = true })</p>
                 }
                 else
                 {
@@ -55,7 +55,37 @@
                 }
                 else
                 {
+            <table class="table">
+                <tr>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Time
+                    </th>
+                    <th>
+                        Bands
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                </tr>
 
+                foreach(var gig in Model.gigs)
+                {
+
+                if (gig.gig.open == true)
+                {
+
+                }
+                else
+                {
+
+                }
+
+
+                }
+            </table>
                 }
             </div>
         </div>

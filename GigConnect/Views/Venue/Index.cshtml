@@ -134,6 +134,7 @@
                 <th> Date</th>
                 <th> Time </th>
                 <th> Line-up </th>
+                <th></th>
             </tr>
 
             @foreach (var gigModel in Model.currentGigs)
@@ -156,6 +157,9 @@
                                 @Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null),
                             </span>
                         }
+                    </td>
+                    <td>
+                       <button class="btn-default">@Html.ActionLink("Edit",".../Gig/Edit", new {gigId = gigModel.gig.GigId })</button> 
                     </td>
                 </tr>
             }
