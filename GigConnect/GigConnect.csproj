@@ -209,37 +209,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201911241920106_init.cs" />
-    <Compile Include="Migrations\201911241920106_init.Designer.cs">
-      <DependentUpon>201911241920106_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911251447288_updateCols.cs" />
-    <Compile Include="Migrations\201911251447288_updateCols.Designer.cs">
-      <DependentUpon>201911251447288_updateCols.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911251659361_testcomp.cs" />
-    <Compile Include="Migrations\201911251659361_testcomp.Designer.cs">
-      <DependentUpon>201911251659361_testcomp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911251919257_junkadd.cs" />
-    <Compile Include="Migrations\201911251919257_junkadd.Designer.cs">
-      <DependentUpon>201911251919257_junkadd.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911252132188_modelUpdate.cs" />
-    <Compile Include="Migrations\201911252132188_modelUpdate.Designer.cs">
-      <DependentUpon>201911252132188_modelUpdate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911261507244_ratingENum.cs" />
-    <Compile Include="Migrations\201911261507244_ratingENum.Designer.cs">
-      <DependentUpon>201911261507244_ratingENum.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911261627481_adjustScaleOnEnum.cs" />
-    <Compile Include="Migrations\201911261627481_adjustScaleOnEnum.Designer.cs">
-      <DependentUpon>201911261627481_adjustScaleOnEnum.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911262302132_newmigration.cs" />
-    <Compile Include="Migrations\201911262302132_newmigration.Designer.cs">
-      <DependentUpon>201911262302132_newmigration.cs</DependentUpon>
+    <Compile Include="Migrations\201911291807325_initRedo.cs" />
+    <Compile Include="Migrations\201911291807325_initRedo.Designer.cs">
+      <DependentUpon>201911291807325_initRedo.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -283,6 +255,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\profile.jpg" />
     <Content Include="Content\Images\versio.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -375,29 +348,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201911241920106_init.resx">
-      <DependentUpon>201911241920106_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911251447288_updateCols.resx">
-      <DependentUpon>201911251447288_updateCols.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911251659361_testcomp.resx">
-      <DependentUpon>201911251659361_testcomp.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911251919257_junkadd.resx">
-      <DependentUpon>201911251919257_junkadd.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911252132188_modelUpdate.resx">
-      <DependentUpon>201911252132188_modelUpdate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911261507244_ratingENum.resx">
-      <DependentUpon>201911261507244_ratingENum.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911261627481_adjustScaleOnEnum.resx">
-      <DependentUpon>201911261627481_adjustScaleOnEnum.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911262302132_newmigration.resx">
-      <DependentUpon>201911262302132_newmigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201911291807325_initRedo.resx">
+      <DependentUpon>201911291807325_initRedo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

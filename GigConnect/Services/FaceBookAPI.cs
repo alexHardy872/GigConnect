@@ -61,7 +61,7 @@ namespace GigConnect.Services
             }
             catch(Exception e)
             {
-                return "Exceptopn: Token Expired";
+                return "Error: No Token or facebook id";
             }
            
         }

@@ -89,7 +89,16 @@
             <a href="@Model.band.bandWebsite">Band Website</a>
 
             <br />
-            <img src="@Model.facebookImageUrl" alt="pic" style="height: 400px; width: 400px;" />
+            @if (Model.facebookImageUrl == "Error: No Token or facebook id")
+            {
+                <img src="~/Content/Images/profile.jpg" alt="pic" style="height: 300px; width: 300px;" />
+
+            }
+            else
+            {
+                <img src="@Model.facebookImageUrl" alt="pic" style="height: 300px; width: 300px;" />
+
+            }
             <button>@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = Model.band.BandId, isBand = true }, null)</button>
 
         </div>
