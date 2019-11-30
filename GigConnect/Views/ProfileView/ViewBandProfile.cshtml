@@ -5,12 +5,12 @@
 }
 
 
-<div class="container">
+
     <div class="row">
-        <div class="col-md-3">
-            <div id="leftComp" style="display: inline-block">
-                <div id="bandInfo">
-                    <h1>@Model.band.bandName - @Model.band.town</h1>
+        <div class="col-md-4 contentCol" style="height: 520px;">
+            <div style="display: inline-block">
+                <div style="text-align: center;">
+                    <h4>@Model.band.bandName (@Model.band.genre) - @Model.band.town</h4>
                     <br />
 
                     <a href="@Model.band.bandWebsite">Band Website</a>
@@ -18,15 +18,21 @@
                     <br />
                     @if (Model.facebookImageUrl == "Error: No Token or facebook id")
                     {
-                        <img src="~/Content/Images/profile.jpg" alt="pic" style="height: 300px; width: 300px;" />
+                        <img src="~/Content/Images/profile.jpg" alt="pic" style="height: 280px; width: 280px;" />
 
                     }
                     else
                     {
-                        <img src="@Model.facebookImageUrl" alt="pic" style="height: 300px; width: 300px;" />
+                        <img src="@Model.facebookImageUrl" alt="pic" style="height: 280px; width: 280px;" />
 
                     }
-                    <button>@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = Model.band.BandId, isBand = true }, null)</button>
+                    @if (User.IsInRole("Venue"))
+                    {
+                        <button class="btn-default">@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = Model.band.BandId, isBand = true }, null)</button>
+                        <button class="btn-default">@Html.ActionLink("Add to line-up", "AddSelectedBandToGig", "Gig", new { bandId = Model.band.BandId }, null)</button>
+                    }
+
+
 
                 </div>
 
@@ -39,17 +45,25 @@
                     }
                     else
                     {
+                        <div style="height: 50px; overflow-y: scroll;">
                         <span id="score">Average rating (@Model.score/4) </span><button class="btn-default">@Html.ActionLink("Write a Review", "Create", "Review", new { reviewedId = Model.band.BandId, isBand = true }, null)</button>
 
                         <table class="table">
+
                             @foreach (var review in Model.reviews)
                             {
-                                <tr>
-                                    <td><strong>@review.rating</strong></td>
-                                    <td>@review.content</td>
-                                </tr>
+                                if (review.content != null)
+                                {
+
+                                    <tr>
+                                        <td><strong>@review.rating</strong></td>
+                                        <td>@review.content</td>
+                                    </tr>
+
+                                }
                             }
                         </table>
+                        </div>
                     }
 
                 </div>
@@ -58,87 +72,118 @@
 
 
         </div>
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<div id="Gigs">
-    <table class="table">
-        <tr>
-            <td>Date</td>
-            <td>Time</td>
-            <td>Venue</td>
-            <td>Bands</td>
-            <td>Address</td>
-
-        </tr>
-        @foreach (var gig in Model.gigs)
-        {
-    <tr>
-        <td>@gig.gig.timeOfGig.Date</td>
-        <td>@gig.gig.timeOfGig.TimeOfDay</td>
-        <td>@gig.gig.Venue.venueName</td>
-        <td>@gig.bands</td>
        
-        @foreach(var band in gig.bands){
+        <div class="col-md-7 cleanCol">
+            <div id="socialContainer" style="display: flex; justify-content: space-between;">
+
+                <div id="twitterPosts"  class="socialP" style="height: 500px; width: 370px; background-color: deepskyblue; text-align: center; border-radius: 15px; ">
+                    <h4 style="color: white;">twitter</h4>
+                    <div class="postScroller" style="overflow-y: scroll; overflow-x: hidden; width: 360px; max-height: 450px; background-color: white; display: inline-block; ">
+
+                        <a class="twitter-timeline" href="https://twitter.com/@Model.band.Social.twitterHandle?ref_src=twsrc%5Etfw">Tweets by @Model.band.bandName</a>
+
+
+
+                    </div>
+                </div>
+
             
-            @Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId },null)
-        }
-        <td>(@gig.formattedAddress)</td>
-    </tr>
 
-        }
-    </table>
+            @if (Model.band.Social.facebookPageId != null)
+            {
+                <div id="facebookPosts" class="socialP" style="height: 500px; width: 370px; background-color: darkblue; text-align: center; border-radius: 15px; ">
+                    <h4 style="color: white;">facebook</h4>
+                    <div class="postScroller" style="overflow-y: scroll; overflow-x: hidden; max-width: 360px; max-height: 450px; background-color: white; display: inline-block; ">
 
-</div>
+                        @if (Model.facebookPermalinks.Count == 0)
+                        {
+                            <div class="postContainer">
+                                <h3 style="color: red;">Facebook Token Exipred</h3>
+                            </div>
+                        }
+                        else
+                        {
+                            foreach (var permaLink in Model.facebookPermalinks)
+                            {
+                                <div class="postContainer">
+                                    <div class="fb-post" data-href="@permaLink" data-width="360">
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
 
 
-<div id="socialContainer" style="display: flex; justify-content: space-between;">
+            }
+
+        </div>
+      </div>
+        </div>
+<div class="row">
+
+    <div class="col-lg-10 contentCol">
+
+        <div class="col-md-7 contentCol">
+            <div id="Gigs" style="height: 300px; overflow-y: scroll;">
+                <h4>Upcoming Shows</h4>
+                <table class="table" width="100%">
+                    <tr>
+                        <td>Date</td>
+                        <td>Time</td>
+                        <td>Venue</td>
+                        <td>Bands</td>
+                        <td>Address</td>
+
+                    </tr>
+                    @foreach (var gig in Model.gigs)
+                    {
+                        <tr>
+                            <td>@gig.gig.timeOfGig.Date</td>
+                            <td>@gig.gig.timeOfGig.TimeOfDay</td>
+                            <td>@gig.gig.Venue.venueName</td>
+                            <td>
+
+                                @foreach (var band in gig.bands)
+                                {
+
+                                    <span> @Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null),</span>
+                                }
+                            </td>
+                            <td>(@gig.formattedAddress)</td>
+                        </tr>
+                    }
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
    
 
-    <div id="twitterPosts" style="height: 700px; width: 370px; background-color: deepskyblue; text-align: center; border-radius: 15px; ">
-        <h2 style="color: white;">twitter</h2>
-        <div class="postScroller" style="overflow-y: scroll; overflow-x: hidden; width: 360px; max-height: 650px; background-color: white; display: inline-block; ">
-
-            <a class="twitter-timeline" href="https://twitter.com/@Model.band.Social.twitterHandle?ref_src=twsrc%5Etfw">Tweets by @Model.band.bandName</a>
 
 
-
-        </div>
-    </div>
-
-    <div id="facebookPosts" style="height: 700px; width: 370px; background-color: darkblue; text-align: center; border-radius: 15px; ">
-        <h2 style="color: white;">facebook</h2>
-        <div class="postScroller" style="overflow-y: scroll; overflow-x: hidden; max-width: 360px; max-height: 650px; background-color: white; display: inline-block; ">
-
-            @if (Model.facebookPermalinks.Count == 0)
-            {
-                <div class="postContainer">
-                    <h3 style="color: red;">Facebook Token Exipred</h3>
-                </div>
-            }
-            else
-            {
-                foreach (var permaLink in Model.facebookPermalinks)
-                {
-                    <div class="postContainer">
-                        <div class="fb-post" data-href="@permaLink" data-width="330">
-                        </div>
-                    </div>
-                }
-            }
-        </div>
-    </div>
-
-</div>
 
 <div id="youtubeVids" style="height: 300px; width: 1200px; background-color: red; text-align: center; border-radius: 15px;">
     <h2 style="color: white;">Youtube Videos</h2>

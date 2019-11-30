@@ -11,11 +11,11 @@
                 <h4>@Model.venue.venueName (@Model.venue.town)</h4>
                 <br />
                 <a href="@Model.venue.websiteUrl">Venue Website</a>
-                <button class="btn-default ">@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
-                <button class="btn-default">@Html.ActionLink("Book a Show", "Create", "Request",  new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
 
                 @if (User.IsInRole("Band"))
                 {
+                    <button class="btn-default ">@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
+                    <button class="btn-default">@Html.ActionLink("Book a Show", "Create", "Request", new { bandId = Model.currentBand.BandId, venueId = Model.venue.VenueId }, null)</button>
                     <h6>@Model.distance.travelDistance miles from you (@Model.distance.travelDuration minutes)</h6>
                 }
                 <br />
@@ -94,7 +94,7 @@
                     
 
                         <td>
-                           @if (gig.gig.open == true)
+                           @if (gig.gig.open == true && User.IsInRole("Band"))
                             {
                                 <span>@Html.ActionLink("Request to Join", "Create", "Request", new { bandId = Model.currentBand.BandId, venueId = Model.venue.VenueId, gigId = gig.gig.GigId }, null), </span>
                             }

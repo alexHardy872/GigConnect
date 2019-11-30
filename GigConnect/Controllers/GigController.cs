@@ -21,20 +21,6 @@ namespace GigConnect.Controllers
 
 
 
-        // venue creates a gig
-        // adds band to gig in create or edit OR automethode AddBandToGig(int bandId) (adds to junction table!)
-
-            // creates open gig?
-
-            // gig created when venue accepts request?
-
-
-
-
-
-
-
-
         // GET: Gig
         public ActionResult Index()
         {

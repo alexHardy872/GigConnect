@@ -92,4 +92,20 @@ body {
     border: 4px solid rgba(94, 255, 77, 0.75);
 }
 
+.cleanCol {
+    margin-right: 0;
+    margin-left: 0;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.socialP{
+    margin-right: 20px;
+    
+}
+
+.col-md-7 clean-col{
+    width: 65%;
+}
+
 

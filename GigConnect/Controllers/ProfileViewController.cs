@@ -176,14 +176,14 @@ namespace GigConnect.Controllers
                     .Include("Venue")
                     .Where(g => g.GigId == gigId).FirstOrDefault());
             }
-            bandGigs = bandGigs.Where(g => g.timeOfGig > DateTime.Now).OrderBy(o => o.timeOfGig).ToList();
+            bandGigs = bandGigs.Where(g => g.timeOfGig > DateTime.Now).OrderByDescending(o => o.timeOfGig).ToList();
             return bandGigs;
         }
 
         public List<Gig> GetGigs(Venue venue)
         {
             List<Gig> Gigs = context.Gigs
-                .Include("Venue").Where(b => b.venueId == venue.VenueId && b.timeOfGig > DateTime.Now).ToList();
+                .Include("Venue").Where(b => b.venueId == venue.VenueId && b.timeOfGig > DateTime.Now).OrderByDescending(o => o.timeOfGig).ToList();
             return Gigs;
         }
 
