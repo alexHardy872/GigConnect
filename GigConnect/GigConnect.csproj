@@ -213,6 +213,10 @@
     <Compile Include="Migrations\201911291807325_initRedo.Designer.cs">
       <DependentUpon>201911291807325_initRedo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911300401550_dates.cs" />
+    <Compile Include="Migrations\201911300401550_dates.Designer.cs">
+      <DependentUpon>201911300401550_dates.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Band.cs" />
@@ -348,6 +352,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201911291807325_initRedo.resx">
       <DependentUpon>201911291807325_initRedo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911300401550_dates.resx">
+      <DependentUpon>201911300401550_dates.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

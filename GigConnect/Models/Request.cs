@@ -28,7 +28,7 @@ namespace GigConnect.Models
         public Venue Venue { get; set; }
 
 
-        public DateTime gigTime { get; set; }
+        public DateTime? gigTime { get; set; }
 
         public DateTime timeStamp { get; set; }
 

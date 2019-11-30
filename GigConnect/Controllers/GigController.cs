@@ -52,7 +52,7 @@ namespace GigConnect.Controllers
         {
             Gig gig = new Gig();
             Request request = GetRequestFromId(requestId);
-            gig.timeOfGig = request.gigTime;
+            gig.timeOfGig = (DateTime)request.gigTime;
             gig.venueId = request.venueId;
             gig.open = true;
             context.Gigs.Add(gig);
@@ -64,12 +64,16 @@ namespace GigConnect.Controllers
       
         public ActionResult AddSelectedBandToGig(int bandId) // from venue carrying venue gigs.
         {
+
+            // send request first ????
+
             Band band = GetBandFromId(bandId);
             Venue venue = GetUserVenue();
             AddBandToGigViewModel model = new AddBandToGigViewModel();
             List<Gig> openGigs = GetOpenGigs(venue);
             model.gigs =   GetGigViewModel(openGigs);
             model.band = band;
+            
             return View(model);
         }
 

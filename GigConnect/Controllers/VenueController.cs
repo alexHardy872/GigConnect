@@ -228,7 +228,7 @@ namespace GigConnect.Controllers
         public List<Message> GetAllMessagesOut(int venueId)
         {
             List<Message> messages = context.Messages
-                .Include("Venue").Include("Band").Where(m => m.venueId == venueId && m.from == "Band").OrderBy(d => d.timeStamp).ToList();
+                .Include("Venue").Include("Band").Where(m => m.venueId == venueId && m.from == "Venue").OrderBy(d => d.timeStamp).ToList();
             return messages;
         }
 

@@ -1,51 +1,62 @@
 ﻿@model GigConnect.Models.ViewModels.AddBandToGigViewModel
 
-@{
-    ViewBag.Title = "AddSelectedBandToGig";
-}
+
 
 <h2>Add @Model.band.bandName to an Existing Gig</h2>
 
-<div id="gigDisplay">
-    <table class="table">
-        <tr>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Description</th>
-            <th>Bands</th>
-            <th>Location</th>
-            <th>Action</th>
-        </tr>
+@if (Model.gigs.Count == 0)
+{
+    <div>
+        <h4><i> No gigs currently on schedule </i></h4>
+    </div>
+}
+else
+{
 
-        @foreach (var gig in Model.gigs)
-        {
-    <tr>
-        <td>
-            @gig.gig.timeOfGig.Date
-        </td>
-        <td>
-            @gig.gig.timeOfGig.TimeOfDay
-        </td>
-        <td>
-            @gig.gig.description
-        </td>
-        <td>
-            @foreach (var band in gig.bands)
+    <div id="gigDisplay">
+        <table class="table">
+            <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Description</th>
+                <th>Bands</th>
+                <th>Location</th>
+                <th>Action</th>
+            </tr>
+
+            @foreach (var gig in Model.gigs)
             {
-                @Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null),
+                <tr>
+                    <td>
+                        @gig.gig.timeOfGig.Date
+                    </td>
+                    <td>
+                        @gig.gig.timeOfGig.TimeOfDay
+                    </td>
+                    <td>
+                        @gig.gig.description
+                    </td>
+                    <td>
+                        @foreach (var band in gig.bands)
+                        {
+                        <span>@Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null), </span>
 
-             }
-        </td>
-        <td>
-            @gig.formattedAddress
-        </td>
+                        }
+                    </td>
+                    <td>
+                        @gig.formattedAddress
+                    </td>
 
-        <td>
-            <button class="btn-defeault">@Html.ActionLink("Add to Gig", "AddBandToGig", new { bandId = Model.band.BandId, gigId = gig.gig.GigId })</button>
-        </td>
-    </tr>
-        }
+                    <td>
+                        <button class="btn-defeault">@Html.ActionLink("Ask " + Model.band.bandName + " to join", "Create", "Request", new { bandId = Model.band.BandId, venueId = gig.gig.venueId, gigId = gig.gig.GigId }, null)</button>
+                    </td>
+                </tr>
+            }
 
-    </table>
+        </table>
 
-</div>
+    </div>
+
+}
+
+

@@ -18,12 +18,7 @@ namespace GigConnect.Controllers
         }
 
 
-        // create request
-            // request going which way?
-            // request attached to a gig?
-            // ect ect 
-            // request denied change bool
-            // request accepted change bool????
+   
 
         public ActionResult Create(int bandId, int venueId, int? gigId)
         {

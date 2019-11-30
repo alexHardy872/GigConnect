@@ -188,13 +188,21 @@
 <div id="youtubeVids" style="height: 300px; width: 1200px; background-color: red; text-align: center; border-radius: 15px;">
     <h2 style="color: white;">Youtube Videos</h2>
     <div class="postScroller" style=" overflow-y: hidden;  max-height: 280px; background-color: white; display: inline-block; ">
-
-        @foreach (var videoUrl in Model.youtubeUrls)
+        @if (Model.youtubeUrls[0] == "failure")
         {
-        <div style="display: inline-block;">
-            <iframe width="250" height="200" src="@videoUrl" frameborder="0" allowfullscreen></iframe>
-        </div>
+
+            <div style="width: 250px; height: 200px"><span><i>Youtube videos currently unavailable</i></span></div>
         }
+        else
+        {
+            foreach (var videoUrl in Model.youtubeUrls)
+            {
+                <div style="display: inline-block;">
+                    <iframe width="250" height="200" src="@videoUrl" frameborder="0" allowfullscreen></iframe>
+                </div>
+            }
+        }
+
 
     </div>
 </div>

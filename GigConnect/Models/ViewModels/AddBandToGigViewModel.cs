@@ -11,5 +11,6 @@ namespace GigConnect.Models.ViewModels
         public List<GigInfoViewModel> gigs { get; set; }
 
         public Band band { get; set; }
+
     }
 }

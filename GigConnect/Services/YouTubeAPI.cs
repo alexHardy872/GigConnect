@@ -69,24 +69,32 @@ namespace GigConnect.Services
         {
             List<string> YoutubeUrls = new List<string>();
 
-            
 
-            int maxResultCount = 4;
+            try
+            {
 
-            SearchResource.ListRequest searchListRequest = client.Search.List("snippet");
+                int maxResultCount = 4;
+
+                SearchResource.ListRequest searchListRequest = client.Search.List("snippet");
                 //searchListRequest.Q = channelId;
                 searchListRequest.MaxResults = maxResultCount;
                 searchListRequest.ChannelId = channelId;
                 searchListRequest.Type = "video";
 
-            SearchListResponse searchListResponse = await searchListRequest.ExecuteAsync();
+                SearchListResponse searchListResponse = await searchListRequest.ExecuteAsync();
 
-            foreach(SearchResult searchResult in searchListResponse.Items)
-            {
-                string url = "https://www.youtube.com/embed/";
+                foreach (SearchResult searchResult in searchListResponse.Items)
+                {
+                    string url = "https://www.youtube.com/embed/";
                     url += searchResult.Id.VideoId;
-                YoutubeUrls.Add(url);
+                    YoutubeUrls.Add(url);
+                }
             }
+            catch(Exception e)
+            {
+                YoutubeUrls.Add("failure");
+            }
+           
 
 
             return YoutubeUrls;
