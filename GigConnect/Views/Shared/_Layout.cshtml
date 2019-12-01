@@ -20,7 +20,7 @@
                 </button>
                 @Html.ActionLink("GigConnect", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
 
-               
+
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -62,6 +62,39 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <script>
+                document.addEventListener('DOMContentLoaded', function () {
+
+
+
+                    (function ($) {
+
+
+
+
+
+
+
+                        //$("tr").mouseenter(function () {
+                        //    $(this).css("background-color", "black");
+
+                        //});
+                        //$("tr").mouseleave(function () {
+                        //    $(this).css("background-color", "#060606");
+
+                        //});
+
+
+
+                    })(jQuery);
+
+                });
+    </script>
+
+
+
+
 </body>
 
 

@@ -76,8 +76,8 @@ textarea {
 }
 
 .container{
-    margin-left: 100px;
-    margin-right: 100px;
+    margin-left: 5%;
+    margin-right: 5%;
    
 }
 
@@ -142,4 +142,10 @@ body {
         margin: 0;
         padding: 0;
         width: 100%;
+    }
+
+
+
+    tr:hover{
+        background-color: black;
     }

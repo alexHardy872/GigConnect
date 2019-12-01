@@ -4,42 +4,140 @@
     ViewBag.Title = "VenueDirectory";
 }
 
-<h2>Venues</h2>
 
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.venueName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.town)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.description)
-        </th>
-       
-        
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.venueName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.town)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.description)
-        </td>
-     
-        <td>
-            @Html.ActionLink("View Profile", "ViewVenueProfile", "ProfileView", new {venueId = item.VenueId}, null)
 
-        </td>
-    </tr>
-}
 
-</table>
+<div class="row">
+    <div class="col-md-1">
+
+    </div>
+    <div class="col-lg-10 contentCol">
+        <div id="bandDirNav" style="display: inline-block; width: 100%">
+            <h2 style="display: inline-block; float: left;">Find Venues</h2>
+
+            <div id="filterForm" style="display: inline-block; float: right; padding-top: 35px;">
+                <form id="search-form">
+                    <label>SEARCH BY:</label>
+
+                    <input id="search-input-text" type="text" name="search-input-text" placeholder="Search" class="form-control" />
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <div style="height: 500px; overflow-y: scroll;">
+            <table class="table">
+                <tr>
+                    <th>Name (Genre)</th>
+
+                    <th>
+                        Hometown Area
+                    </th>
+                    <th>
+
+                    </th>
+
+
+                    <th></th>
+
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr class="Search">
+                        <td>
+    
+                                <a id="logoLink" href="@Url.Action("ViewVenueProfile", "ProfileView", new { venueId = item.VenueId }, null)">
+                                    <img class="logoImg" src="~/Content/Images/profile.jpg" style="height: 50px; width: 50px;" alt="logo" />
+                                </a><span>   @Html.DisplayFor(modelItem => item.venueName)</span><span style="color: gray"><i>  (@Html.DisplayFor(modelItem => item.genre))</i></span>
+                            
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.town)
+                        </td>
+
+                        <td style="width: 30%">
+                            @item.description
+                        </td>
+
+
+
+                        <td style="text-align: right;">
+                            <button class="btn-default">@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = item.VenueId, isBand = false }, null)</button>
+
+                            <button class="btn-default">@Html.ActionLink("Events/Details", "ViewVenueProfile", "ProfileView", new { venueId = item.VenueId }, null)</button>
+
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+    <div class="col-md-1">
+
+    </div>
+</div>
+
+
+
+
+<script>
+                document.addEventListener('DOMContentLoaded', function () {
+
+
+
+                    (function ($) {
+
+
+
+
+
+
+
+                        $(".logoImg").mouseenter(function () {
+                            $(this).css("border", "2pt solid yellow");
+
+                        });
+                        $(".logoImg").mouseleave(function () {
+                            $(this).css("border", "none");
+
+                        });
+
+
+
+
+
+
+                        function Contains(text_one, text_two) {
+                            if (text_one.indexOf(text_two) != -1)
+                                return true;
+                        }
+
+
+                        $("#search-input-text").keyup(function () {
+                            var searchText = $("#search-input-text").val().toLowerCase();
+                            $(".Search").each(function () {
+                                if (!Contains($(this).text().toLowerCase(), searchText)) {
+                                    $(this).hide();
+                                }
+                                else {
+                                    $(this).show();
+                                }
+                            });
+                        });
+
+
+                    })(jQuery);
+
+                });
+</script>
+
+
+

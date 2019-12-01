@@ -23,19 +23,7 @@
 </div>
 
 
-    
 
-        @*<div class="optionsContainer">
-
-            <div class="optionsHeader" id="showGigs"><div class="txtBtn">Gigs</div></div>
-
-            <div class="optionsHeader" id="showVenues"><div class="txtBtn">Gigs</div></div>
-
-            <div class="optionsHeader" id="showMessages"><div class="txtBtn">Messages</div></div>
-
-            <div class="optionsHeader" id="showRequests"><div class="txtBtn">Pending Requests</div></div>
-
-        </div>*@
 
 <div id="messages">
   
@@ -370,9 +358,6 @@
                     (function ($) {
 
 
-
-
-
                         $("#showInbox").click(function () {
                             console.log("Handler for .click() called.");
                             $("#inbox").show()
@@ -380,14 +365,7 @@
                             $(this).css("font-weight", "bold");
                             $("#showOutbox").css("font-weight", "normal");
                         });
-                        $("#showInbox").mouseenter(function () {
-                            $(this).css("background-image", "linear-gradient(white, black)");
-
-                        });
-                        $("#showInbox").mouseleave(function () {
-                            $(this).css("background-image", "none");
-
-                        });
+                  
 
                         $("#showOutbox").click(function () {
                             console.log("Handler for .click() called.");
@@ -396,14 +374,7 @@
                             $(this).css("font-weight", "bold");
                             $("#showInbox").css("font-weight", "normal");
                         });
-                        $("#showOutbox").mouseenter(function () {
-                            $(this).css("background-image", "linear-gradient(white, black)");
-
-                        });
-                        $("#showOutbox").mouseleave(function () {
-                            $(this).css("background-image", "none");
-
-                        });
+                  
 
 
 
@@ -416,14 +387,7 @@
                             $("#showRequestsOut").css("font-weight", "normal");
                              $("#showResponse").css("font-weight", "normal");
                         });
-                        $("#showRequestsIn").mouseenter(function () {
-                            $(this).css("background-image", "linear-gradient(white, black)");
-
-                        });
-                        $("#showRequestsIn").mouseleave(function () {
-                            $(this).css("background-image", "none");
-
-                        });
+                 
 
                         $("#showRequestsOut").click(function () {
                             console.log("Handler for .click() called.");
@@ -434,14 +398,7 @@
                             $("#showRequestsIn").css("font-weight", "normal");
                              $("#showResponse").css("font-weight", "normal");
                         });
-                        $("#showRequestsOut").mouseenter(function () {
-                            $(this).css("background-image", "linear-gradient(white, black)");
-
-                        });
-                        $("#showRequestsOut").mouseleave(function () {
-                            $(this).css("background-image", "none");
-
-                        });
+                     
 
                         $("#showResponse").click(function () {
                             console.log("Handler for .click() called.");
@@ -452,14 +409,7 @@
                             $("#showRequestsIn").css("font-weight", "normal");
                             $("#showRequestsOut").css("font-weight", "normal");
                         });
-                        $("#showRequestsOut").mouseenter(function () {
-                            $(this).css("background-image", "linear-gradient(white, black)");
-
-                        });
-                        $("#showRequestsOut").mouseleave(function () {
-                            $(this).css("background-image", "none");
-
-                        });
+                      
 
 
 
