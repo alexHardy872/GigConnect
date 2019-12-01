@@ -143,7 +143,7 @@
                     <tr class="headRow">
                         <th>RECIEVED</th>
                         <th>DATE/TIME OF GIG</th>
-                        <th>VENUE</th>
+                        <th>BAND</th>
                         <th>MESSAGE</th>
                         <th>ACTIONS</th>
                     </tr>
@@ -163,7 +163,7 @@
                                 <td> @request.Gig.timeOfGig.ToShortDateString()  @@<span>@request.Gig.timeOfGig.ToString("hh:mm tt")</span></td>
                             }
 
-                            <td style="font-weight: bold;">@request.Venue.venueName:</td>
+                            <td style="font-weight: bold;">@request.Band.bandName:</td>
                             <td>@request.message</td>
                             <td>
                                 <button class="btn-default" style="background-color: green;">@Html.ActionLink("ACCEPT", "ApproveRequest", "Request", new { requestId = request.RequestId }, null)</button>

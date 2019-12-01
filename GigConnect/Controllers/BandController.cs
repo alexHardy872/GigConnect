@@ -268,7 +268,7 @@ namespace GigConnect.Controllers
         public List<Request> GetRequestsOut(int bandId)
         {
             List<Request> requestsOut = context.Requests
-                .Include("Venue").Include("Band").Where(r => r.bandId == bandId && r.fromVenue == false && r.approved == false && r.denied == false)
+                .Include("Venue").Include("Band").Include("Gig").Where(r => r.bandId == bandId && r.fromVenue == false && r.approved == false && r.denied == false)
                 .OrderByDescending(d => d.timeStamp).ToList();
             return requestsOut;
         }
@@ -276,7 +276,7 @@ namespace GigConnect.Controllers
         public List<Request> GetRespondedRequests(int bandId)
         {
             List<Request> requestsOut = context.Requests
-                            .Include("Venue").Include("Band").Where(r => r.bandId == bandId && r.fromBand == true && r.approved == true || r.denied == true)
+                            .Include("Venue").Include("Band").Include("Gig").Where(r => r.bandId == bandId && r.fromBand == true).Where( r => r.approved == true || r.denied == true)
                             .OrderByDescending(d => d.timeStamp).ToList();
             return requestsOut;
         }

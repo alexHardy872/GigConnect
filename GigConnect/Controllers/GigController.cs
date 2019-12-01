@@ -59,11 +59,20 @@ namespace GigConnect.Controllers
             gig.venueId = request.venueId;
             gig.open = true;
             context.Gigs.Add(gig);
-            await AddBandToGig(request.bandId, gig.GigId);
+            AddBandToGig(request.bandId, gig.GigId);
             await context.SaveChangesAsync();
             return RedirectToAction("Index", "Home");
         }
 
+        public async Task<ActionResult> AddBandFromRequest(int requestId)
+        {
+            Request request = GetRequestFromId(requestId);
+            int gigId = request.eventId ?? default(int);
+           await Task.Run(() => AddBandToGig(request.bandId, gigId));
+
+            return RedirectToAction("Index", "Home");
+
+        }
       
         public ActionResult AddSelectedBandToGig(int bandId) // from venue carrying venue gigs.
         {
@@ -82,7 +91,7 @@ namespace GigConnect.Controllers
 
       
         
-        public async Task<ActionResult> AddBandToGig(int bandId, int gigId)
+        public async void AddBandToGig(int bandId, int gigId)
         {
             BandGig junction = new BandGig();
             junction.gigId = gigId;
@@ -90,10 +99,21 @@ namespace GigConnect.Controllers
 
             context.BandGigs.Add(junction);
             await context.SaveChangesAsync();
-            return RedirectToAction("Index", "Home");
+            
         }
 
-        public async Task<ActionResult> Edit(int gigId)
+        public ActionResult Details(int gigId)
+        {
+            GigInfoViewModel model = new GigInfoViewModel();
+            model.gig = GetGigFromId(gigId);
+            model.bands = GetBandsOnGig(model.gig);
+
+            return View(gigId);
+        }
+
+
+
+        public ActionResult Edit(int gigId)
         {
             GigInfoViewModel model = new GigInfoViewModel();
             model.gig = GetGigFromId(gigId);

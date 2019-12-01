@@ -24,6 +24,12 @@ namespace GigConnect.Controllers
         {
             Request request = new Request();
             request.eventId = gigId;
+            if(gigId != null)
+            {
+                int gigId2 = gigId ?? default(int);
+                Gig gig = GetGigById(gigId2);
+                request.message = "Request to join existing gig on " + gig.timeOfGig.ToShortDateString();
+            }
             request.venueId = venueId;
             request.bandId = bandId;
             request.timeStamp = DateTime.Now;
@@ -61,7 +67,7 @@ namespace GigConnect.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("AddBandFromRequest", "Gig", new { requestId = requestId });
             }
             
         }
@@ -101,6 +107,12 @@ namespace GigConnect.Controllers
         {
             Request request = context.Requests.Where(r => r.RequestId == id).FirstOrDefault();
             return request;
+        }
+
+        public Gig GetGigById(int id)
+        {
+            Gig gig = context.Gigs.Where(g => g.GigId == id).FirstOrDefault();
+            return gig;
         }
       
 
