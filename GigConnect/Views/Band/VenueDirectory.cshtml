@@ -10,14 +10,13 @@
 
 
 <div class="row">
-    <div class="col-md-1">
-
-    </div>
-    <div class="col-lg-10 contentCol">
+    
+    <div class="col-lg-12">
+        <div class="contentCol">
         <div id="bandDirNav" style="display: inline-block; width: 100%">
             <h2 style="display: inline-block; float: left;">Find Venues</h2>
 
-            <div id="filterForm" style="display: inline-block; float: right; padding-top: 35px;">
+            <div id="filterForm" style="display: inline-block; float: right; padding-top: 35px; padding-right: 15px;">
                 <form id="search-form">
                     <label>SEARCH BY:</label>
 
@@ -80,63 +79,61 @@
             </table>
         </div>
     </div>
-    <div class="col-md-1">
-
-    </div>
+   </div>
 </div>
 
 
 
 
 <script>
-                document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
 
 
 
-                    (function ($) {
-
-
-
-
-
-
-
-                        $(".logoImg").mouseenter(function () {
-                            $(this).css("border", "2pt solid yellow");
-
-                        });
-                        $(".logoImg").mouseleave(function () {
-                            $(this).css("border", "none");
-
-                        });
+        (function ($) {
 
 
 
 
 
 
-                        function Contains(text_one, text_two) {
-                            if (text_one.indexOf(text_two) != -1)
-                                return true;
-                        }
+
+            $(".logoImg").mouseenter(function () {
+                $(this).css("border", "2pt solid yellow");
+
+            });
+            $(".logoImg").mouseleave(function () {
+                $(this).css("border", "none");
+
+            });
 
 
-                        $("#search-input-text").keyup(function () {
-                            var searchText = $("#search-input-text").val().toLowerCase();
-                            $(".Search").each(function () {
-                                if (!Contains($(this).text().toLowerCase(), searchText)) {
-                                    $(this).hide();
-                                }
-                                else {
-                                    $(this).show();
-                                }
-                            });
-                        });
 
 
-                    })(jQuery);
 
+
+            function Contains(text_one, text_two) {
+                if (text_one.indexOf(text_two) != -1)
+                    return true;
+            }
+
+
+            $("#search-input-text").keyup(function () {
+                var searchText = $("#search-input-text").val().toLowerCase();
+                $(".Search").each(function () {
+                    if (!Contains($(this).text().toLowerCase(), searchText)) {
+                        $(this).hide();
+                    }
+                    else {
+                        $(this).show();
+                    }
                 });
+            });
+
+
+        })(jQuery);
+
+    });
 </script>
 
 

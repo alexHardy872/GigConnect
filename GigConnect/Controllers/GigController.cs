@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace GigConnect.Controllers
 {
-    [Authorize(Roles = "Venue")]
+    //[Authorize(Roles = "Venue")]
     public class GigController : Controller
     {
         ApplicationDbContext context;
@@ -77,8 +77,6 @@ namespace GigConnect.Controllers
         public ActionResult AddSelectedBandToGig(int bandId) // from venue carrying venue gigs.
         {
 
-            // send request first ????
-
             Band band = GetBandFromId(bandId);
             Venue venue = GetUserVenue();
             AddBandToGigViewModel model = new AddBandToGigViewModel();
@@ -104,11 +102,20 @@ namespace GigConnect.Controllers
 
         public ActionResult Details(int gigId)
         {
+
             GigInfoViewModel model = new GigInfoViewModel();
             model.gig = GetGigFromId(gigId);
             model.bands = GetBandsOnGig(model.gig);
+            Location location = context.Locations.Where(l => l.LocationId == model.gig.Venue.LocationId).FirstOrDefault();
+            model.formattedAddress = GeoCode.FormatAddress(location);
 
             return View(gigId);
+        }
+
+        public ActionResult List()
+        {
+            List<GigInfoViewModel> models = GetAllGigs();
+            return View(models);
         }
 
 
@@ -223,6 +230,16 @@ namespace GigConnect.Controllers
         {
             Band band = context.Bands.Where(b => b.BandId == bandId).FirstOrDefault();
             return band;
+        }
+
+        public List<GigInfoViewModel> GetAllGigs()
+        {
+            
+            List<Gig> gigs = context.Gigs.Include("Venue").ToList();
+            List<GigInfoViewModel> gigList = GetGigViewModel(gigs);
+
+
+            return gigList;
         }
 
     }

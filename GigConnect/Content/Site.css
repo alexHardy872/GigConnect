@@ -81,22 +81,31 @@ textarea {
    
 }
 
+html{
+    height: 100%;
+}
 body {
-    background: linear-gradient( rgba(0, 0, 0, 0.80), rgba(0, 0, 0, 0.80) ),url("Images/versio.jpg");
+    height: 100%;
+    background: linear-gradient( rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.10) ),url("Images/versio.jpg");
     background-size: cover;
+    background-attachment: fixed;
 }
 
 .contentCol {
     background-image: linear-gradient( #222222, black);
-    margin-right: 15px;
+    margin: 5px;
     border: 4px solid rgba(94, 255, 77, 0.50);
     border-radius: 15px;
+    box-shadow: 0px 0px 12px rgba(94, 255, 77, 0.50);
+    padding: 2%;
 }
 
 #youtubeCol {
-    background-image: linear-gradient( rgba(245, 0, 0, 0.73), transparent);
+    background-image: linear-gradient( rgba(245, 0, 0, 0.73),rgba(160, 50, 100, 0.65) );
     border-color: rgba(255, 255, 255, 0.73);
     margin-right: 0px;
+    box-shadow: 0px 0px 12px rgba(255, 0, 0, 0.73);
+    text-align: center;
 }
 .cleanCol {
     margin-right: 0;
@@ -105,10 +114,7 @@ body {
     padding-left: 0;
 }
 
-.socialP{
-    margin-right: 20px;
-    
-}
+
 
 .col-md-7 clean-col{
     width: 65%;
@@ -159,7 +165,64 @@ body {
     .video{
         margin-right: 0px;
         margin-left: 0px;
+        margin-left: 5px;
         margin-top: 10px;
         margin-bottom: 10px;
         background-color: black;
     }
+
+    .bord{
+        border: 1px solid white;
+        height: 650px;
+    }
+
+.mainImage {
+    box-shadow: 0px 0px 12px rgba(94, 255, 77, 0.50);
+}
+
+.socialNav:hover {
+    cursor: pointer;
+    background-color: rgba(94, 255, 77, 0.50);
+}
+
+.socialNav{
+    width: 100%;
+}
+
+.small-gigs-table{
+    font-size: 8pt;
+}
+
+#twitterPosts {
+    display: none;
+    height: 550px;
+    width: 80%;
+    background-color: deepskyblue;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0px 0px 15px blue;
+}
+
+#facebookPosts {
+    display: none;
+    height: 550px;
+    width: 80%;
+    background-color: darkblue;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0px 0px 12px white;
+}
+
+.postScroller {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width: 98%;
+    max-height: 480px;
+    background-color: white;
+    display: inline-block;
+}
+
+.social{
+    margin-top: 20px;
+    text-align: center;
+}

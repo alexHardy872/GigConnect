@@ -25,7 +25,7 @@
 
 
 <div id="messages">
-    <table class="table">
+    <table class="table" style="table-layout: fixed;">
         <tr>
             <td>
                 <button id="showInbox" class="btn-default" style=" height: 40px; width: 100%;font-weight: bold;">INBOX</button>
@@ -57,7 +57,7 @@
                         <tr>
                             <td> @message.timeStamp.ToShortDateString() </td>
                             <td> @message.timeStamp.ToString("hh:mm tt"):</td>
-                            <td style="font-weight: bold;">@message.Band.bandName:</td>
+                            <td style="font-weight: bold;">@Html.ActionLink(message.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = message.Band.BandId }, null)</td>
                             <td>@message.messageContent</td>
                             <td>
                                 <button class="btn-default">@Html.ActionLink("Reply", "Create", "Message", new { recipientId = message.Band.BandId, isBand = true }, null)</button>
@@ -70,8 +70,8 @@
                         <tr style="color: gray">
                             <td> @message.timeStamp.ToShortDateString() </td>
                             <td> @message.timeStamp.ToString("hh:mm tt"):</td>
-                            <td style="font-weight: bold;">@message.Band.bandName:</td>
-                            <td>@message.messageContent</td>
+                            <td style="font-weight: bold;">@Html.ActionLink(message.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = message.Band.BandId }, null)</td>
+                            <td style="width: 60%;">@message.messageContent</td>
                             <td>
                                 <button class="btn-default">@Html.ActionLink("Reply", "Create", "Message", new { recipientId = message.Band.BandId, isBand = true }, null)</button>
                                 <button class="btn-default">@Html.ActionLink("Unread", "ToggleRead", "Message", new { messageId = message.MessageId }, null)</button>
@@ -103,8 +103,8 @@
                     <tr style="color: gray">
                         <td> @message.timeStamp.ToShortDateString() </td>
                         <td> @message.timeStamp.ToString("hh:mm tt"):</td>
-                        <td style="font-weight: bold;">@message.Band.bandName:</td>
-                        <td>@message.messageContent</td>
+                        <td style="font-weight: bold;">@Html.ActionLink(message.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = message.Band.BandId }, null)</td>
+                        <td style="width: 60%;">@message.messageContent</td>
                         <td>
                             <button class="btn-default">@Html.ActionLink("Send Another?", "Create", "Message", new { recipientId = message.Venue.VenueId, isBand = false }, null)</button>
                         </td>
@@ -119,10 +119,10 @@
 
     <div id="requests">
 
-        <table class="table">
+        <table class="table" style="table-layout: fixed;">
             <tr>
                 <td>
-                    <button id="showRequestsIn" class="btn-default" style=" height: 40px; width: 100%;font-weight: bold;">REQUESTS IN</button>
+                    <button id="showRequestsIn" class="btn-default" style=" height: 40px; width: 100%; font-weight: bold;">REQUESTS IN</button>
                 </td>
                 <td>
                     <button id="showRequestsOut" class="btn-default" style=" height: 40px; width: 100%; ">REQUESTS OUT</button>
@@ -163,8 +163,16 @@
                                 <td> @request.Gig.timeOfGig.ToShortDateString()  @@<span>@request.Gig.timeOfGig.ToString("hh:mm tt")</span></td>
                             }
 
-                            <td style="font-weight: bold;">@request.Band.bandName:</td>
-                            <td>@request.message</td>
+                        <td style="font-weight: bold;">@Html.ActionLink(request.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = request.Band.BandId }, null)</td>
+
+
+                            <td style="width: 40%;">
+                            @if (request.eventId != null)
+                            {
+                                <strong><i>Request to JOIN:</i></strong>
+                            } <span style="color: gray;">@request.message</span></td>
+
+
                             <td>
                                 <button class="btn-default" style="background-color: green;">@Html.ActionLink("ACCEPT", "ApproveRequest", "Request", new { requestId = request.RequestId }, null)</button>
                                 <button class="btn-default" style="background-color: red;">@Html.ActionLink("DECLINE", "DenyRequest", "Request", new { requestId = request.RequestId }, null)</button>
@@ -208,7 +216,7 @@
                                 <td> @request.Gig.timeOfGig.ToShortDateString()  @@<span>@request.Gig.timeOfGig.ToString("hh:mm tt")</span></td>
                             }
 
-                            <td style="font-weight: bold;">@request.Band.bandName:</td>
+                        <td style="font-weight: bold;">@Html.ActionLink(request.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = request.Band.BandId }, null)</td>
 
 
                             @if (request.approved == true)
@@ -246,7 +254,7 @@
                     <tr class="headRow">
                         <th>SENT</th>
                         <th>DATE/TIME OF GIG</th>
-                        <th>VENUE</th>
+                        <th>BAND</th>
                         <th>STATUS</th>
                         <th>ACTIONS</th>
                     </tr>
@@ -266,7 +274,7 @@
                                 <td> @request.Gig.timeOfGig.ToShortDateString()  @@<span>@request.Gig.timeOfGig.ToString("hh:mm tt")</span></td>
                             }
 
-                            <td style="font-weight: bold;">@request.Venue.venueName:</td>
+                        <td style="font-weight: bold;">@Html.ActionLink(request.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = request.Band.BandId }, null)</td>
 
 
                             @if (request.approved == true)
@@ -410,7 +418,34 @@
                     $("#showRequestsIn").css("font-weight", "normal");
                     $("#showRequestsOut").css("font-weight", "normal");
                 });
-              
+
+
+            updateNotification();
+            function updateNotification() {
+
+                if (@Model.messagesIn.Where(m => m.read == false).ToList().Count != 0) {
+                   // $("#showRequestsIn").css("color", "yellow");
+                    $("#showInbox").append("<span style='color: yellow; float: right;'> (@Model.messagesIn.Count Unread)<span>");
+                }
+
+
+                if (@Model.requestsIn.Count != 0) {
+                   // $("#showRequestsIn").css("color", "yellow");
+                    $("#showRequestsIn").append("<span style='color: yellow; float: right;'> (@Model.requestsIn.Count Unanswered)<span>");
+                }
+
+                 if (@Model.requestsOut.Count != 0) {
+                   // $("#showRequestsIn").css("color", "yellow");
+                 $("#showRequestsOut").append("<span style='color: yellow; float: right;'> (@Model.requestsOut.Count Pending)<span>");
+                }
+
+                  if (@Model.requestResponses.Count != 0) {
+                   // $("#showRequestsIn").css("color", "yellow");
+                    $("#showResponse").append("<span style='color: yellow; float: right;'> (@Model.requestResponses.Count NEW)<span>");
+                }
+
+
+            }
 
           
            

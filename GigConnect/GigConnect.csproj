@@ -332,6 +332,7 @@
     <Content Include="Views\Gig\AddSelectedBandToGig.cshtml" />
     <Content Include="Views\Gig\RemoveBandsFromLineUp.cshtml" />
     <Content Include="Views\Venue\BandDirectory.cshtml" />
+    <Content Include="Views\Gig\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

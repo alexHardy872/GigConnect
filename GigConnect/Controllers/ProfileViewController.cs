@@ -131,7 +131,7 @@ namespace GigConnect.Controllers
             List<Review> reviews = context.BandReviews
                 .Include("Review")
                 .Where(r => r.bandId == band.BandId)
-                .Select(s => s.Review).ToList();
+                .Select(s => s.Review).OrderByDescending(o => o.timeStamp).ToList();
             return reviews;
         }
 
@@ -140,7 +140,7 @@ namespace GigConnect.Controllers
             List<Review> reviews = context.VenueReviews
                 .Include("Review")
                 .Where(r => r.venueId == venue.VenueId)
-                .Select(s => s.Review).ToList();
+                .Select(s => s.Review).OrderByDescending(o => o.timeStamp).ToList();
             return reviews;
         }
 
@@ -179,14 +179,14 @@ namespace GigConnect.Controllers
                     .Include("Venue")
                     .Where(g => g.GigId == gigId).FirstOrDefault());
             }
-            bandGigs = bandGigs.Where(g => g.timeOfGig > DateTime.Now).OrderByDescending(o => o.timeOfGig).ToList();
+            bandGigs = bandGigs.Where(g => g.timeOfGig > DateTime.Now).OrderBy(o => o.timeOfGig).ToList();
             return bandGigs;
         }
 
         public List<Gig> GetGigs(Venue venue)
         {
             List<Gig> Gigs = context.Gigs
-                .Include("Venue").Where(b => b.venueId == venue.VenueId && b.timeOfGig > DateTime.Now).OrderByDescending(o => o.timeOfGig).ToList();
+                .Include("Venue").Where(b => b.venueId == venue.VenueId && b.timeOfGig > DateTime.Now).OrderBy(o => o.timeOfGig).ToList();
             return Gigs;
         }
 

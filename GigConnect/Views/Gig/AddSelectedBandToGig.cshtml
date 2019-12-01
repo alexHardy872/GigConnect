@@ -20,7 +20,7 @@ else
                 <th>Time</th>
                 <th>Description</th>
                 <th>Bands</th>
-                <th>Location</th>
+                <th>Venue</th>
                 <th>Action</th>
             </tr>
 
@@ -33,10 +33,10 @@ else
                     <td>
                         @gig.gig.timeOfGig.ToString("hh:mm tt")
                     </td>
-                    <td>
+                    <td style="width: 30%;">
                         @gig.gig.description
                     </td>
-                    <td>
+                    <td style="width: 20%;">
                         @if (gig.bands.Count == 0)
                         {
                             <i style="color: grey;">No bands confirmed!</i>
@@ -52,7 +52,7 @@ else
 
                     </td>
                     <td>
-                        @gig.formattedAddress
+                        @gig.gig.Venue.venueName
                     </td>
 
                     <td>

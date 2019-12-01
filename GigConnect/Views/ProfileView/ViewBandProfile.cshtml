@@ -4,218 +4,216 @@
     ViewBag.Title = "ViewBandProfile";
 }
 
+    <div class="row">
+        <div class="col-md-4">
+            <div class="contentCol" style="height: 650px;">
+                <div style="display: inline-block">
+                    <div style="text-align: center;">
+                        <h4>@Model.band.bandName (@Model.band.genre) - @Model.band.town</h4>
+                        @if (User.IsInRole("Venue"))
+                        {
+                            <button class="btn-default">@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = Model.band.BandId, isBand = true }, null)</button>
+                            <button class="btn-default">@Html.ActionLink("Add to line-up", "AddSelectedBandToGig", "Gig", new { bandId = Model.band.BandId }, null)</button>
+                        }
 
+                        <br />
 
-<div class="row" style="width: 1400px;">
-    <div class="col-md-3 contentCol" style="height: 630px;">
-        <div style="display: inline-block">
-            <div style="text-align: center;">
-                <h4>@Model.band.bandName (@Model.band.genre) - @Model.band.town</h4>
-                @if (User.IsInRole("Venue"))
-                {
-                    <button class="btn-default">@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = Model.band.BandId, isBand = true }, null)</button>
-                    <button class="btn-default">@Html.ActionLink("Add to line-up", "AddSelectedBandToGig", "Gig", new { bandId = Model.band.BandId }, null)</button>
-                }
+                        <a href="@Model.band.bandWebsite">Band Website</a>
 
-                <br />
+                        <br />
+                        @if (Model.facebookImageUrl == "Error: No Token or facebook id")
+                        {
+                            <img class="mainImage" src="~/Content/Images/profile.jpg" alt="pic" style="height: 270px; width: 270px;" />
 
-                <a href="@Model.band.bandWebsite">Band Website</a>
+                        }
+                        else
+                        {
+                            <img class="mainImage" src="@Model.facebookImageUrl" alt="pic" style="height: 270px; width: 270px;" />
 
-                <br />
-                @if (Model.facebookImageUrl == "Error: No Token or facebook id")
-                {
-                    <img src="~/Content/Images/profile.jpg" alt="pic" style="height: 280px; width: 280px;" />
+                        }
+                    </div>
 
-                }
-                else
-                {
-                    <img src="@Model.facebookImageUrl" alt="pic" style="height: 280px; width: 280px;" />
+                    <div id="ratings">
 
-                }
-
-
-
-
-            </div>
-
-            <div id="ratings">
-
-                <h4>Reviews</h4>
-                @if (Model.reviews.Count == 0)
-                {
-                    <p> This band does not have any reviews yet.. @Html.ActionLink("Be the first!", "Create", "Review", new { reviewedId = Model.band.BandId, isBand = true }, null)</p>
-                }
-                else
-                {
-                    <div style="height: 180px; overflow-y: scroll;">
+                        <h6>Reviews</h6>
                         <span id="score">Average rating @Model.score out of 5 </span><button class="btn-default">@Html.ActionLink("Write a Review", "Create", "Review", new { reviewedId = Model.band.BandId, isBand = true }, null)</button>
+                        @if (Model.reviews.Count == 0)
+                        {
+                            <p> This band does not have any reviews yet.. @Html.ActionLink("Be the first!", "Create", "Review", new { reviewedId = Model.band.BandId, isBand = true }, null)</p>
+                        }
+                        else
+                        {
+                            <div style="height: 180px; overflow-y: scroll;">
 
-                        <table class="table">
 
-                            @foreach (var review in Model.reviews)
-                            {
-                                if (review.content != null)
-                                {
+                                <table class="table">
 
-                                    <tr>
-                                        @if ((int)review.rating == 0)
+                                    @foreach (var review in Model.reviews)
+                                    {
+                                        if (review.content != null)
                                         {
-                                            <td style="color: red;"><strong>@review.rating</strong>!</td>
-                                        }
-                                        else if ((int)review.rating == 1)
-                                        {
-                                            <td style="color: orange;"><strong>@review.rating</strong></td>
-                                        }
-                                        else if ((int)review.rating == 2)
-                                        {
-                                            <td style="color: yellow;"><strong>@review.rating</strong></td>
-                                        }
-                                        else if ((int)review.rating == 3)
-                                        {
-                                            <td style="color: green;"><strong>@review.rating</strong></td>
-                                        }
-                                        else if ((int)review.rating == 4)
-                                        {
-                                            <td style="color: lawngreen;"><strong>@review.rating</strong>!</td>
-                                        }
 
-                                        <td>@review.content</td>
-                                    </tr>
+                                            <tr>
+                                                @if ((int)review.rating == 0)
+                                                {
+                                                    <td style="color: red;"><strong>@review.rating</strong>!</td>
+                                                }
+                                                else if ((int)review.rating == 1)
+                                                {
+                                                    <td style="color: orange;"><strong>@review.rating</strong></td>
+                                                }
+                                                else if ((int)review.rating == 2)
+                                                {
+                                                    <td style="color: yellow;"><strong>@review.rating</strong></td>
+                                                }
+                                                else if ((int)review.rating == 3)
+                                                {
+                                                    <td style="color: green;"><strong>@review.rating</strong></td>
+                                                }
+                                                else if ((int)review.rating == 4)
+                                                {
+                                                    <td style="color: lawngreen;"><strong>@review.rating</strong>!</td>
+                                                }
 
-                                }
-                            }
-                        </table>
+                                                <td>@review.content</td>
+                                            </tr>
+
+                                        }
+                                    }
+                                </table>
+                            </div>
+                        }
+
                     </div>
-                }
+                </div>
+
+
 
             </div>
         </div>
+        <div class="col-md-5">
+            <div class="contentCol" style="height: 650px;">
 
-
-
-    </div>
-    <div class="col-md-5 contentCol" style="height: 630px;">
-
-        <div id="Gigs" style="height: 300px; overflow-y: scroll;">
-            <h4>Upcoming Shows</h4>
-            <table class="table" width="100%">
-                <tr>
-                    <td>Date</td>
-                    <td>Time</td>
-                    <td>Venue</td>
-                    <td>Bands</td>
-                    <td></td>
-                    @*<td>Address</td>*@
-
-                </tr>
-                @foreach (var gig in Model.gigs)
-                {
+                <table style="border-radius: 15px; table-layout: fixed; width: 100%; text-align: center;">
                     <tr>
-                        <td>@gig.gig.timeOfGig.ToShortDateString()</td>
-                        <td>@gig.gig.timeOfGig.ToString("hh:mm tt")</td>
-                        <td><button class="btn-default">@Html.ActionLink(gig.gig.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = gig.gig.Venue.VenueId }, null)</button></td>
                         <td>
-
-                            @foreach (var band in gig.bands)
-                            {
-
-                                <span> @Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null),</span>
-                            }
+                            <button class="btn-default socialNav" id="ShowEvents">Events</button>
                         </td>
-                        @*<td>(@gig.formattedAddress)</td>*@
-                        <td><button class="btn-default" style="background-color: green;">@Html.ActionLink("DETAILS", "Details", "Gig", new { gigId = gig.gig.GigId }, null) </button></td>
+                        <td>
+                            <button class="btn-default socialNav" id="ShowFacebook">Facebook</button>
+                        </td>
+                        <td>
+                            <button class="btn-default socialNav" id="ShowTwitter">Twitter</button>
+                        </td>
                     </tr>
-                }
-            </table>
+                </table>
 
-        </div>
-    </div>
-    <div class="col-sm-3 contentCol" id="youtubeCol" style="height: 630px;">
-        <h4>YouTube</h4>
-        <div class="postScroller" style=" overflow-y: scroll;  max-height: 570px; background-color: transparent; text-align: center;">
-            @if (Model.youtubeUrls.Count == 0)
-            {
+                <div id="Gigs" style="height: 500px; overflow-y: scroll;">
+                    <h4>Upcoming Shows</h4>
+                    <table class="table small-gigs-table" width="100%">
+                        <tr>
+                            <td>Date</td>
+                            <td>Time</td>
+                            <td>Venue</td>
+                            <td>Bands</td>
+                            <td></td>
+                            @*<td>Address</td>*@
 
-                <div class="video" style="width: 250px; height: 180px"><span><i>Youtube videos currently unavailable</i></span></div>
-                <div class="video" style="width: 250px; height: 180px"><span><i>Youtube videos currently unavailable</i></span></div>
-                <div class="video" style="width: 250px; height: 180px"><span><i>Youtube videos currently unavailable</i></span></div>
-                <div class="video" style="width: 250px; height: 180px"><span><i>Youtube videos currently unavailable</i></span></div>
-            }
-            else
-            {
-                foreach (var videoUrl in Model.youtubeUrls)
-                {
-                    <div class="video" style="display: inline-block;">
-                        <iframe width="200" height="180" src="@videoUrl" frameborder="0" allowfullscreen></iframe>
+                        </tr>
+                        @foreach (var gig in Model.gigs)
+                        {
+                            <tr>
+                                <td>@gig.gig.timeOfGig.ToShortDateString()</td>
+                                <td>@gig.gig.timeOfGig.ToString("hh:mm tt")</td>
+                                <td><button class="btn-default">@Html.ActionLink(gig.gig.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = gig.gig.Venue.VenueId }, null)</button></td>
+                                <td>
+
+                                    @foreach (var band in gig.bands)
+                                    {
+
+                                        <span> @Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null),</span>
+                                    }
+                                </td>
+                                @*<td>(@gig.formattedAddress)</td>*@
+                                <td><button class="btn-default" style="background-color: green;">@Html.ActionLink("DETAILS", "Details", "Gig", new { gigId = gig.gig.GigId }, null) </button></td>
+                            </tr>
+                        }
+                    </table>
+
+                </div>
+
+
+
+
+                <div id="twitterPosts" class="social">
+                    <h4 style="color: white;">twitter</h4>
+                    <div class="postScroller">
+                        <a class="twitter-timeline" href="https://twitter.com/@Model.band.Social.twitterHandle?ref_src=twsrc%5Etfw">Tweets by @Model.band.bandName</a>
                     </div>
-
-                }
-            }
-
-
-        </div>
-
-
-    </div>
-
-</div>
+                </div>
 
 
 
-
-
-
-
-
-
-
-
-<div class="col-md-7 cleanCol" style="display: none;">
-    <div id="socialContainer" style="display: flex; justify-content: space-between;">
-
-        <div id="twitterPosts" class="socialP" style="height: 500px; width: 370px; background-color: deepskyblue; text-align: center; border-radius: 15px; ">
-            <h4 style="color: white;">twitter</h4>
-            <div class="postScroller" style="overflow-y: scroll; overflow-x: hidden; width: 360px; max-height: 450px; background-color: white; display: inline-block; ">
-
-                <a class="twitter-timeline" href="https://twitter.com/@Model.band.Social.twitterHandle?ref_src=twsrc%5Etfw">Tweets by @Model.band.bandName</a>
-
-
+                <div id="facebookPosts" class="social">
+                    <h4 style="color: white;">facebook</h4>
+                    <div class="postScroller">
+                        @if (Model.facebookPermalinks.Count == 0)
+                        {
+                            <div class="postContainer">
+                                <h3 style="color: red;">Facebook Token Exipred</h3>
+                            </div>
+                        }
+                        else
+                        {
+                            foreach (var permaLink in Model.facebookPermalinks)
+                            {
+                                <div class="postContainer">
+                                    <div class="fb-post" data-href="@permaLink" data-width="300">
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
 
             </div>
+
         </div>
-
-
-
-        @if (Model.band.Social.facebookPageId != null)
-        {
-            <div id="facebookPosts" class="socialP" style="height: 500px; width: 370px; background-color: darkblue; text-align: center; border-radius: 15px; ">
-                <h4 style="color: white;">facebook</h4>
-                <div class="postScroller" style="overflow-y: scroll; overflow-x: hidden; max-width: 360px; max-height: 450px; background-color: white; display: inline-block; ">
-
-                    @if (Model.facebookPermalinks.Count == 0)
+        <div class="col-md-3">
+            <div class="contentCol" id="youtubeCol" style="height: 650px;">
+                <h4>YouTube</h4>
+                <div class="postScroller" style=" overflow-y: scroll;  max-height: 570px; background-color: transparent; text-align: center;">
+                    @if (Model.youtubeUrls.Count == 0)
                     {
-                        <div class="postContainer">
-                            <h3 style="color: red;">Facebook Token Exipred</h3>
-                        </div>
+
+                        <div class="video" style="width: 220px; height: 180px"><span><i>Youtube videos currently unavailable</i></span></div>
+                        <div class="video" style="width: 220px; height: 180px"><span><i>Youtube videos currently unavailable</i></span></div>
+                        <div class="video" style="width: 220px; height: 180px"><span><i>Youtube videos currently unavailable</i></span></div>
+                        <div class="video" style="width: 220px; height: 180px"><span><i>Youtube videos currently unavailable</i></span></div>
                     }
                     else
                     {
-                        foreach (var permaLink in Model.facebookPermalinks)
+                        foreach (var videoUrl in Model.youtubeUrls)
                         {
-                            <div class="postContainer">
-                                <div class="fb-post" data-href="@permaLink" data-width="360">
-                                </div>
+                            <div class="video" style="display: inline-block;">
+                                <iframe width="220" height="180" src="@videoUrl" frameborder="0" allowfullscreen></iframe>
                             </div>
+
                         }
                     }
+
+
                 </div>
+
+
             </div>
-
-
-        }
-
+        </div>
     </div>
-</div>
+
+
+
+   
+    
 
 
 
@@ -226,6 +224,15 @@
 
 
 
+
+
+
+
+    
+
+
+
+        
 
 
 
@@ -246,8 +253,24 @@
 
 
 
+            $("#ShowFacebook").click(function () {
+                $("#twitterPosts").hide();
+                $("#Gigs").hide();
+                $("#facebookPosts").show();
+            });
 
+            
+            $("#ShowTwitter").click(function () {
+                $("#facebookPosts").hide();
+                $("#Gigs").hide();
+                  $("#twitterPosts").show();
+            });
 
+            $("#ShowEvents").click(function () {
+                $("#facebookPosts").hide();
+                $("#twitterPosts").hide();
+                $("#Gigs").show();
+            });
 
 
 

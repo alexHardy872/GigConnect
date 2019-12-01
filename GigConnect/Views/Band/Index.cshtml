@@ -27,7 +27,7 @@
 
 <div id="messages">
   
-    <table class="table">
+    <table class="table" style="table-layout: fixed;">
         <tr>
             <td>
                 <button id="showInbox" class="btn-default" style=" height: 40px; width: 100%;font-weight: bold;">INBOX</button>
@@ -59,7 +59,7 @@
                         <tr>
                             <td> @message.timeStamp.ToShortDateString() </td>
                             <td> @message.timeStamp.ToString("hh:mm tt"):</td>
-                            <td style="font-weight: bold;">@message.Venue.venueName:</td>
+                            <td style="font-weight: bold;">@Html.ActionLink(message.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = message.Venue.VenueId },null) </td>
                             <td>@message.messageContent</td>
                             <td>
                                 <button style="background-color: black;">@Html.ActionLink("Reply", "Create", "Message", new { recipientId = message.Venue.VenueId, isBand = false }, null)</button>
@@ -67,20 +67,20 @@
                             </td>
                         </tr>
                     }
-                    else
-                    {
+                                                else
+                                                {
                         <tr style="color: gray">
                             <td> @message.timeStamp.ToShortDateString() </td>
                             <td> @message.timeStamp.ToString("hh:mm tt"):</td>
-                            <td style="font-weight: bold;">@message.Venue.venueName:</td>
+                            <td style="font-weight: bold;">@Html.ActionLink(message.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = message.Venue.VenueId }, null)</td>
                             <td>@message.messageContent</td>
                             <td>
                                 <button style="background-color: black;">@Html.ActionLink("Reply", "Create", "Message", new { recipientId = message.Venue.VenueId, isBand = false }, null)</button>
                                 <button style="background-color: black;">@Html.ActionLink("Unread", "ToggleRead", "Message", new { messageId = message.MessageId }, null)</button>
                             </td>
                         </tr>
-                    }
-                }
+                                                }
+                                            }
             </table>
         }
     </div>
@@ -91,7 +91,7 @@
             <div><span>NO MESSAGES SENT</span></div>
         }
         else
-        {
+                                        {
             <table class="table">
                 <tr>
                     <th>DATE</th>
@@ -101,11 +101,11 @@
                     <th>ACTIONS</th>
                 </tr>
                 @foreach (var message in Model.messagesOut)
-                {
+                                    {
                     <tr style="color: gray">
                         <td> @message.timeStamp.ToShortDateString() </td>
                         <td> @message.timeStamp.ToString("hh:mm tt"):</td>
-                        <td style="font-weight: bold;">@message.Venue.venueName:</td>
+                        <td style="font-weight: bold;">@Html.ActionLink(message.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = message.Venue.VenueId }, null)</td>
                         <td>@message.messageContent</td>
                         <td>
                             <button style="background-color: black;">@Html.ActionLink("Send Another?", "Create", "Message", new { recipientId = message.Venue.VenueId, isBand = false }, null)</button>
@@ -122,7 +122,7 @@
 
     <div id="requests">
 
-        <table class="table">
+        <table class="table" style="table-layout: fixed;">
             <tr>
                 <td>
                     <button id="showRequestsIn" class="btn-default" style=" height: 40px; width: 100%;font-weight: bold;">REQUESTS IN</button>
@@ -151,7 +151,7 @@
                         <th>ACTIONS</th>
                     </tr>
                     @foreach (var request in Model.requestsIn)
-                    {
+                            {
 
                         <tr>
                             <td> @request.timeStamp.ToShortDateString()  @@<span>@request.timeStamp.ToString("hh:mm tt")</span></td>
@@ -166,8 +166,8 @@
                                 <td> @request.Gig.timeOfGig.ToShortDateString()  @@<span>@request.Gig.timeOfGig.ToString("hh:mm tt")</span></td>
                             }
 
-                            <td style="font-weight: bold;">@request.Venue.venueName:</td>
-                            <td>@request.message</td>
+                        <td style="font-weight: bold;">@Html.ActionLink(request.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = request.Venue.VenueId }, null)</td>
+                            <td style="width: 40%">@request.message</td>
                             <td>
                                 <button class="btn-default" style="background-color: green;">@Html.ActionLink("ACCEPT", "ApproveRequest", "Request", new { requestId = request.RequestId }, null)</button>
                                 <button class="btn-default" style="background-color: red;">@Html.ActionLink("DECLINE", "DenyRequest", "Request", new { requestId = request.RequestId }, null)</button>
@@ -211,7 +211,7 @@
                                 <td> @request.Gig.timeOfGig.ToShortDateString()  @@<span>@request.Gig.timeOfGig.ToString("hh:mm tt")</span></td>
                             }
 
-                            <td style="font-weight: bold;">@request.Venue.venueName:</td>
+                        <td style="font-weight: bold;">@Html.ActionLink(request.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = request.Venue.VenueId }, null)</td>
                           
 
                             @if (request.approved == true)
@@ -269,7 +269,7 @@
                                 <td> @request.Gig.timeOfGig.ToShortDateString()  @@<span>@request.Gig.timeOfGig.ToString("hh:mm tt")</span></td>
                             }
 
-                            <td style="font-weight: bold;">@request.Venue.venueName:</td>
+                        <td style="font-weight: bold;">@Html.ActionLink(request.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = request.Venue.VenueId }, null)</td>
                             
 
                             @if (request.approved == true)
@@ -410,7 +410,33 @@
                             $("#showRequestsOut").css("font-weight", "normal");
                         });
                       
+                        
+                    updateNotification();
+                    function updateNotification() {
 
+                        if (@Model.messagesIn.Where(m => m.read == false).ToList().Count != 0) {
+                           // $("#showRequestsIn").css("color", "yellow");
+                            $("#showInbox").append("<span style='color: yellow; float: right;'> (@Model.messagesIn.Count Unread)<span>");
+                        }
+
+
+                        if (@Model.requestsIn.Count != 0) {
+                           // $("#showRequestsIn").css("color", "yellow");
+                            $("#showRequestsIn").append("<span style='color: yellow; float: right;'> (@Model.requestsIn.Count Unanswered)<span>");
+                        }
+
+                         if (@Model.requestsOut.Count != 0) {
+                           // $("#showRequestsIn").css("color", "yellow");
+                         $("#showRequestsOut").append("<span style='color: yellow; float: right;'> (@Model.requestsOut.Count Pending)<span>");
+                        }
+
+                          if (@Model.requestResponses.Count != 0) {
+                           // $("#showRequestsIn").css("color", "yellow");
+                            $("#showResponse").append("<span style='color: yellow; float: right;'> (@Model.requestResponses.Count NEW)<span>");
+                        }
+
+
+                    }
 
 
 
