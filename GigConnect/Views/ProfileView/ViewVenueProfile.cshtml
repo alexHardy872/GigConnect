@@ -26,9 +26,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8" style=" height: 700px; ">
-            <div class="contentCol" style="margin-right: 0px;">
-                <div style="height: 350px; overflow-y: scroll;">
+        <div class="col-md-8" style=" max-height: 700px; ">
+            <div class="contentCol" style="margin-right: 0px; min-height: 50%;">
+                <div style="height: 300px; overflow-y: scroll;">
                     <div>
                         <h4>Upcoming Events at @Model.venue.venueName</h4>
                         @if (Model.gigs.Count == 0)
@@ -94,17 +94,25 @@
                     </div>
                 </div>
             </div>
-            <div class="contentCol" style="height: 270px; margin-right: 0px; margin-top: 20px; padding: 5px;">
-                <div>
-                    <h6>Reviews</h6>
-                    @if (Model.reviews.Count == 0)
-                    {
-                        <p> This venue does not have any reviews yet.. @Html.ActionLink("Be the first!", "Create", "Review", new { reviewedId = Model.venue.VenueId, isBand = false }, null)</p>
-                    }
-                    else
-                    {
-                        <div style="height: 240px; overflow-y: scroll;">
-                            <span id="score">Average rating (@Model.score out of 5) </span><button class="btn-default">@Html.ActionLink("Write a Review", "Create", "Review", new { reviewedId = Model.venue.VenueId, isBand = false }, null)</button>
+            <div class="contentCol" style="min-height: 50%; margin-right: 0px; margin-top: 20px; padding: 5px;">
+                <div style="padding-left: 10px; height: 260px;">
+                    <div style="float: left;">
+
+                        <h6>Reviews</h6>
+                        @if (Model.reviews.Count == 0)
+                        {
+                            <p> This venue does not have any reviews yet.. @Html.ActionLink("Be the first!", "Create", "Review", new { reviewedId = Model.venue.VenueId, isBand = false }, null)</p>
+                        }
+
+                        <span id="score" style="margin-top: 10px;">  Average rating (@Model.score out of 5) </span>
+
+                    </div>
+                    
+                    
+                        
+
+                        <button class="btn-default" style="float: right; margin-right: 10px; margin-top: 10px;">@Html.ActionLink("Write a Review", "Create", "Review", new { reviewedId = Model.venue.VenueId, isBand = false }, null)</button>
+                        <div style="height: 200px; overflow-y: scroll; width: 100%; clear: left; ">
 
                             <table class="table">
                                 @foreach (var review in Model.reviews)
@@ -137,7 +145,7 @@
                                 }
                             </table>
                         </div>
-                    }
+                    
                 </div>
             </div>
         </div>

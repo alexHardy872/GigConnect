@@ -39,9 +39,9 @@ namespace GigConnect.Controllers
             model.band = band;
             model.facebookImageUrl = await FacebookAPI.GetProfilePicture(socials.facebookPageId);
              model.facebookPermalinks = await FacebookAPI.GetPermaUrlFromPost(socials.facebookPageId);
-            // model.youtubeUrls = await GetYoutubeUrls(band);
+             model.youtubeUrls = await GetYoutubeUrls(band);
             //model.facebookPermalinks = new List<string>(); // place holder for less API calls
-            model.youtubeUrls = new List<string>();
+            //model.youtubeUrls = new List<string>();
             
             model.reviews = GetBandReviews(band);
             model.score = AverageReviews(model.reviews);

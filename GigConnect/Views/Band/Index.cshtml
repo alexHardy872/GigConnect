@@ -422,16 +422,19 @@
 
                         if (@Model.requestsIn.Count != 0) {
                            // $("#showRequestsIn").css("color", "yellow");
+
                             $("#showRequestsIn").append("<span style='color: yellow; float: right;'> (@Model.requestsIn.Count Unanswered)<span>");
                         }
 
                          if (@Model.requestsOut.Count != 0) {
                            // $("#showRequestsIn").css("color", "yellow");
+
                          $("#showRequestsOut").append("<span style='color: yellow; float: right;'> (@Model.requestsOut.Count Pending)<span>");
                         }
 
                           if (@Model.requestResponses.Count != 0) {
                            // $("#showRequestsIn").css("color", "yellow");
+
                             $("#showResponse").append("<span style='color: yellow; float: right;'> (@Model.requestResponses.Count NEW)<span>");
                         }
 
