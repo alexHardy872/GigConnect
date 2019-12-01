@@ -188,7 +188,7 @@
                     <tr class="headRow">
                         <th>SENT</th>
                         <th>DATE/TIME OF GIG</th>
-                        <th>VENUE</th>
+                        <th>BAND</th>
                         <th>STATUS</th>
                         <th>ACTIONS</th>
                     </tr>
@@ -208,7 +208,7 @@
                                 <td> @request.Gig.timeOfGig.ToShortDateString()  @@<span>@request.Gig.timeOfGig.ToString("hh:mm tt")</span></td>
                             }
 
-                            <td style="font-weight: bold;">@request.Venue.venueName:</td>
+                            <td style="font-weight: bold;">@request.Band.bandName:</td>
 
 
                             @if (request.approved == true)

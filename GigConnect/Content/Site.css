@@ -5,8 +5,8 @@
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -72,7 +72,7 @@ textarea {
 }
 
 .body-content{
-    margin: 100px;
+    margin: 20px;
 }
 
 .container{
@@ -88,10 +88,16 @@ body {
 
 .contentCol {
     background-image: linear-gradient( #222222, black);
-    margin-right: 20px;
+    margin-right: 15px;
     border: 4px solid rgba(94, 255, 77, 0.50);
+    border-radius: 15px;
 }
 
+#youtubeCol {
+    background-image: linear-gradient( rgba(245, 0, 0, 0.73), transparent);
+    border-color: rgba(255, 255, 255, 0.73);
+    margin-right: 0px;
+}
 .cleanCol {
     margin-right: 0;
     margin-left: 0;
@@ -147,5 +153,13 @@ body {
 
 
     tr:hover{
+        background-color: black;
+    }
+
+    .video{
+        margin-right: 0px;
+        margin-left: 0px;
+        margin-top: 10px;
+        margin-bottom: 10px;
         background-color: black;
     }
