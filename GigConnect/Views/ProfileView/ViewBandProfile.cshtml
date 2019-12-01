@@ -7,7 +7,7 @@
 
 
     <div class="row">
-        <div class="col-md-4 contentCol" style="height: 520px;">
+        <div class="col-md-4 contentCol" style="height: 600px;">
             <div style="display: inline-block">
                 <div style="text-align: center;">
                     <h4>@Model.band.bandName (@Model.band.genre) - @Model.band.town</h4>
@@ -45,8 +45,8 @@
                     }
                     else
                     {
-                        <div style="height: 50px; overflow-y: scroll;">
-                        <span id="score">Average rating (@Model.score/4) </span><button class="btn-default">@Html.ActionLink("Write a Review", "Create", "Review", new { reviewedId = Model.band.BandId, isBand = true }, null)</button>
+                        <div style="height: 120px; overflow-y: scroll;">
+                        <span id="score">Average rating @Model.score out of 5 </span><button class="btn-default">@Html.ActionLink("Write a Review", "Create", "Review", new { reviewedId = Model.band.BandId, isBand = true }, null)</button>
 
                         <table class="table">
 
@@ -55,10 +55,30 @@
                                 if (review.content != null)
                                 {
 
-                                    <tr>
-                                        <td><strong>@review.rating</strong></td>
-                                        <td>@review.content</td>
-                                    </tr>
+                            <tr>
+                                @if ((int)review.rating == 0)
+                                {
+                                    <td style="color: red;"><strong>@review.rating</strong>!</td>
+                                }
+                                else if ((int)review.rating == 1)
+                                {
+                                    <td style="color: orange;"><strong>@review.rating</strong></td>
+                                }
+                                else if ((int)review.rating == 2)
+                                {
+                                    <td style="color: yellow;"><strong>@review.rating</strong></td>
+                                }
+                                else if ((int)review.rating == 3)
+                                {
+                                    <td style="color: green;"><strong>@review.rating</strong></td>
+                                }
+                                else if ((int)review.rating == 4)
+                                {
+                                    <td style="color: lawngreen;"><strong>@review.rating</strong>!</td>
+                                }
+
+                                <td>@review.content</td>
+                            </tr>
 
                                 }
                             }
@@ -139,8 +159,8 @@
                     @foreach (var gig in Model.gigs)
                     {
                         <tr>
-                            <td>@gig.gig.timeOfGig.Date</td>
-                            <td>@gig.gig.timeOfGig.TimeOfDay</td>
+                            <td>@gig.gig.timeOfGig.ToShortDateString()</td>
+                            <td>@gig.gig.timeOfGig.ToString("hh:mm tt")</td>
                             <td>@gig.gig.Venue.venueName</td>
                             <td>
 
@@ -188,7 +208,7 @@
 <div id="youtubeVids" style="height: 300px; width: 1200px; background-color: red; text-align: center; border-radius: 15px;">
     <h2 style="color: white;">Youtube Videos</h2>
     <div class="postScroller" style=" overflow-y: hidden;  max-height: 280px; background-color: white; display: inline-block; ">
-        @if (Model.youtubeUrls[0] == "failure")
+        @if (Model.youtubeUrls.Count == 0)
         {
 
             <div style="width: 250px; height: 200px"><span><i>Youtube videos currently unavailable</i></span></div>

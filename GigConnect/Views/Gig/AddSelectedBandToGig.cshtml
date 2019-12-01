@@ -28,27 +28,35 @@ else
             {
                 <tr>
                     <td>
-                        @gig.gig.timeOfGig.Date
+                        @gig.gig.timeOfGig.ToShortDateString()
                     </td>
                     <td>
-                        @gig.gig.timeOfGig.TimeOfDay
+                        @gig.gig.timeOfGig.ToString("hh:mm tt")
                     </td>
                     <td>
                         @gig.gig.description
                     </td>
                     <td>
-                        @foreach (var band in gig.bands)
+                        @if (gig.bands.Count == 0)
                         {
-                        <span>@Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null), </span>
-
+                            <i style="color: grey;">No bands confirmed!</i>
                         }
+                        else
+                        {
+                            foreach (var band in gig.bands)
+                            {
+                                <span>@Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null), </span>
+
+                            }
+                        }
+
                     </td>
                     <td>
                         @gig.formattedAddress
                     </td>
 
                     <td>
-                        <button class="btn-defeault">@Html.ActionLink("Ask " + Model.band.bandName + " to join", "Create", "Request", new { bandId = Model.band.BandId, venueId = gig.gig.venueId, gigId = gig.gig.GigId }, null)</button>
+                        <button class="btn-default">@Html.ActionLink("Ask " + Model.band.bandName + " to join", "Create", "Request", new { bandId = Model.band.BandId, venueId = gig.gig.venueId, gigId = gig.gig.GigId }, null)</button>
                     </td>
                 </tr>
             }

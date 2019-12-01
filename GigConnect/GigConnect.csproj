@@ -196,6 +196,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BandController.cs" />
+    <Compile Include="Controllers\BandFilterController.cs" />
     <Compile Include="Controllers\GigController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -237,6 +238,7 @@
     <Compile Include="Models\VenueReview.cs" />
     <Compile Include="Models\ViewModels\AddBandToGigViewModel.cs" />
     <Compile Include="Models\ViewModels\BandIndexViewModel.cs" />
+    <Compile Include="Models\ViewModels\BandPicViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateAndEditViewModel.cs" />
     <Compile Include="Models\ViewModels\GigInfoViewModel.cs" />
     <Compile Include="Models\ViewModels\BandProfileViewModel.cs" />
@@ -334,6 +336,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ViewComponents\" />
+    <Folder Include="Views\BandFilter\" />
     <Folder Include="Views\Role\" />
   </ItemGroup>
   <ItemGroup>

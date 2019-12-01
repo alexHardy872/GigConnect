@@ -50,16 +50,20 @@ namespace GigConnect.Controllers
 
         public async Task<ActionResult> ApproveRequest(int requestId)
         {
-
             Request request = GetRequestById(requestId);
-            if(request.eventId == null)
+           
+            request.approved = true;
+            await context.SaveChangesAsync();
+            if (request.eventId == null)
             {
                 // create gig
                 return RedirectToAction("CreateGigFromRequest", "Gig", new { requestId = requestId });
             }
-            request.approved = true;
-            await context.SaveChangesAsync();
-            return RedirectToAction("Index", "Home");
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
         }
 
         public async Task<ActionResult> DenyRequest(int requestId)

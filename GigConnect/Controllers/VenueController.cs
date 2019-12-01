@@ -130,10 +130,18 @@ namespace GigConnect.Controllers
             }
         }
 
-        public ActionResult BandDirectory()
+        public async Task<ActionResult> BandDirectory()
         {
-            List<Band> bands = context.Bands.ToList();
-            return View(bands);
+            List<Band> bands = context.Bands.Include("Social").ToList();
+            List<BandPicViewModel> models = new List<BandPicViewModel>();
+            foreach(Band band in bands)
+            {
+                BandPicViewModel temp = new BandPicViewModel();
+                temp.band = band;
+                temp.facebookUrl = await FacebookAPI.GetProfilePicture(band.Social.facebookPageId);
+                models.Add(temp);
+            }
+            return View(models);
         }
 
         public VenueIndexViewModel AssembleIndexViewModelForVenue()
@@ -219,7 +227,7 @@ namespace GigConnect.Controllers
         public List<Message> GetAllMessagesIn(int venueId)
         {
             List<Message> messages = context.Messages
-                .Include("Venue").Include("Band").Where(m => m.venueId == venueId && m.from == "Band").ToList();
+                .Include("Venue").Include("Band").Where(m => m.venueId == venueId && m.from == "Band").OrderByDescending(o => o.timeStamp).ToList();
             return messages;
         }
 
@@ -228,30 +236,30 @@ namespace GigConnect.Controllers
         public List<Message> GetAllMessagesOut(int venueId)
         {
             List<Message> messages = context.Messages
-                .Include("Venue").Include("Band").Where(m => m.venueId == venueId && m.from == "Venue").OrderBy(d => d.timeStamp).ToList();
+                .Include("Venue").Include("Band").Where(m => m.venueId == venueId && m.from == "Venue").OrderByDescending(d => d.timeStamp).ToList();
             return messages;
         }
 
         public List<Request> GetRequestsIn(int venueId)
         {
             List<Request> requestsIn = context.Requests
-                .Include("Venue").Include("Band").Where(r => r.venueId ==venueId && r.fromVenue == true && r.approved == false && r.denied == false)
-                .OrderBy(o => o.timeStamp).ToList();
+                .Include("Venue").Include("Band").Include("Gig").Where(r => r.venueId ==venueId && r.fromVenue == false && r.approved == false && r.denied == false)
+                .OrderByDescending(o => o.timeStamp).ToList();
             return requestsIn;
         }
         public List<Request> GetRequestsOut(int venueId)
         {
             List<Request> requestsIn = context.Requests
-                .Include("Venue").Include("Band").Where(r => r.venueId == venueId && r.fromVenue == true && r.approved == false && r.denied == false)
-                .OrderBy(o => o.timeStamp).ToList();
+                .Include("Venue").Include("Band").Include("Gig").Where(r => r.venueId == venueId && r.fromVenue == true && r.approved == false && r.denied == false)
+                .OrderByDescending(o => o.timeStamp).ToList();
             return requestsIn;
         }
 
         public List<Request> GetRespondedRequests(int venueId)
         {
             List<Request> requestsOut = context.Requests
-                            .Include("Venue").Include("Band").Where(r => r.venueId == venueId && r.fromVenue == true && r.approved == true || r.denied == true)
-                            .OrderBy(o => o.timeStamp).ToList();
+                            .Include("Venue").Include("Band").Include("Gig").Where(r => r.venueId == venueId && r.fromVenue == true && r.approved == true || r.denied == true)
+                            .OrderByDescending(o => o.timeStamp).ToList();
             return requestsOut;
         }
 
@@ -261,7 +269,7 @@ namespace GigConnect.Controllers
             List<Review> reviews = context.VenueReviews
                 .Include("Review")
                 .Where(r => r.venueId == venue.VenueId)
-                .Select(s => s.Review).ToList();
+                .Select(s => s.Review).OrderByDescending(o => o.timeStamp).ToList();
             return reviews;
         }
 
@@ -273,7 +281,7 @@ namespace GigConnect.Controllers
             foreach (Review review in reviews)
             {
                 int ratingEnum = (int)review.rating + 1;
-                score += Convert.ToDouble(review.rating);
+                score += Convert.ToDouble(ratingEnum);
             }
             double average = score / reviews.Count;
             return Math.Round(average, 1);

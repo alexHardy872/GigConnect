@@ -38,8 +38,11 @@ namespace GigConnect.Controllers
             SocialMediaIds socials = GetBandSocials(band.socialId);
             model.band = band;
             model.facebookImageUrl = await FacebookAPI.GetProfilePicture(socials.facebookPageId);
-            model.facebookPermalinks = await FacebookAPI.GetPermaUrlFromPost(socials.facebookPageId);
-            model.youtubeUrls = await GetYoutubeUrls(band);
+            // model.facebookPermalinks = await FacebookAPI.GetPermaUrlFromPost(socials.facebookPageId);
+            // model.youtubeUrls = await GetYoutubeUrls(band);
+            model.facebookPermalinks = new List<string>(); // place holder for less API calls
+            model.youtubeUrls = new List<string>();
+            
             model.reviews = GetBandReviews(band);
             model.score = AverageReviews(model.reviews);
             model.gigs =  GetGigViewModel(GetGigs(band));
@@ -149,7 +152,7 @@ namespace GigConnect.Controllers
             foreach(Review review in reviews)
             {
                 int ratingEnum = (int)review.rating + 1;
-                score += Convert.ToDouble(review.rating);
+                score += Convert.ToDouble(ratingEnum);
             }
             double average = score / reviews.Count;
             return Math.Round(average, 1);
@@ -162,7 +165,7 @@ namespace GigConnect.Controllers
 
         public List<Band> GetBandsOnGig(Gig gig)
         {
-            List<Band> bands = context.BandGigs.Where(g => g.gigId == gig.GigId).Select(s => s.Band).ToList();
+            List<Band> bands =  context.BandGigs.Where(g => g.gigId == gig.GigId).Select(s => s.Band).ToList();
             return bands;
 
         }

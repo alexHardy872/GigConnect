@@ -4,111 +4,138 @@
 
 
 
-<div class="container">
+
     <div class="row">
         <div class="col-md-4 contentCol">
-            <div>
-                <h4>@Model.venue.venueName (@Model.venue.town)</h4>
-                <br />
-                <a href="@Model.venue.websiteUrl">Venue Website</a>
+            <div >
+                <div>
+                    <h4>@Model.venue.venueName (@Model.venue.town)</h4>
+                    <p>@Model.venue.description</p>
+                    <a href="@Model.venue.websiteUrl">Venue Website</a>
 
-                @if (User.IsInRole("Band"))
-                {
-                    <button class="btn-default ">@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
-                    <button class="btn-default">@Html.ActionLink("Book a Show", "Create", "Request", new { bandId = Model.currentBand.BandId, venueId = Model.venue.VenueId }, null)</button>
-                    <h6>@Model.distance.travelDistance miles from you (@Model.distance.travelDuration minutes)</h6>
-                }
-                <br />
-                <span>@GigConnect.Services.GeoCode.FormatAddress(Model.venue.Location)</span>
-                <div id="map" style="height: 350px; width: 90%;"></div>
-
-
-            </div>
-            <div>
-                <h4>Reviews</h4>
-                @if (Model.reviews.Count == 0)
-                {
-                    <p> This venue does not have any reviews yet.. @Html.ActionLink("Be the first!", "Create", "Review", new { reviewedId = Model.venue.VenueId, isBand = false }, null)</p>
-                }
-                else
-                {
-                    <span id="score">Average rating (@Model.score/4) </span><button class="btn-default">@Html.ActionLink("Write a Review", "Create", "Review", new { reviewedId = Model.venue.VenueId, isBand = false })</button>
-
-                    <table class="table">
-                        @foreach (var review in Model.reviews)
-                        {
-                            <tr>
-                                <td><strong>@review.rating</strong></td>
-                                <td>@review.content</td>
-                            </tr>
-                        }
-                    </table>
-                }
-            </div>
-        </div>
-        <div class="col-md-4 contentCol">
-            <div>
-                <h4>Upcoming Events at @Model.venue.venueName</h4>
-                @if(Model.gigs.Count == 0)
-                {
+                    @if (User.IsInRole("Band"))
+                    {
+                        <button class="btn-default ">@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = Model.venue.VenueId, isBand = false }, null)</button>
+                        <button class="btn-default">@Html.ActionLink("Book a Show", "Create", "Request", new { bandId = Model.currentBand.BandId, venueId = Model.venue.VenueId }, null)</button>
+                        <h6>@Model.distance.travelDistance miles from you (@Model.distance.travelDuration minutes)</h6>
+                    }
                     <br />
-                    <p><i>No gigs on current schedule!</i></p>
-                }
-                else
-                {
-            <table class="table" style="width: 100%;">
-                <tr>
-                    <th>
-                        Date
-                    </th>
-                    <th>
-                        Time
-                    </th>
-                    <th>
-                        Bands
-                    </th>
-                    <th>
-                        Description
-                    </th>
-                    <th>
+                    <span>@GigConnect.Services.GeoCode.FormatAddress(Model.venue.Location)</span>
+                    <div id="map" style="height: 350px; width: 90%;"></div>
 
-                    </th>
-                </tr>
 
-                @foreach (var gig in Model.gigs)
-                {
+                </div>
+                <div>
+                    <h6>Reviews</h6>
+                    @if (Model.reviews.Count == 0)
+                    {
+                        <p> This venue does not have any reviews yet.. @Html.ActionLink("Be the first!", "Create", "Review", new { reviewedId = Model.venue.VenueId, isBand = false }, null)</p>
+                    }
+                    else
+                    {
+                        <div style="height: 180px; overflow-y: scroll;">
+                            <span id="score">Average rating (@Model.score out of 5) </span><button class="btn-default">@Html.ActionLink("Write a Review", "Create", "Review", new { reviewedId = Model.venue.VenueId, isBand = false }, null)</button>
 
-                    <tr>
-                        <td>@gig.gig.timeOfGig.ToShortDateString()</td>
-                    
-                        <td>@gig.gig.timeOfGig.ToString("hh:mm tt")</td>
+                            <table class="table">
+                                @foreach (var review in Model.reviews)
+                                {
+                                    <tr>
+                                        @if ((int)review.rating == 0)
+                                        {
+                                            <td style="color: red;"><strong>@review.rating</strong>!</td>
+                                        }
+                                        else if ((int)review.rating == 1)
+                                        {
+                                            <td style="color: orange;"><strong>@review.rating</strong></td>
+                                        }
+                                        else if ((int)review.rating == 2)
+                                        {
+                                            <td style="color: yellow;"><strong>@review.rating</strong></td>
+                                        }
+                                        else if ((int)review.rating == 3)
+                                        {
+                                            <td style="color: green;"><strong>@review.rating</strong></td>
+                                        }
+                                        else if ((int)review.rating == 4)
+                                        {
+                                            <td style="color: lawngreen;"><strong>@review.rating</strong>!</td>
+                                        }
 
-                        <td>
-                            @foreach (var band in gig.bands)
+
+                                        <td>@review.content</td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+                </div>
+        <div class="col-md-7 contentCol">
+            <div style="max-height: 750px;">
+                <div overflow-y: scroll;">
+                    <h4>Upcoming Events at @Model.venue.venueName</h4>
+                    @if (Model.gigs.Count == 0)
+                    {
+                        <br />
+                        <p><i>No gigs on current schedule!</i></p>
+                    }
+                    else
+                    {
+                        <table class="table" style="width: 100%;">
+                            <tr>
+                                <th>Date </th>
+                                <th> Time</th>
+                                <th>Bands </th>
+                                <th>Description</th>
+                                <th> Status </th>
+                            </tr>
+
+                            @foreach (var gig in Model.gigs)
                             {
-                     <span>@Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null), </span>
 
-                              }
-                        </td>
-                        <td>@gig.gig.description</td>
-                    
+                                <tr>
+                                    <td>@gig.gig.timeOfGig.ToShortDateString()</td>
 
-                        <td>
-                           @if (gig.gig.open == true && User.IsInRole("Band"))
-                            {
-                                <span>@Html.ActionLink("Request to Join", "Create", "Request", new { bandId = Model.currentBand.BandId, venueId = Model.venue.VenueId, gigId = gig.gig.GigId }, null), </span>
+                                    <td>@gig.gig.timeOfGig.ToString("hh:mm tt")</td>
+
+                                    <td>
+                                        @foreach (var band in gig.bands)
+                                        {
+                                            <span>@Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null), </span>
+
+                                        }
+                                    </td>
+                                    <td>@gig.gig.description</td>
+                                    <td>
+                                        @if (User.IsInRole("Band"))
+                                        {
+                                            if (gig.gig.open == true)
+                                            {
+                                                <span>@Html.ActionLink("Request to Join", "Create", "Request", new { bandId = Model.currentBand.BandId, venueId = Model.venue.VenueId, gigId = gig.gig.GigId }, null), </span>
+                                            }
+                                            else
+                                            {
+                                                <span><i>this gig is closed to new bands</i></span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (gig.gig.open == false)
+                                            {
+                                                <span><i>closed</i></span>
+                                            }
+                                            else
+                                            {
+                                                <span><i>booking...</i></span>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
                             }
-                            else
-                            {
-                                <span><i>this gig is closed to new bands</i></span>
-                            }
-                        </td>
-                        </tr>
-
-
-                }
-            </table>
-                }
+                        </table>
+                    }
+                </div>
             </div>
         </div>
         <div class="col-md-4">
@@ -126,7 +153,7 @@
 
         </div>
     </div>
-</div>
+
 
 
 

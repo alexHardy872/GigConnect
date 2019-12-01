@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace GigConnect.Controllers
 {
+    [Authorize(Roles = "Venue")]
     public class GigController : Controller
     {
         ApplicationDbContext context;
@@ -34,6 +35,7 @@ namespace GigConnect.Controllers
             Gig gig = new Gig();
             gig.venueId = GetUserVenue().VenueId;
             gig.open = true;
+            gig.timeOfGig = DateTime.Now;
 
 
             return View(gig);
@@ -45,8 +47,9 @@ namespace GigConnect.Controllers
 
             context.Gigs.Add(gig);
             await context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","Home");
         }
+
 
         public async Task<ActionResult> CreateGigFromRequest(int requestId)
         {
@@ -78,7 +81,7 @@ namespace GigConnect.Controllers
         }
 
       
-
+        
         public async Task<ActionResult> AddBandToGig(int bandId, int gigId)
         {
             BandGig junction = new BandGig();
@@ -90,12 +93,33 @@ namespace GigConnect.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public async Task<ActionResult> Edit(int gigId)
+        {
+            GigInfoViewModel model = new GigInfoViewModel();
+            model.gig = GetGigFromId(gigId);
+            model.bands = GetBandsOnGig(model.gig);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(GigInfoViewModel model)
+        {
+            Gig gigToEdit = GetGigFromId(model.gig.GigId);
+            gigToEdit.open = model.gig.open;
+            gigToEdit.timeOfGig = model.gig.timeOfGig;
+            gigToEdit.venueId = model.gig.venueId;
+            gigToEdit.description = model.gig.description;
+            await context.SaveChangesAsync();
+            return View("Index", "Home");
+        }
+
         public async Task<ActionResult> RemoveBandFromGig(int bandId, int gigId)
         {
             BandGig toRemove = context.BandGigs.Where(g => g.bandId == bandId && g.gigId == gigId).FirstOrDefault();
             context.BandGigs.Remove(toRemove);
             await context.SaveChangesAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("RemoveBandsFromLineUp", new { gigId = gigId });
         }
 
         public ActionResult RemoveBandsFromLineUp(int gigId)
@@ -107,6 +131,8 @@ namespace GigConnect.Controllers
 
             return View(model);
         }
+
+        // in edit view have buttons to remove a band from a gig that return the same view but also a description and tim ect
 
         public ActionResult ToggleGigOpen(int gigId)
         {

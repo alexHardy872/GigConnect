@@ -261,14 +261,14 @@ namespace GigConnect.Controllers
         public List<Request> GetRequestsIn(int bandId)
         {
             List<Request> requestsIn = context.Requests
-                .Include("Venue").Include("Band").Where(r => r.bandId == bandId && r.fromVenue == true && r.approved == false && r.denied == false)
+                .Include("Venue").Include("Band").Include("Gig").Where(r => r.bandId == bandId && r.fromVenue == true && r.approved == false && r.denied == false)
                 .OrderByDescending(d => d.timeStamp).ToList();
             return requestsIn;
         }
         public List<Request> GetRequestsOut(int bandId)
         {
             List<Request> requestsOut = context.Requests
-                .Include("Venue").Include("Band").Where(r => r.bandId == bandId && r.fromVenue == true && r.approved == false && r.denied == false)
+                .Include("Venue").Include("Band").Where(r => r.bandId == bandId && r.fromVenue == false && r.approved == false && r.denied == false)
                 .OrderByDescending(d => d.timeStamp).ToList();
             return requestsOut;
         }
