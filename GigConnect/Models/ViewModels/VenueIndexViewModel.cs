@@ -13,7 +13,7 @@ namespace GigConnect.Models.ViewModels
 
         public List<GigInfoViewModel> currentGigs { get; set; }
 
-        public List<GigInfoViewModel> openGigs { get; set; }
+        //public List<GigInfoViewModel> openGigs { get; set; }
 
         public List<Message> messagesIn { get; set; }
 

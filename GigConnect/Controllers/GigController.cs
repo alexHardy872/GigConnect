@@ -161,11 +161,12 @@ namespace GigConnect.Controllers
 
         // in edit view have buttons to remove a band from a gig that return the same view but also a description and tim ect
 
-        public ActionResult ToggleGigOpen(int gigId)
+        public async Task<ActionResult> ToggleGigOpen(int gigId)
         {
             Gig gig = GetGigFromId(gigId);
             gig.open = !gig.open;
-            return RedirectToAction("Home", "Index");
+            await context.SaveChangesAsync();
+            return RedirectToAction("Index", "Home");
 
 
         }

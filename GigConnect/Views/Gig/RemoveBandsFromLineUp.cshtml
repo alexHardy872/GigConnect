@@ -4,29 +4,46 @@
     ViewBag.Title = "RemoveBandsFromLineUp";
 }
 
-<h2>RemoveBandsFromLineUp</h2>
 
 
-<table class="table">
-    <tr>
-        <th>
-            Band
-        </th>
-        <th>
-            Action
-        </th>
-    </tr>
+<div class="row">
+    <div class="col-md-4">
 
-@foreach (var band in Model.bands) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => band.bandName)
-        </td>
-        <td>
-           
-            <button class="btn-default" style="background-color: red;">@Html.ActionLink("Remove", "RemoveBandFromGig", new { bandId = band.BandId, gigId = Model.gig.GigId })</button>
-        </td>
-    </tr>
-}
+    </div>
+    <div class="col-md-4">
+        <div class="contentCol">
+            <h6>RemoveBandsFromLineUp</h6>
+            <table class="table">
+                <tr>
+                    <th>
+                        Band
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
 
-</table>
+                @foreach (var band in Model.bands)
+                {
+                    <tr>
+                        <td>
+                            @band.bandName;
+                        </td>
+                        <td style="width: 20%;">
+
+                            <button class="btn-default" style="background-color: red;">@Html.ActionLink("Remove", "RemoveBandFromGig", new { bandId = band.BandId, gigId = Model.gig.GigId })</button>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+
+        </div>
+        <button class="btn-default" >@Html.ActionLink("Back To Edit", "Edit", "Gig", new {gigId = Model.gig.GigId }, null)</button>
+
+    </div>
+    <div class="col-md-4">
+
+    </div>
+</div>

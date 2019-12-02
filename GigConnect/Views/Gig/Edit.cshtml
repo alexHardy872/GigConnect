@@ -1,65 +1,67 @@
-﻿@model GigConnect.Models.Gig
+﻿@model GigConnect.Models.ViewModels.GigInfoViewModel
 
 @{
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+    <div class="contentCol">
+        <h2>Edit Gig </h2>
 
-@using (Html.BeginForm())
-{
+        @using (Html.BeginForm())
+        {
 
 
-    @Html.AntiForgeryToken()
+            @Html.AntiForgeryToken()
 
-    @Html.HiddenFor(x => x.GigId)
-   
-    @Html.HiddenFor(x => x.venueId)
-    
+            @Html.HiddenFor(x => x.gig.GigId)
 
-    <div class="form-horizontal">
-        <h4>Gig</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.GigId)
+            @Html.HiddenFor(x => x.gig.venueId)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+            <div>
+                <button class="btn-default">@Html.ActionLink("EDIT LINEUP", "RemoveBandsFromLineUp", "Gig", new { gigId = Model.gig.GigId }, null)</button>
             </div>
-        </div>
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.gig.GigId)
+                @Html.HiddenFor(model => model.gig.venueId)
 
-   
+                <div class="form-group">
+                    @Html.LabelFor(model => model.gig.description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.timeOfGig, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.timeOfGig, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.timeOfGig, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        @Html.TextAreaFor(model => model.gig.description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.gig.description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.open, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.open)
-                    @Html.ValidationMessageFor(model => model.open, "", new { @class = "text-danger" })
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.gig.timeOfGig, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.gig.timeOfGig, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.gig.timeOfGig, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.gig.open, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.gig.open)
+                            @Html.ValidationMessageFor(model => model.gig.open, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
+        }
     </div>
-}
 
-<div>
-    <button class="btn-default">@Html.ActionLink("EDIT LINEUP", "RemoveBandFromLineUp", "Gig", new { gigId = Model.GigId }, null)</button>
 
-</div>

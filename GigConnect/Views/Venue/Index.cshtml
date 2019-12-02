@@ -2,18 +2,329 @@
 
 @model GigConnect.Models.ViewModels.VenueIndexViewModel
 
-<h2>@Model.venue.venueName</h2>
 
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-4">
-
+<div class="row bord">
+    <div class="col-lg-12">
+        <div class="contentCol">
+            <h4>@Model.venue.venueName - Home</h4>
         </div>
-        <div class="col-md-4">
+    </div>
+</div>
+<div class="row bord">
+    <div class="col-sm-3 bord" style="height: 700px;">
+        <button id="showGigs" class="btn-default dashBtn"><span class="dashHead">Gigs</span></button>
+        <button id="showInbox" class="btn-default dashBtn"><span class="dashHead">Inbox</span></button>
+        <button id="showOutbox" class="btn-default dashBtn"><span class="dashHead">Outbox</span></button>
+        <button id="showRequestsIn" class="btn-default dashBtn"><span class="dashHead">Requests</span></button>
+        <button id="showRequestsOut" class="btn-default dashBtn"><span class="dashHead">Pending Requests</span></button>
+        <button id="showResponse" class="btn-default dashBtn"><span class="dashHead">Responses</span></button>
+    </div>
+    <div class="col-lg-9 bord">
+        <div class="contentCol">
 
-        </div>
-        <div class="col-md-4">
+            <div id="Gigs" style="height: 500px; overflow-y: scroll;">
+                <h4>Upcoming Shows</h4>
+                <table class="table small-gigs-table" width="100%">
+                    <tr>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Bands</th>
+                        <th>Discription</th>
+                        <th></th>
+                    </tr>
+                    @foreach (var gig in Model.currentGigs)
+                    {
+                        <tr>
+                            @if (gig.gig.open == true)
+                            {
+                                <td style="background-color: rgba(233, 212, 96, 1); color: black;"><i>Booking...</i></td>
+                            }
+                            else
+                            {
+                                <td>BOOKED</td>
+                            }
+
+                            <td>@gig.gig.timeOfGig.ToShortDateString()</td>
+                            <td>@gig.gig.timeOfGig.ToString("hh:mm tt")</td>
+                            <td>
+
+                                @foreach (var band in gig.bands)
+                                {
+
+                                    <span> @Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null),</span>
+                                }
+                            </td>
+                            <td style="width: 40%;">@gig.gig.description</td>
+
+                            <td>
+                                <button class="btn-default tdBtnV">@Html.ActionLink("Edit", "Edit", "Gig", new { gigId = gig.gig.GigId }, null)</button>
+                                @if (gig.gig.open == true)
+                                {
+                                    <button class="btn-default tdBtnV">@Html.ActionLink("CLOSE", "ToggleGigOpen", "Gig", new { gigId = gig.gig.GigId }, null)</button>
+                                }
+                                else
+                                {
+                                    <button class="btn-default tdBtnV">@Html.ActionLink("OPEN", "ToggleGigOpen", "Gig", new { gigId = gig.gig.GigId }, null)</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </table>
+
+            </div>
+
+            <div id="inbox" style="display: none;">
+                @if (Model.messagesIn.Count == 0)
+                {
+                    <div><span>NO MESSAGES IN INBOX</span></div>
+                }
+                else
+                {
+                    <table class="table">
+                        <tr>
+                            <td>DATE</td>
+                            <td>TIME</td>
+                            <td>FROM</td>
+                            <td>MESSAGE</td>
+                            <td>ACTIONS</td>
+                        </tr>
+                        @foreach (var message in Model.messagesIn)
+                        {
+                            if (message.read == false)
+                            {
+                                <tr>
+                                    <td> @message.timeStamp.ToShortDateString() </td>
+                                    <td> @message.timeStamp.ToString("hh:mm tt"):</td>
+                                    <td style="font-weight: bold;">@Html.ActionLink(message.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = message.Band.BandId }, null)</td>
+                                    <td>@message.messageContent</td>
+                                    <td>
+                                        <button class="btn-default">@Html.ActionLink("Reply", "Create", "Message", new { recipientId = message.Band.BandId, isBand = true }, null)</button>
+                                        <button class="btn-default">@Html.ActionLink("Read", "ToggleRead", "Message", new { messageId = message.MessageId }, null)</button>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr style="color: gray">
+                                    <td> @message.timeStamp.ToShortDateString() </td>
+                                    <td> @message.timeStamp.ToString("hh:mm tt"):</td>
+                                    <td style="font-weight: bold;">@Html.ActionLink(message.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = message.Band.BandId }, null)</td>
+                                    <td style="width: 60%;">@message.messageContent</td>
+                                    <td>
+                                        <button class="btn-default">@Html.ActionLink("Reply", "Create", "Message", new { recipientId = message.Band.BandId, isBand = true }, null)</button>
+                                        <button class="btn-default">@Html.ActionLink("Unread", "ToggleRead", "Message", new { messageId = message.MessageId }, null)</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                }
+            </div>
+
+            <div id="outbox" style="display: none;">
+                @if (Model.messagesOut.Count == 0)
+                {
+                    <div><span>NO MESSAGES SENT</span></div>
+                }
+                else
+                {
+                    <table class="table">
+                        <tr>
+                            <td>DATE</td>
+                            <td>TIME</td>
+                            <td>TO</td>
+                            <td>MESSAGE</td>
+                            <td>ACTIONS</td>
+                        </tr>
+                        @foreach (var message in Model.messagesOut)
+                        {
+                            <tr style="color: gray">
+                                <td> @message.timeStamp.ToShortDateString() </td>
+                                <td> @message.timeStamp.ToString("hh:mm tt"):</td>
+                                <td style="font-weight: bold;">@Html.ActionLink(message.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = message.Band.BandId }, null)</td>
+                                <td style="width: 60%;">@message.messageContent</td>
+                                <td>
+                                    <button class="btn-default">@Html.ActionLink("Send Another?", "Create", "Message", new { recipientId = message.Venue.VenueId, isBand = false }, null)</button>
+                                </td>
+                            </tr>
+
+                        }
+                    </table>
+                }
+            </div>
+
+            <div id="requestsIn" style="display: none;">
+                @if (Model.requestsIn.Count == 0)
+                {
+                    <div><span>NO REQUESTS</span></div>
+                }
+                else
+                {
+                    <table class="table">
+                        <tr class="headRow">
+                            <th>RECIEVED</th>
+                            <th>DATE/TIME OF GIG</th>
+                            <th>BAND</th>
+                            <th>MESSAGE</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                        @foreach (var request in Model.requestsIn)
+                        {
+
+                            <tr>
+                                <td> @request.timeStamp.ToShortDateString()  @@<span>@request.timeStamp.ToString("hh:mm tt")</span></td>
+                                @if (request.eventId == null)
+                                {
+                                    string date = request.gigTime.HasValue ? request.gigTime.Value.ToShortDateString() : string.Empty;
+                                    string time = request.gigTime.HasValue ? request.gigTime.Value.ToString("hh:mm tt") : string.Empty;
+                                    <td> @date @@<span>@time</span></td>
+                                }
+                                else
+                                {
+                                    <td> @request.Gig.timeOfGig.ToShortDateString()  @@<span>@request.Gig.timeOfGig.ToString("hh:mm tt")</span></td>
+                                }
+
+                                <td style="font-weight: bold;">@Html.ActionLink(request.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = request.Band.BandId }, null)</td>
+
+
+                                <td style="width: 40%;">
+                                    @if (request.eventId != null)
+                                    {
+                                        <strong><i>Request to JOIN:</i></strong>
+                                    } <span style="color: gray;">@request.message</span>
+                                </td>
+
+
+                                <td>
+                                    <button class="btn-default" style="background-color: green;">@Html.ActionLink("ACCEPT", "ApproveRequest", "Request", new { requestId = request.RequestId }, null)</button>
+                                    <button class="btn-default" style="background-color: red;">@Html.ActionLink("DECLINE", "DenyRequest", "Request", new { requestId = request.RequestId }, null)</button>
+                                </td>
+                            </tr>
+
+
+                        }
+                    </table>
+                }
+            </div>
+
+            <div id="requestsOut" style="display: none;">
+                @if (Model.requestsOut.Count == 0)
+                {
+                    <div><span>NO REQUESTS</span></div>
+                }
+                else
+                {
+                    <table class="table">
+                        <tr class="headRow">
+                            <th>SENT</th>
+                            <th>DATE/TIME OF GIG</th>
+                            <th>BAND</th>
+                            <th>STATUS</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                        @foreach (var request in Model.requestsOut)
+                        {
+
+                            <tr>
+                                <td> @request.timeStamp.ToShortDateString()  @@<span>@request.timeStamp.ToString("hh:mm tt")</span></td>
+                                @if (request.eventId == null)
+                                {
+                                    string date = request.gigTime.HasValue ? request.gigTime.Value.ToShortDateString() : string.Empty;
+                                    string time = request.gigTime.HasValue ? request.gigTime.Value.ToString("hh:mm tt") : string.Empty;
+                                    <td> @date @@<span>@time</span></td>
+                                }
+                                else
+                                {
+                                    <td> @request.Gig.timeOfGig.ToShortDateString()  @@<span>@request.Gig.timeOfGig.ToString("hh:mm tt")</span></td>
+                                }
+
+                                <td style="font-weight: bold;">@Html.ActionLink(request.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = request.Band.BandId }, null)</td>
+
+
+                                @if (request.approved == true)
+                                {
+                                    <td><strong style="color: green;">APPROVED!</strong></td>
+                                }
+                                else if (request.denied == true)
+                                {
+                                    <td><strong style="color: red;">DENIED!</strong></td>
+                                }
+
+                                <td><i style="color: yellow;">Pending...</i></td>
+
+                                <td>
+                                    <button class="btn-default">@Html.ActionLink("MESSAGE", "Create", "Message", new { recipientId = request.bandId, isBand = true }, null)</button>
+                                    <button class="btn-default" style="background-color: red;">@Html.ActionLink("DELETE", "Delete", "Request", new { requestId = request.RequestId }, null)</button>
+
+                                </td>
+                            </tr>
+
+
+                        }
+                    </table>
+                }
+            </div>
+
+            <div id="response" style="display: none;">
+                @if (Model.requestResponses.Count == 0)
+                {
+                    <div><span>NO RESPONSES</span></div>
+                }
+                else
+                {
+                    <table class="table">
+                        <tr class="headRow">
+                            <th>SENT</th>
+                            <th>DATE/TIME OF GIG</th>
+                            <th>BAND</th>
+                            <th>STATUS</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                        @foreach (var request in Model.requestResponses)
+                        {
+
+                            <tr>
+                                <td> @request.timeStamp.ToShortDateString()  @@<span>@request.timeStamp.ToString("hh:mm tt")</span></td>
+                                @if (request.eventId == null)
+                                {
+                                    string date = request.gigTime.HasValue ? request.gigTime.Value.ToShortDateString() : string.Empty;
+                                    string time = request.gigTime.HasValue ? request.gigTime.Value.ToString("hh:mm tt") : string.Empty;
+                                    <td> @date @@<span>@time</span></td>
+                                }
+                                else
+                                {
+                                    <td> @request.Gig.timeOfGig.ToShortDateString()  @@<span>@request.Gig.timeOfGig.ToString("hh:mm tt")</span></td>
+                                }
+
+                                <td style="font-weight: bold;">@Html.ActionLink(request.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = request.Band.BandId }, null)</td>
+
+
+                                @if (request.approved == true)
+                                {
+                                    <td><strong style="color: green;">APPROVED!</strong></td>
+                                }
+                                else if (request.denied == true)
+                                {
+                                    <td><strong style="color: red;">DENIED!</strong></td>
+                                }
+
+                                <td>
+                                    <button class="btn-default">@Html.ActionLink("MESSAGE", "Create", "Message", new { recipientId = request.bandId, isBand = true }, null)</button>
+                                    <button class="btn-default" style="background-color: red;">@Html.ActionLink("DELETE", "Delete", "Request", new { requestId = request.RequestId }, null)</button>
+
+                                </td>
+                            </tr>
+
+
+                        }
+                    </table>
+                }
+            </div>
+
+
+
 
         </div>
     </div>
@@ -24,281 +335,14 @@
 
 
 
-<div id="messages">
-    <table class="table" style="table-layout: fixed;">
-        <tr>
-            <td>
-                <button id="showInbox" class="btn-default" style=" height: 40px; width: 100%;font-weight: bold;">INBOX</button>
-            </td>
-            <td>
-                <button id="showOutbox" class="btn-default" style=" height: 40px; width: 100%; ">OUTBOX</button>
-            </td>
-        </tr>
-    </table>
-    <div id="inbox">
-        @if (Model.messagesIn.Count == 0)
-        {
-            <div><span>NO MESSAGES IN INBOX</span></div>
-        }
-        else
-        {
-            <table class="table">
-                <tr>
-                    <td>DATE</td>
-                    <td>TIME</td>
-                    <td>FROM</td>
-                    <td>MESSAGE</td>
-                    <td>ACTIONS</td>
-                </tr>
-                @foreach (var message in Model.messagesIn)
-                {
-                    if (message.read == false)
-                    {
-                        <tr>
-                            <td> @message.timeStamp.ToShortDateString() </td>
-                            <td> @message.timeStamp.ToString("hh:mm tt"):</td>
-                            <td style="font-weight: bold;">@Html.ActionLink(message.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = message.Band.BandId }, null)</td>
-                            <td>@message.messageContent</td>
-                            <td>
-                                <button class="btn-default">@Html.ActionLink("Reply", "Create", "Message", new { recipientId = message.Band.BandId, isBand = true }, null)</button>
-                                <button class="btn-default">@Html.ActionLink("Read", "ToggleRead", "Message", new { messageId = message.MessageId }, null)</button>
-                            </td>
-                        </tr>
-                    }
-                    else
-                    {
-                        <tr style="color: gray">
-                            <td> @message.timeStamp.ToShortDateString() </td>
-                            <td> @message.timeStamp.ToString("hh:mm tt"):</td>
-                            <td style="font-weight: bold;">@Html.ActionLink(message.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = message.Band.BandId }, null)</td>
-                            <td style="width: 60%;">@message.messageContent</td>
-                            <td>
-                                <button class="btn-default">@Html.ActionLink("Reply", "Create", "Message", new { recipientId = message.Band.BandId, isBand = true }, null)</button>
-                                <button class="btn-default">@Html.ActionLink("Unread", "ToggleRead", "Message", new { messageId = message.MessageId }, null)</button>
-                            </td>
-                        </tr>
-                    }
-                }
-            </table>
-        }
-    </div>
-
-    <div id="outbox" style="display: none;">
-        @if (Model.messagesOut.Count == 0)
-        {
-            <div><span>NO MESSAGES SENT</span></div>
-        }
-        else
-        {
-            <table class="table">
-                <tr>
-                    <td>DATE</td>
-                    <td>TIME</td>
-                    <td>TO</td>
-                    <td>MESSAGE</td>
-                    <td>ACTIONS</td>
-                </tr>
-                @foreach (var message in Model.messagesOut)
-                {
-                    <tr style="color: gray">
-                        <td> @message.timeStamp.ToShortDateString() </td>
-                        <td> @message.timeStamp.ToString("hh:mm tt"):</td>
-                        <td style="font-weight: bold;">@Html.ActionLink(message.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = message.Band.BandId }, null)</td>
-                        <td style="width: 60%;">@message.messageContent</td>
-                        <td>
-                            <button class="btn-default">@Html.ActionLink("Send Another?", "Create", "Message", new { recipientId = message.Venue.VenueId, isBand = false }, null)</button>
-                        </td>
-                    </tr>
-
-                }
-            </table>
-        }
-    </div>
+    
 
 
 
-    <div id="requests">
-
-        <table class="table" style="table-layout: fixed;">
-            <tr>
-                <td>
-                    <button id="showRequestsIn" class="btn-default" style=" height: 40px; width: 100%; font-weight: bold;">REQUESTS IN</button>
-                </td>
-                <td>
-                    <button id="showRequestsOut" class="btn-default" style=" height: 40px; width: 100%; ">REQUESTS OUT</button>
-                </td>
-                <td>
-                    <button id="showResponse" class="btn-default" style=" height: 40px; width: 100%; ">RESPONSES</button>
-                </td>
-            </tr>
-        </table>
-        <div id="requestsIn">
-            @if (Model.requestsIn.Count == 0)
-            {
-                <div><span>NO REQUESTS</span></div>
-            }
-            else
-            {
-                <table class="table">
-                    <tr class="headRow">
-                        <th>RECIEVED</th>
-                        <th>DATE/TIME OF GIG</th>
-                        <th>BAND</th>
-                        <th>MESSAGE</th>
-                        <th>ACTIONS</th>
-                    </tr>
-                    @foreach (var request in Model.requestsIn)
-                    {
-
-                        <tr>
-                            <td> @request.timeStamp.ToShortDateString()  @@<span>@request.timeStamp.ToString("hh:mm tt")</span></td>
-                            @if (request.eventId == null)
-                            {
-                                string date = request.gigTime.HasValue ? request.gigTime.Value.ToShortDateString() : string.Empty;
-                                string time = request.gigTime.HasValue ? request.gigTime.Value.ToString("hh:mm tt") : string.Empty;
-                                <td> @date @@<span>@time</span></td>
-                            }
-                            else
-                            {
-                                <td> @request.Gig.timeOfGig.ToShortDateString()  @@<span>@request.Gig.timeOfGig.ToString("hh:mm tt")</span></td>
-                            }
-
-                        <td style="font-weight: bold;">@Html.ActionLink(request.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = request.Band.BandId }, null)</td>
+    
 
 
-                            <td style="width: 40%;">
-                            @if (request.eventId != null)
-                            {
-                                <strong><i>Request to JOIN:</i></strong>
-                            } <span style="color: gray;">@request.message</span></td>
-
-
-                            <td>
-                                <button class="btn-default" style="background-color: green;">@Html.ActionLink("ACCEPT", "ApproveRequest", "Request", new { requestId = request.RequestId }, null)</button>
-                                <button class="btn-default" style="background-color: red;">@Html.ActionLink("DECLINE", "DenyRequest", "Request", new { requestId = request.RequestId }, null)</button>
-                            </td>
-                        </tr>
-
-
-                    }
-                </table>
-            }
-        </div>
-
-        <div id="requestsOut" style="display: none;">
-            @if (Model.requestsOut.Count == 0)
-            {
-                <div><span>NO REQUESTS</span></div>
-            }
-            else
-            {
-                <table class="table">
-                    <tr class="headRow">
-                        <th>SENT</th>
-                        <th>DATE/TIME OF GIG</th>
-                        <th>BAND</th>
-                        <th>STATUS</th>
-                        <th>ACTIONS</th>
-                    </tr>
-                    @foreach (var request in Model.requestsOut)
-                    {
-
-                        <tr>
-                            <td> @request.timeStamp.ToShortDateString()  @@<span>@request.timeStamp.ToString("hh:mm tt")</span></td>
-                            @if (request.eventId == null)
-                            {
-                                string date = request.gigTime.HasValue ? request.gigTime.Value.ToShortDateString() : string.Empty;
-                                string time = request.gigTime.HasValue ? request.gigTime.Value.ToString("hh:mm tt") : string.Empty;
-                                <td> @date @@<span>@time</span></td>
-                            }
-                            else
-                            {
-                                <td> @request.Gig.timeOfGig.ToShortDateString()  @@<span>@request.Gig.timeOfGig.ToString("hh:mm tt")</span></td>
-                            }
-
-                        <td style="font-weight: bold;">@Html.ActionLink(request.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = request.Band.BandId }, null)</td>
-
-
-                            @if (request.approved == true)
-                            {
-                                <td><strong style="color: green;">APPROVED!</strong></td>
-                            }
-                            else if (request.denied == true)
-                            {
-                                <td><strong style="color: red;">DENIED!</strong></td>
-                            }
-
-                            <td><i style="color: yellow;">Pending...</i></td>
-
-                            <td>
-                                <button class="btn-default">@Html.ActionLink("MESSAGE", "Create", "Message", new { recipientId = request.bandId, isBand = true }, null)</button>
-                                <button class="btn-default" style="background-color: red;">@Html.ActionLink("DELETE", "Delete", "Request", new { requestId = request.RequestId }, null)</button>
-
-                            </td>
-                        </tr>
-
-
-                    }
-                </table>
-            }
-        </div>
-
-        <div id="response" style="display: none;">
-            @if (Model.requestResponses.Count == 0)
-            {
-                <div><span>NO RESPONSES</span></div>
-            }
-            else
-            {
-                <table class="table">
-                    <tr class="headRow">
-                        <th>SENT</th>
-                        <th>DATE/TIME OF GIG</th>
-                        <th>BAND</th>
-                        <th>STATUS</th>
-                        <th>ACTIONS</th>
-                    </tr>
-                    @foreach (var request in Model.requestResponses)
-                    {
-
-                        <tr>
-                            <td> @request.timeStamp.ToShortDateString()  @@<span>@request.timeStamp.ToString("hh:mm tt")</span></td>
-                            @if (request.eventId == null)
-                            {
-                                string date = request.gigTime.HasValue ? request.gigTime.Value.ToShortDateString() : string.Empty;
-                                string time = request.gigTime.HasValue ? request.gigTime.Value.ToString("hh:mm tt") : string.Empty;
-                                <td> @date @@<span>@time</span></td>
-                            }
-                            else
-                            {
-                                <td> @request.Gig.timeOfGig.ToShortDateString()  @@<span>@request.Gig.timeOfGig.ToString("hh:mm tt")</span></td>
-                            }
-
-                        <td style="font-weight: bold;">@Html.ActionLink(request.Band.bandName, "ViewBandProfile", "ProfileView", new { bandId = request.Band.BandId }, null)</td>
-
-
-                            @if (request.approved == true)
-                            {
-                                <td><strong style="color: green;">APPROVED!</strong></td>
-                            }
-                            else if (request.denied == true)
-                            {
-                                <td><strong style="color: red;">DENIED!</strong></td>
-                            }
-
-                            <td>
-                                <button class="btn-default">@Html.ActionLink("MESSAGE", "Create", "Message", new { recipientId = request.bandId, isBand = true }, null)</button>
-                                <button class="btn-default" style="background-color: red;">@Html.ActionLink("DELETE", "Delete", "Request", new { requestId = request.RequestId }, null)</button>
-
-                            </td>
-                        </tr>
-
-
-                    }
-                </table>
-            }
-        </div>
-    </div>
+       
 
 
 
@@ -310,47 +354,7 @@
 
 
 
-
-    <div id="gigList">
-        <h3>Upcoming Gigs</h3>
-        <table class="table">
-            <tr>
-                <th> Venue </th>
-                <th> Date</th>
-                <th> Time </th>
-                <th> Line-up </th>
-                <th></th>
-            </tr>
-
-            @foreach (var gigModel in Model.currentGigs)
-            {
-
-                <tr>
-
-                    <td>
-                        @Html.ActionLink(gigModel.gig.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = gigModel.gig.Venue.VenueId }, null),
-                    </td>
-                    <td>  @Html.DisplayFor(modelItem => gigModel.gig.timeOfGig.ToShortDateString())  </td>
-                    <td>  @Html.DisplayFor(modelItem => gigModel.gig.timeOfGig.ToString("hh:mm tt"))  </td>
-
-                    <td>
-
-                        @foreach (var band in gigModel.bands)
-                        {
-
-                            <span>
-                                @Html.ActionLink(band.bandName, "ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null),
-                            </span>
-                        }
-                    </td>
-                    <td>
-                        <button class="btn-default">@Html.ActionLink("Edit", ".../Gig/Edit", new { gigId = gigModel.gig.GigId })</button>
-                    </td>
-                </tr>
-            }
-
-        </table>
-    </div>
+    
 
 
 
@@ -366,53 +370,65 @@
         (function ($) {
 
 
-
-
-
             $("#showInbox").click(function () {
-                console.log("Handler for .click() called.");
-                $("#inbox").show()
                 $("#outbox").hide();
-                $(this).css("font-weight", "bold");
-                $("#showOutbox").css("font-weight", "normal");
+                $("#Gigs").hide();
+                $("#requestsIn").show()
+                $("#requestsOut").hide();
+                $("#response").hide();
+                $("#showInbox").show();
+
             });
-     
+
+
+            //$("#showInbox").click(function () {
+            //    console.log("Handler for .click() called.");
+            //    $("#inbox").show()
+            //    $("#outbox").hide();
+            //    $(this).css("font-weight", "bold");
+            //    $("#showOutbox").css("font-weight", "normal");
+            //});
+
 
             $("#showOutbox").click(function () {
                 console.log("Handler for .click() called.");
                 $("#inbox").hide()
+                $("#Gigs").hide();
                 $("#outbox").show();
                 $(this).css("font-weight", "bold");
                 $("#showInbox").css("font-weight", "normal");
             });
-   
+
 
              $("#showRequestsIn").click(function () {
                     console.log("Handler for .click() called.");
                     $("#requestsIn").show()
                     $("#requestsOut").hide();
-                        $("#response").hide();
+                 $("#response").hide();
+                 $("#Gigs").hide();
                     $(this).css("font-weight", "bold");
                     $("#showRequestsOut").css("font-weight", "normal");
                         $("#showResponse").css("font-weight", "normal");
                 });
-            
+
 
                 $("#showRequestsOut").click(function () {
                     console.log("Handler for .click() called.");
                     $("#requestsIn").hide()
                     $("#response").hide();
+                    $("#Gigs").hide();
                     $("#requestsOut").show();
                     $(this).css("font-weight", "bold");
                     $("#showRequestsIn").css("font-weight", "normal");
                         $("#showResponse").css("font-weight", "normal");
                 });
-          
+
 
                 $("#showResponse").click(function () {
                     console.log("Handler for .click() called.");
                     $("#requestsIn").hide()
                     $("#requestsOut").hide();
+                    $("#Gigs").hide();
                     $("#response").show();
                     $(this).css("font-weight", "bold");
                     $("#showRequestsIn").css("font-weight", "normal");
@@ -423,34 +439,38 @@
             updateNotification();
             function updateNotification() {
 
-                if (@Model.messagesIn.Where(m => m.read == false).ToList().Count != 0) {
-                   // $("#showRequestsIn").css("color", "yellow");
-                    $("#showInbox").append("<span style='color: yellow; float: right;'> (@Model.messagesIn.Count Unread)<span>");
+                @{ 
+                    var unreadMessageCount = Model.messagesIn.Where(m => m.read == false).ToList().Count;
+
+ }
+                if (@unreadMessageCount != 0) {
+                    $("#showInbox").addClass("alertHead");
+                    $("#showInbox").append("<span class='notifyCount'> (@unreadMessageCount Unread)<span>");
                 }
 
 
                 if (@Model.requestsIn.Count != 0) {
-                   // $("#showRequestsIn").css("color", "yellow");
-                    $("#showRequestsIn").append("<span style='color: yellow; float: right;'> (@Model.requestsIn.Count Unanswered)<span>");
+                    $("#showRequestsIn").addClass("alertHead");
+                    $("#showRequestsIn").append("<span class='notifyCount'>(@Model.requestsIn.Count Unanswered!)<span>");
                 }
 
                  if (@Model.requestsOut.Count != 0) {
-                   // $("#showRequestsIn").css("color", "yellow");
-                 $("#showRequestsOut").append("<span style='color: yellow; float: right;'> (@Model.requestsOut.Count Pending)<span>");
+                   $("#showRequestsOut").addClass("alertHead");
+                 $("#showRequestsOut").append("<span class='notifyCount'> (@Model.requestsOut.Count Pending)<span>");
                 }
 
                   if (@Model.requestResponses.Count != 0) {
-                   // $("#showRequestsIn").css("color", "yellow");
-                    $("#showResponse").append("<span style='color: yellow; float: right;'> (@Model.requestResponses.Count NEW)<span>");
+                   $("#showResponse").addClass("alertHead");
+                    $("#showResponse").append("<span class='notifyCount'> (@Model.requestResponses.Count NEW)<span>");
                 }
 
 
             }
 
-          
-           
 
-            
+
+
+
 
 
 

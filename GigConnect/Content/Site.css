@@ -23,53 +23,6 @@ textarea {
     max-width: 280px;
 }
 
-.optionsContainer {
-    width: 100%;
-    display: flex;
-    flex-wrap: nowrap;
-    background-color: transparent;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.optionsHeader {
-    border: 2pt solid rgba(56, 119, 128, .30);
-    border-radius: 15px;
-    /*background-color: #dbd4d3;*/
-    font-weight: normal;
-    background-color: white;
-    width: 25%;
-    height: 60px;
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-top: 0;
-    text-align: center;
-    line-height: 75px;
-    overflow: hidden;
-}
-
-.optionsHeadCurrent {
-    border: 2pt solid rgb(56, 119, 128);
-    border-radius: 15px;
-    border-bottom: none;
-    font-weight: bold;
-}
-
-.optionsHeader:hover {
-    background-image: linear-gradient(silver, transparent);
-}
-
-.txtBtn {
-    padding: 0;
-    margin: 0;
-    height: 25px;
-    padding: 0;
-    margin: 0;
-    position: relative;
-    font-size: 18pt;
-}
 
 .body-content{
     margin: 20px;
@@ -172,10 +125,7 @@ body {
     box-shadow: 2px 2px 12px black;
 }
 
-    .bord{
-        border: 1px solid white;
-        height: 650px;
-    }
+  
 
 .mainImage {
     box-shadow: 0px 0px 12px rgba(94, 255, 77, 0.50);
@@ -233,3 +183,50 @@ body {
     position: relative;
  
 }
+
+.bord{
+    border: 1px dashed white;
+}
+
+
+
+.dashBtn {
+    background-color: black;
+    height: 60px;
+    width: 100%;
+    font-weight: normal;
+    font-size: 12pt;
+    border-radius: 15px;
+    border: 2pt solid rgba(94, 255, 77, 0.50);
+    padding-bottom: 2%;
+    padding-top: 2%;
+    padding-left: 5%;
+    margin-bottom: 1%;
+    margin-top: 1%;
+}
+
+.dashHead{
+    float: left;
+    
+   
+}
+
+.notifyCount {
+    float: left;
+    margin-left: 20px;
+    font-weight: bold;
+    float: right;
+}
+
+.alertHead {
+    font-weight: bold;
+    border-color: yellow;
+    background-color: rgba(94, 255, 77, 0.35);
+    
+}
+
+.tdBtnV{
+    width: 100%;
+}
+
+

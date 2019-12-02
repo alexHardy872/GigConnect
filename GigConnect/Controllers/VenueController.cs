@@ -149,7 +149,6 @@ namespace GigConnect.Controllers
             VenueIndexViewModel venueInfo = new VenueIndexViewModel();
             venueInfo.venue = GetUserVenue();
             venueInfo.currentGigs = GetGigViewModel(GetGigs(venueInfo.venue)); // contains Gig, BandsList, Location (formatted)
-            venueInfo.openGigs = GetGigViewModel(GetOpenGigs(venueInfo.venue));
             venueInfo.messagesIn = GetAllMessagesIn(venueInfo.venue.VenueId);
             venueInfo.messagesOut = GetAllMessagesOut(venueInfo.venue.VenueId);
             venueInfo.requestsIn = GetRequestsIn(venueInfo.venue.VenueId);
@@ -184,7 +183,7 @@ namespace GigConnect.Controllers
         {
             List<Gig> venueGigs = new List<Gig>();
             List<Gig> allGigs = context.Gigs
-                .Include("Venue").Where(g => g.venueId == venue.VenueId && g.open == false).OrderBy(o => o.timeOfGig).ToList();
+                .Include("Venue").Where(g => g.venueId == venue.VenueId).OrderBy(o => o.timeOfGig).ToList();
             return allGigs;
         }
         public List<Gig> GetOpenGigs(Venue venue)

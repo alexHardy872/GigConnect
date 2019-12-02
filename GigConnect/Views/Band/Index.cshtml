@@ -4,29 +4,39 @@
 
 @model GigConnect.Models.ViewModels.BandIndexViewModel
 
-    <h2>@Model.band.bandName</h2>
+<h2>@Model.band.bandName</h2>
 
 
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-4">
 
+<div class="row bord">
+    <div class="col-md-4 bord">
         </div>
-        <div class="col-md-4">
+                         
+    <div class="col-md-4 bord">
+    </div>           
+    <div class="col-md-4 bord">
 
-        </div>
-        <div class="col-md-4">
+    </div>
+</div>
+<div class="row bord">
+    <div class="col-md-4 bord">
 
-        </div>
+    </div>
+    <div class="col-md-4 bord">
+
+    </div>
+    <div class="col-md-4 bord">
+
     </div>
 </div>
 
 
 
 
+
 <div id="messages">
-  
+
     <table class="table" style="table-layout: fixed;">
         <tr>
             <td>
@@ -59,7 +69,7 @@
                         <tr>
                             <td> @message.timeStamp.ToShortDateString() </td>
                             <td> @message.timeStamp.ToString("hh:mm tt"):</td>
-                            <td style="font-weight: bold;">@Html.ActionLink(message.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = message.Venue.VenueId },null) </td>
+                            <td style="font-weight: bold;">@Html.ActionLink(message.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = message.Venue.VenueId }, null) </td>
                             <td>@message.messageContent</td>
                             <td>
                                 <button style="background-color: black;">@Html.ActionLink("Reply", "Create", "Message", new { recipientId = message.Venue.VenueId, isBand = false }, null)</button>
@@ -67,8 +77,8 @@
                             </td>
                         </tr>
                     }
-                                                else
-                                                {
+                    else
+                    {
                         <tr style="color: gray">
                             <td> @message.timeStamp.ToShortDateString() </td>
                             <td> @message.timeStamp.ToString("hh:mm tt"):</td>
@@ -79,8 +89,8 @@
                                 <button style="background-color: black;">@Html.ActionLink("Unread", "ToggleRead", "Message", new { messageId = message.MessageId }, null)</button>
                             </td>
                         </tr>
-                                                }
-                                            }
+                    }
+                }
             </table>
         }
     </div>
@@ -91,7 +101,7 @@
             <div><span>NO MESSAGES SENT</span></div>
         }
         else
-                                        {
+        {
             <table class="table">
                 <tr>
                     <th>DATE</th>
@@ -101,7 +111,7 @@
                     <th>ACTIONS</th>
                 </tr>
                 @foreach (var message in Model.messagesOut)
-                                    {
+                {
                     <tr style="color: gray">
                         <td> @message.timeStamp.ToShortDateString() </td>
                         <td> @message.timeStamp.ToString("hh:mm tt"):</td>
@@ -151,7 +161,7 @@
                         <th>ACTIONS</th>
                     </tr>
                     @foreach (var request in Model.requestsIn)
-                            {
+                    {
 
                         <tr>
                             <td> @request.timeStamp.ToShortDateString()  @@<span>@request.timeStamp.ToString("hh:mm tt")</span></td>
@@ -166,7 +176,7 @@
                                 <td> @request.Gig.timeOfGig.ToShortDateString()  @@<span>@request.Gig.timeOfGig.ToString("hh:mm tt")</span></td>
                             }
 
-                        <td style="font-weight: bold;">@Html.ActionLink(request.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = request.Venue.VenueId }, null)</td>
+                            <td style="font-weight: bold;">@Html.ActionLink(request.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = request.Venue.VenueId }, null)</td>
                             <td style="width: 40%">@request.message</td>
                             <td>
                                 <button class="btn-default" style="background-color: green;">@Html.ActionLink("ACCEPT", "ApproveRequest", "Request", new { requestId = request.RequestId }, null)</button>
@@ -211,8 +221,8 @@
                                 <td> @request.Gig.timeOfGig.ToShortDateString()  @@<span>@request.Gig.timeOfGig.ToString("hh:mm tt")</span></td>
                             }
 
-                        <td style="font-weight: bold;">@Html.ActionLink(request.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = request.Venue.VenueId }, null)</td>
-                          
+                            <td style="font-weight: bold;">@Html.ActionLink(request.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = request.Venue.VenueId }, null)</td>
+
 
                             @if (request.approved == true)
                             {
@@ -269,8 +279,8 @@
                                 <td> @request.Gig.timeOfGig.ToShortDateString()  @@<span>@request.Gig.timeOfGig.ToString("hh:mm tt")</span></td>
                             }
 
-                        <td style="font-weight: bold;">@Html.ActionLink(request.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = request.Venue.VenueId }, null)</td>
-                            
+                            <td style="font-weight: bold;">@Html.ActionLink(request.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = request.Venue.VenueId }, null)</td>
+
 
                             @if (request.approved == true)
                             {
@@ -350,7 +360,7 @@
 
 
 
-            <script>
+<script>
                 document.addEventListener('DOMContentLoaded', function () {
 
 
@@ -365,7 +375,7 @@
                             $(this).css("font-weight", "bold");
                             $("#showOutbox").css("font-weight", "normal");
                         });
-                  
+
 
                         $("#showOutbox").click(function () {
                             console.log("Handler for .click() called.");
@@ -374,7 +384,7 @@
                             $(this).css("font-weight", "bold");
                             $("#showInbox").css("font-weight", "normal");
                         });
-                  
+
 
 
 
@@ -387,7 +397,7 @@
                             $("#showRequestsOut").css("font-weight", "normal");
                              $("#showResponse").css("font-weight", "normal");
                         });
-                 
+
 
                         $("#showRequestsOut").click(function () {
                             console.log("Handler for .click() called.");
@@ -398,7 +408,7 @@
                             $("#showRequestsIn").css("font-weight", "normal");
                              $("#showResponse").css("font-weight", "normal");
                         });
-                     
+
 
                         $("#showResponse").click(function () {
                             console.log("Handler for .click() called.");
@@ -409,8 +419,8 @@
                             $("#showRequestsIn").css("font-weight", "normal");
                             $("#showRequestsOut").css("font-weight", "normal");
                         });
-                      
-                        
+
+
                     updateNotification();
                     function updateNotification() {
 
@@ -446,7 +456,7 @@
                     })(jQuery);
 
                 });
-            </script>
+</script>
 
 
 
