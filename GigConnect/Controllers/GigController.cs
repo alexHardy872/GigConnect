@@ -236,7 +236,7 @@ namespace GigConnect.Controllers
         public List<GigInfoViewModel> GetAllGigs()
         {
             
-            List<Gig> gigs = context.Gigs.Include("Venue").ToList();
+            List<Gig> gigs = context.Gigs.Include("Venue").OrderBy(g => g.timeOfGig).ToList();
             List<GigInfoViewModel> gigList = GetGigViewModel(gigs);
 
 

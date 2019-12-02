@@ -18,8 +18,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("GigConnect", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", @id = "mainLogoLink" })
+                @*@Html.ActionLink("GigConnect", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", @id = "mainLogoLink" })*@
+                <div class="logo">
+                    <a id="logoLink" href="@Url.Action("Index", "Home")">
+                        <img id="logoImg" src="~/Content/Images/gigConnectLogo.png" style="height: 60px;" alt="logo" />
+                        
 
+                    </a>
+                </div>
 
             </div>
             <div class="navbar-collapse collapse">

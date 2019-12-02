@@ -21,48 +21,59 @@
         <div style="height: 500px; overflow-y: scroll;">
             <table class="table">
                 <tr>
-                    <th>Name (Genre)</th>
+                    <th>Date</th>
 
                     <th>
-                        Hometown Area
+                        Time
                     </th>
                     <th>
-
+                        Venue
                     </th>
-
-
-                    <th></th>
+                    <th>
+                        Bands
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        City
+                    </th>
 
                 </tr>
 
                 @foreach (var item in Model)
                 {
-                    <tr class="Search">
-                        <td>
+            <tr class="Search">
+                <td>
+                    @item.gig.timeOfGig.ToShortDateString()
+                </td>
+                <td>
+                    @item.gig.timeOfGig.ToString("hh:mm tt")
+                </td>
+                <td>
+                    @Html.ActionLink(item.gig.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = item.gig.venueId }, null)
+                </td>
 
-                            <a id="logoLink" href="@Url.Action("ViewVenueProfile", "ProfileView", new { venueId = item.VenueId }, null)">
-                                <img class="logoImg" src="~/Content/Images/profile.jpg" style="height: 50px; width: 50px;" alt="logo" />
-                            </a><span>   @Html.DisplayFor(modelItem => item.venueName)</span><span style="color: gray"><i>  (@Html.DisplayFor(modelItem => item.genre))</i></span>
+                <td>
+                    @foreach (var band in item.bands)
+                    {
+                    <a class="no-line" href="@Url.Action("ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null)">
+                        <span class="bandLink no-line">@band.bandName, </span>
+                    </a>
+                    
+                    }
+                </td>
 
-                        </td>
+                <td style="width: 30%">
+                    @Html.DisplayFor(modelItem => item.gig.description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.gig.Venue.town)
+                </td>
 
-                        <td>
-                            @Html.DisplayFor(modelItem => item.town)
-                        </td>
+              
 
-                        <td style="width: 30%">
-                            @item.description
-                        </td>
-
-
-
-                        <td style="text-align: right;">
-                            <button class="btn-default">@Html.ActionLink("Send a Message", "Create", "Message", new { recipientId = item.VenueId, isBand = false }, null)</button>
-
-                            <button class="btn-default">@Html.ActionLink("Events/Details", "ViewVenueProfile", "ProfileView", new { venueId = item.VenueId }, null)</button>
-
-                        </td>
-                    </tr>
+            </tr>
                 }
 
             </table>
@@ -80,14 +91,14 @@
 
         (function ($) {
 
-            $(".logoImg").mouseenter(function () {
-                $(this).css("border", "2pt solid yellow");
+            //$(".logoImg").mouseenter(function () {
+            //    $(this).css("border", "2pt solid yellow");
 
-            });
-            $(".logoImg").mouseleave(function () {
-                $(this).css("border", "none");
+            //});
+            //$(".logoImg").mouseleave(function () {
+            //    $(this).css("border", "none");
 
-            });
+            //});
 
             function Contains(text_one, text_two) {
                 if (text_one.indexOf(text_two) != -1)
