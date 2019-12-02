@@ -229,4 +229,13 @@ body {
     width: 100%;
 }
 
+.no{
+    color: gray;
+    font-style: italic;
+}
 
+
+.indexBox{
+    height: 350px;
+    overflow-y: scroll;
+}

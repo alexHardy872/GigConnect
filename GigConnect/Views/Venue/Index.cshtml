@@ -4,15 +4,15 @@
 
 
 
-<div class="row bord">
+<div class="row">
     <div class="col-lg-12">
         <div class="contentCol">
             <h4>@Model.venue.venueName - Home</h4>
         </div>
     </div>
 </div>
-<div class="row bord">
-    <div class="col-sm-3 bord" style="height: 700px;">
+<div class="row">
+    <div class="col-sm-3" style="height: 700px;">
         <button id="showGigs" class="btn-default dashBtn"><span class="dashHead">Gigs</span></button>
         <button id="showInbox" class="btn-default dashBtn"><span class="dashHead">Inbox</span></button>
         <button id="showOutbox" class="btn-default dashBtn"><span class="dashHead">Outbox</span></button>
@@ -20,10 +20,10 @@
         <button id="showRequestsOut" class="btn-default dashBtn"><span class="dashHead">Pending Requests</span></button>
         <button id="showResponse" class="btn-default dashBtn"><span class="dashHead">Responses</span></button>
     </div>
-    <div class="col-lg-9 bord">
+    <div class="col-lg-9">
         <div class="contentCol">
 
-            <div id="Gigs" style="height: 500px; overflow-y: scroll;">
+            <div id="Gigs" class="indexBox">
                 <h4>Upcoming Shows</h4>
                 <table class="table small-gigs-table" width="100%">
                     <tr>
@@ -75,10 +75,11 @@
 
             </div>
 
-            <div id="inbox" style="display: none;">
+            <div id="inbox" style="display: none;" class="indexBox">
                 @if (Model.messagesIn.Count == 0)
                 {
-                    <div><span>NO MESSAGES IN INBOX</span></div>
+                    
+                    <h2 class="no">no messages</h2>
                 }
                 else
                 {
@@ -123,16 +124,16 @@
                 }
             </div>
 
-            <div id="outbox" style="display: none;">
+            <div id="outbox" style="display: none;" class="indexBox">
                 @if (Model.messagesOut.Count == 0)
                 {
-                    <div><span>NO MESSAGES SENT</span></div>
+                    <h2 class="no">no sent messages</h2>
                 }
                 else
                 {
                     <table class="table">
                         <tr>
-                            <td>DATE</td>
+                            <td>SENT</td>
                             <td>TIME</td>
                             <td>TO</td>
                             <td>MESSAGE</td>
@@ -155,10 +156,10 @@
                 }
             </div>
 
-            <div id="requestsIn" style="display: none;">
+            <div id="requestsIn" style="display: none;" class="indexBox">
                 @if (Model.requestsIn.Count == 0)
                 {
-                    <div><span>NO REQUESTS</span></div>
+                    <h2 class="no">no requests!</h2>
                 }
                 else
                 {
@@ -209,10 +210,10 @@
                 }
             </div>
 
-            <div id="requestsOut" style="display: none;">
+            <div id="requestsOut" style="display: none;" class="indexBox">
                 @if (Model.requestsOut.Count == 0)
                 {
-                    <div><span>NO REQUESTS</span></div>
+                    <h2 class="no">no pending requests!</h2>
                 }
                 else
                 {
@@ -267,10 +268,10 @@
                 }
             </div>
 
-            <div id="response" style="display: none;">
+            <div id="response" style="display: none;" class="indexBox">
                 @if (Model.requestResponses.Count == 0)
                 {
-                    <div><span>NO RESPONSES</span></div>
+                    <h2 class="no">no responses</h2>
                 }
                 else
                 {
@@ -373,69 +374,64 @@
             $("#showInbox").click(function () {
                 $("#outbox").hide();
                 $("#Gigs").hide();
-                $("#requestsIn").show()
+                $("#requestsIn").hide()
                 $("#requestsOut").hide();
                 $("#response").hide();
-                $("#showInbox").show();
+                $("#inbox").show();
 
             });
 
-
-            //$("#showInbox").click(function () {
-            //    console.log("Handler for .click() called.");
-            //    $("#inbox").show()
-            //    $("#outbox").hide();
-            //    $(this).css("font-weight", "bold");
-            //    $("#showOutbox").css("font-weight", "normal");
-            //});
-
-
-            $("#showOutbox").click(function () {
-                console.log("Handler for .click() called.");
-                $("#inbox").hide()
+             $("#showOutbox").click(function () {
+                $("#inbox").hide();
                 $("#Gigs").hide();
+                $("#requestsIn").hide()
+                $("#requestsOut").hide();
+                $("#response").hide();
                 $("#outbox").show();
-                $(this).css("font-weight", "bold");
-                $("#showInbox").css("font-weight", "normal");
-            });
 
+             });
 
              $("#showRequestsIn").click(function () {
-                    console.log("Handler for .click() called.");
-                    $("#requestsIn").show()
-                    $("#requestsOut").hide();
-                 $("#response").hide();
-                 $("#Gigs").hide();
-                    $(this).css("font-weight", "bold");
-                    $("#showRequestsOut").css("font-weight", "normal");
-                        $("#showResponse").css("font-weight", "normal");
-                });
+                $("#inbox").hide();
+                $("#Gigs").hide();
+                $("#requestsOut").hide();
+                $("#response").hide();
+                $("#outbox").hide();
+                $("#requestsIn").show()
 
+             });
 
-                $("#showRequestsOut").click(function () {
-                    console.log("Handler for .click() called.");
-                    $("#requestsIn").hide()
-                    $("#response").hide();
-                    $("#Gigs").hide();
-                    $("#requestsOut").show();
-                    $(this).css("font-weight", "bold");
-                    $("#showRequestsIn").css("font-weight", "normal");
-                        $("#showResponse").css("font-weight", "normal");
-                });
+            $("#showRequestsOut").click(function () {
+                $("#inbox").hide();
+                $("#Gigs").hide();
+                $("#requestsIn").hide();
+                $("#response").hide();
+                $("#outbox").hide();
+                $("#requestsOut").show()
 
+            });
 
-                $("#showResponse").click(function () {
-                    console.log("Handler for .click() called.");
-                    $("#requestsIn").hide()
-                    $("#requestsOut").hide();
-                    $("#Gigs").hide();
-                    $("#response").show();
-                    $(this).css("font-weight", "bold");
-                    $("#showRequestsIn").css("font-weight", "normal");
-                    $("#showRequestsOut").css("font-weight", "normal");
-                });
+            $("#showResponse").click(function () {
+                $("#inbox").hide();
+                $("#Gigs").hide();
+                $("#requestsOut").hide();
+                $("#outbox").hide();
+                $("#requestsIn").hide()
+                $("#response").show();
 
+            });
 
+             $("#showGigs").click(function () {
+                $("#inbox").hide();
+                $("#response").hide();
+                $("#requestsOut").hide();
+                $("#outbox").hide();
+                $("#requestsIn").hide()
+                $("#Gigs").show();
+
+            });
+
+            
             updateNotification();
             function updateNotification() {
 
