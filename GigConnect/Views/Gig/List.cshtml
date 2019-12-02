@@ -38,6 +38,9 @@
                     <th>
                         City
                     </th>
+                    <th>
+                        Booking
+                    </th>
 
                 </tr>
 
@@ -51,7 +54,9 @@
                     @item.gig.timeOfGig.ToString("hh:mm tt")
                 </td>
                 <td>
-                    @Html.ActionLink(item.gig.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = item.gig.venueId }, null)
+                    <a class="no-line" href="@Url.Action("ViewVenueProfile", "ProfileView", new { venueId = item.gig.venueId }, null)">
+                        <span class="venueLink no-line">@item.gig.Venue.venueName</span>
+                    </a>
                 </td>
 
                 <td>
@@ -71,7 +76,16 @@
                     @Html.DisplayFor(modelItem => item.gig.Venue.town)
                 </td>
 
-              
+                <td>
+                    @if(item.gig.open == true)
+                    {
+                        <i>Open</i>
+                    }
+                    else
+                    {
+                        <i>Closed</i>
+                    }
+                </td>
 
             </tr>
                 }

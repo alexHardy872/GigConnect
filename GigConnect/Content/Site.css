@@ -280,6 +280,11 @@ body {
     color: rgba(94, 255, 77, 1);
 }
 
+.venueLink {
+    font-weight: bold;
+    color: yellow;
+}
+
 .no-line{
     text-decoration: none;
 }

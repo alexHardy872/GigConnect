@@ -134,7 +134,7 @@
                             <tr style="color: gray">
                                 <td> @message.timeStamp.ToShortDateString() </td>
                                 <td> @message.timeStamp.ToString("hh:mm tt"):</td>
-                                <td style="font-weight: bold;">@Html.ActionLink(message.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = message.Venue.VenueId }, null)</td>
+                                <td style="font-weight: bold; width: 10%">@Html.ActionLink(message.Venue.venueName, "ViewVenueProfile", "ProfileView", new { venueId = message.Venue.VenueId }, null)</td>
                                 <td>@message.messageContent</td>
                                 <td>
                                     <button style="background-color: black;">@Html.ActionLink("Send Another?", "Create", "Message", new { recipientId = message.Venue.VenueId, isBand = false }, null)</button>
