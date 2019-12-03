@@ -112,6 +112,33 @@ namespace GigConnect.Controllers
             return View(gigId);
         }
 
+
+        public async Task<ActionResult> Delete(int gigId)
+        {
+            Gig gig = GetGigById(gigId);
+            List<Band> bands = GetBandsOnGig(gig);
+            List<Request> requests = GetRequestsForGig(gigId);
+
+            foreach (Band band in bands)
+            {
+                RemoveBandFromGig(band.BandId, gig.GigId); // delete bandGig junction                 
+            }
+            foreach (Request request in requests)
+            {
+                context.Requests.Remove(request);
+            }
+            if (gig.timeOfGig > DateTime.Now)
+            {
+                string cancellationMessage = "The show on " + gig.timeOfGig.ToShortDateString() + " at " + gig.Venue.venueName + " has been cancelled";
+                MessageAllBandsOnGig(bands, gig.venueId, cancellationMessage);
+                //return RedirectToAction("MessageAllBandsOnGig", "Message", new { bands = bands, venueId = gig.venueId, content = cancellationMessage });            
+            }
+            context.Gigs.Remove(gig);
+            await context.SaveChangesAsync();
+
+           
+                return RedirectToAction("Index", "Home");
+            }
         public ActionResult List()
         {
             List<GigInfoViewModel> models = GetAllGigs();
@@ -141,11 +168,11 @@ namespace GigConnect.Controllers
             return View("Index", "Home");
         }
 
-        public async Task<ActionResult> RemoveBandFromGig(int bandId, int gigId)
+        public ActionResult RemoveBandFromGig(int bandId, int gigId)
         {
-            BandGig toRemove = context.BandGigs.Where(g => g.bandId == bandId && g.gigId == gigId).FirstOrDefault();
+            BandGig toRemove =  context.BandGigs.Where(g => g.bandId == bandId && g.gigId == gigId).FirstOrDefault();
             context.BandGigs.Remove(toRemove);
-            await context.SaveChangesAsync();
+            context.SaveChanges();
             return RedirectToAction("RemoveBandsFromLineUp", new { gigId = gigId });
         }
 
@@ -241,6 +268,50 @@ namespace GigConnect.Controllers
 
 
             return gigList;
+        }
+
+
+        public Gig GetGigById(int id)
+        {
+            Gig gig = context.Gigs.Include("Venue").Where(g => g.GigId == id).FirstOrDefault();
+            return gig;
+        }
+
+     
+
+        public void DeleteRequests(int gigId)
+        {
+            List<Request> requestsToDelete = context.Requests.Where(r => r.eventId == gigId).ToList();
+            foreach(Request request in requestsToDelete)
+            {
+                context.Requests.Remove(request);
+            }
+           context.SaveChanges();
+        }
+
+        public List<Request> GetRequestsForGig(int id)
+        {
+            List<Request> requests = context.Requests.Where(r => r.eventId == id).ToList();
+            return requests;
+        }
+
+
+
+        public void MessageAllBandsOnGig(List<Band> bands, int venueId, string content)
+        {
+            foreach (Band band in bands)
+            {
+                    Message temp = new Message();
+                    temp.from = "Venue";
+                    temp.read = false;
+                    temp.bandId = band.BandId;
+                    temp.messageContent = content;
+                    temp.timeStamp = DateTime.Now;
+                    temp.venueId = venueId;
+                    context.Messages.Add(temp);
+            }
+            context.SaveChanges();
+
         }
 
     }

@@ -17,9 +17,10 @@
 
             @Html.HiddenFor(x => x.gig.venueId)
 
-            <div>
-                <button class="btn-default">@Html.ActionLink("EDIT LINEUP", "RemoveBandsFromLineUp", "Gig", new { gigId = Model.gig.GigId }, null)</button>
-            </div>
+    <div>
+        <button class="btn-default">@Html.ActionLink("EDIT LINEUP", "RemoveBandsFromLineUp", "Gig", new { gigId = Model.gig.GigId }, null)</button>
+        <button class="btn-default">@Html.ActionLink("CANCEL SHOW", "Delete", "Gig", new { gigId = Model.gig.GigId }, null)</button>
+    </div>
             <div class="form-horizontal">
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
