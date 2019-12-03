@@ -64,11 +64,11 @@ namespace GigConnect.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public async Task<ActionResult> AddBandFromRequest(int requestId)
+        public ActionResult AddBandFromRequest(int requestId)
         {
             Request request = GetRequestFromId(requestId);
             int gigId = request.eventId ?? default(int);
-           await Task.Run(() => AddBandToGig(request.bandId, gigId));
+           AddBandToGig(request.bandId, gigId);
 
             return RedirectToAction("Index", "Home");
 
@@ -89,14 +89,14 @@ namespace GigConnect.Controllers
 
       
         
-        public async void AddBandToGig(int bandId, int gigId)
+        public void AddBandToGig(int bandId, int gigId)
         {
             BandGig junction = new BandGig();
             junction.gigId = gigId;
             junction.bandId = bandId;
 
             context.BandGigs.Add(junction);
-            await context.SaveChangesAsync();
+            context.SaveChanges();
             
         }
 
@@ -165,7 +165,7 @@ namespace GigConnect.Controllers
             gigToEdit.venueId = model.gig.venueId;
             gigToEdit.description = model.gig.description;
             await context.SaveChangesAsync();
-            return View("Index", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult RemoveBandFromGig(int bandId, int gigId)
