@@ -67,7 +67,11 @@ namespace GigConnect.Services
 
         public static string GetFullState(string partial)
         {
-            return states.Where(a => a.Key == partial).Select(b => b.Value).FirstOrDefault();
+            if (states.ContainsKey(partial))
+            {
+                return states[partial];
+            }
+            return "fail";
 
         }
 
