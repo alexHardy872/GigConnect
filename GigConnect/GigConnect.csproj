@@ -252,6 +252,7 @@
     <Compile Include="Services\DistanceMatrix.cs" />
     <Compile Include="Services\FaceBookAPI.cs" />
     <Compile Include="Services\GeoCode.cs" />
+    <Compile Include="Services\StateNames.cs" />
     <Compile Include="Services\YouTubeAPI.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

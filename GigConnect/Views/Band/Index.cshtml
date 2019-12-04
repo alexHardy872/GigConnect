@@ -67,6 +67,7 @@
             </div>
 
             <div id="inbox" style="display: none;" class="indexBox">
+                <h4>Inbox</h4>
                 @if (Model.messagesIn.Count == 0)
                 {
                     <h2 class="no">no messages</h2>
@@ -115,6 +116,7 @@
             </div>
 
             <div id="outbox" style="display: none;" class="indexBox">
+                <h4>Outbox</h4>
                 @if (Model.messagesOut.Count == 0)
                 {
                     <h2 class="no">no sent messages</h2>
@@ -151,6 +153,7 @@
 
 
             <div id="requestsIn" style="display: none;" class="indexBox">
+                <h4>Requests</h4>
                 @if (Model.requestsIn.Count == 0)
                 {
                     <h2 class="no">no requests</h2>
@@ -196,6 +199,7 @@
             </div>
 
             <div id="requestsOut" style="display: none;" class="indexBox">
+                <h4>Pending Requests</h4>
                 @if (Model.requestsOut.Count == 0)
                 {
                     <h2 class="no">no requests</h2>
@@ -254,6 +258,7 @@
             </div>
 
             <div id="response" style="display: none;" class="indexBox">
+                <h4>Responses</h4>
                 @if (Model.requestResponses.Count == 0)
                 {
                     <h2 class="no">no responses</h2>

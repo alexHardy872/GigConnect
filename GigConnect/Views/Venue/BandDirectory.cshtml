@@ -70,6 +70,11 @@
 
                     <td>
                         @Html.DisplayFor(modelItem => item.band.town)
+                        @{
+                            var state = GigConnect.Services.StateNames.GetFullState(item.band.Location.state.ToString());
+
+                        }
+                        <span hidden>@item.band.Location.city, @item.band.Location.state, @state</span>
                     </td>
 
 

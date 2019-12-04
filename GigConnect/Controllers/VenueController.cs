@@ -132,7 +132,7 @@ namespace GigConnect.Controllers
 
         public async Task<ActionResult> BandDirectory()
         {
-            List<Band> bands = context.Bands.Include("Social").ToList();
+            List<Band> bands = context.Bands.Include("Social").Include("Location").ToList();
             List<BandPicViewModel> models = new List<BandPicViewModel>();
             foreach(Band band in bands)
             {

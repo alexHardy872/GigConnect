@@ -155,7 +155,7 @@ namespace GigConnect.Controllers
 
         public ActionResult VenueDirectory()
         {
-            List<Venue> venues = context.Venues.ToList();
+            List<Venue> venues = context.Venues.Include("Location").ToList();
             return View(venues);
         }
 

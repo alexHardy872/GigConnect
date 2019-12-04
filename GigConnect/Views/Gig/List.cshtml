@@ -65,6 +65,7 @@
                     <a class="no-line" href="@Url.Action("ViewBandProfile", "ProfileView", new { bandId = band.BandId }, null)">
                         <span class="bandLink no-line">@band.bandName, </span>
                     </a>
+                    <span hidden>@band.genre </span>
                     
                     }
                 </td>
@@ -73,7 +74,10 @@
                     @Html.DisplayFor(modelItem => item.gig.description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.gig.Venue.town)
+                    @{ 
+                        var state = GigConnect.Services.StateNames.GetFullState(item.gig.Venue.Location.state.ToString());
+                    }
+                    @Html.DisplayFor(modelItem => item.gig.Venue.town) <span hidden>@item.gig.Venue.Location.city, @item.gig.Venue.Location.state, @state</span>
                 </td>
 
                 <td>
